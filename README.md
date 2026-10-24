@@ -1,6 +1,6 @@
 # Below the Watermark
 
-**Band scale forensics for western blots, and an open benchmark for the edits AI watermarks miss.**
+**A scientific image integrity review assistant, with experimental Western blot forensics and an open AI-era blot benchmark.**
 
 Built in 48 hours at Gator Hack V (UF AI Days 2026) for the theme "Fresh off the frontier."
 
@@ -66,7 +66,7 @@ Numbers are from `results/*.json`, on 20 held out test papers the models never s
 | ai splice caught | 22% |
 | intensify caught | 38% |
 | erase caught | 2% |
-| AI splice caught with NO AI splices in training | 38% at 8% false flags (AUROC 0.717) |
+| AI splice caught with NO AI splices in training (earlier v1 experiment; not rerun for v2) | 38% at 8% false flags (AUROC 0.717) |
 | Baseline: gradient boosting on hand built features, AUROC | 0.543 |
 
 **One publishing step after pasting an AI band** (same steps as the SynthID test)
@@ -133,8 +133,9 @@ examples/     demo inputs (CC BY figure with an AI band WE added; the published 
 - A flag means look closer. It is never proof of misconduct.
 - The forgeries are simulated; a careful forger can get past this detector.
 - Figures are at web resolution, where bands can be only about 13 × 6 pixels. Full resolution originals carry more evidence.
-- The SynthID results are a small, hand run case study. We reported the gap to Google.
-- Copied band detection works on unresized images and degrades badly after resizing or JPEG.
+- The SynthID results are a small, hand-run case study. A disclosure draft exists; external submission is not confirmed.
+- Experimental copied-band detection has low detection rates even at native resolution and degrades further after resizing or JPEG.
+- Automatic blot recognition is conservative; users can request blot-specific screening for images they identify as blots or skip it. Neither setting validates authenticity.
 
 ## Ethics and terms
 
