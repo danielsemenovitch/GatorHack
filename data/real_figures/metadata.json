@@ -1,0 +1,1202 @@
+[
+ {
+  "file": "PMC7261179_F4.jpg",
+  "pmcid": "PMC7261179",
+  "year": "2020",
+  "title": "Regulation of alternative polyadenylation in the yeast Saccharomyces cerevisiae by histone H3K4 and H3K36 methyltransferases.",
+  "doi": "10.1093/nar/gkaa292",
+  "license": "cc by",
+  "figLabel": "Figure 4.",
+  "caption": "Set1 and Set2 modulate each other. (A) Protein levels of Set1, Set2, histone H3, histone H4, H3K4me1, H3K36me3, RNAP II, RNAP II Ser2-P, Rna15 and Pta1 in wild-type, set1\u0394 and set2\u0394 backgrounds. (B) Protein levels of histone H3K4me1 and H3K36me3 in wild-type histone H3, histone H3K4R and H3K36R backgrounds. For panel A and B, whole cell extracts from exponentially growing cells in YPD media in the presence of 10 nM rapamycin (for 2 hours) or DMSO were resolved by SDS-PAGE and analyzed by Western blot. \u03b1-tubulin was used as a protein loading control. (C\u2013F) ChIP of histone H3K4me1 and H3K36me3 t"
+ },
+ {
+  "file": "PMC10579373_Fig1.jpg",
+  "pmcid": "PMC10579373",
+  "year": "2023",
+  "title": "Fibrocystin/Polyductin releases a C-terminal fragment that translocates into mitochondria and suppresses cystogenesis.",
+  "doi": "10.1038/s41467-023-42196-4",
+  "license": "cc by",
+  "figLabel": "Fig. 1",
+  "caption": "Processing of native FPC generates C-terminal cleavage fragments in vivo, including ICD15 with an N-terminal mitochondrial targeting sequence.a Diagram depicting the epitope positions of the anti-FPC antibodies, with PECD (magenta) and PTM (black) indicated. Figure created in BioRender. b Western blot of Pkhd1 KO, WT and HA P6 mouse kidneys using E1 (left panel) and anti-HA (right panel) antibodies. Various FPC products are indicated by (\u201ca\u201d\u2013\u201cf\u201d), with corresponding ICD products marked by color-matched asterisks. Three independent experiments were performed, with similar results. c Western blo"
+ },
+ {
+  "file": "PMC10579373_Fig2.jpg",
+  "pmcid": "PMC10579373",
+  "year": "2023",
+  "title": "Fibrocystin/Polyductin releases a C-terminal fragment that translocates into mitochondria and suppresses cystogenesis.",
+  "doi": "10.1038/s41467-023-42196-4",
+  "license": "cc by",
+  "figLabel": "Fig. 2",
+  "caption": "Mitochondrial Translocation of FPC ICD15.a Schematic diagram of mouse and human ICD15 constructs used in the study, with the MTS sequences and the predicted p(Import) to mitochondria shown. The mutant amino acids are shown in red. b\u2013d FPC ICD15 constructs tagged with GFP were transfected into mIMCD3 cells and imaged. Mitochondria are shown in red, and FPC-GFP constructs in green. A field of cells is shown in the first panel, scale bar 50\u2009\u00b5m. Box highlights area of magnified cells. Scale bar 20\u2009\u00b5m. Three separate experiments per construct were performed independently with similar results. e Sch"
+ },
+ {
+  "file": "PMC10536113_pathogens1201126f001.jpg",
+  "pmcid": "PMC10536113",
+  "year": "2023",
+  "title": "HSV-1 Triggers an Antiviral Transcriptional Response during Viral Replication That Is Completely Abrogated in PKR<sup>-/-</sup> Cells.",
+  "doi": "10.3390/pathogens12091126",
+  "license": "cc by",
+  "figLabel": "Figure 1",
+  "caption": "Abrogated activation of TBK1, IRF3 and NF-\u03baB during HSV-1 replication in PKR\u2212/\u2212 cells. (a) Immunoblot analyses of lysates of PKR\u2212/\u2212 and wild-type HEp-2. (b\u2013d) Quantitative Real-time PCR was performed to evaluate the transcriptional levels of TBK1 (b), IRF3 (c), and NF-\u03baB (d) in HEp-2 and PKR\u2212/\u2212 cells. The cells were infected at MOI 10 with HSV-1 and harvested at 9 h and 24 h post-infection to total RNA extraction. The transcriptional levels of considered genes were analyzed by calculating the value of 2\u2212\u0394\u0394Ct. The assay was performed as a means of triplicate \u00b1 SD and expressed as fold change ov"
+ },
+ {
+  "file": "PMC10536113_pathogens1201126f003.jpg",
+  "pmcid": "PMC10536113",
+  "year": "2023",
+  "title": "HSV-1 Triggers an Antiviral Transcriptional Response during Viral Replication That Is Completely Abrogated in PKR<sup>-/-</sup> Cells.",
+  "doi": "10.3390/pathogens12091126",
+  "license": "cc by",
+  "figLabel": "Figure 3",
+  "caption": "Validation of PKR silencing by western blotting and RT-qPCR. HEp-2 cells were transfected with three different siRNA duplexes at 5 and 10 \u00b5M to silencing PKR, and siRNA scrambled was used as negative control (10 \u00b5M). Samples were collected at 48 h post-transfection to measure the expression of PKR. (a) Western blot analysis was performed to detect the protein level of PKR following silencing. The GAPDH was used to check the protein loading. Panel (b) shows fold changes in protein quantification. Band density was determined with the Image J program, expressed as fold change over the appropriate"
+ },
+ {
+  "file": "PMC10651854_Fig3.jpg",
+  "pmcid": "PMC10651854",
+  "year": "2023",
+  "title": "RBMS3-induced circHECTD1 encoded a novel protein to suppress the vasculogenic mimicry formation in glioblastoma multiforme.",
+  "doi": "10.1038/s41419-023-06269-y",
+  "license": "cc by",
+  "figLabel": "Fig. 3",
+  "caption": "RBMS3 depressed the VM formation of GBM cells.A Relative expression of RBMS3 in NBT (n\u2009=\u20093), LGGT (n\u2009=\u20099), and GBM (n\u2009=\u20099) shown by western blot. **P\u2009<\u20090.01 vs NBT group; ##P\u2009<\u20090.01 vs LGGT group. B The endogenous expression of RBMS3 in NHA, U87, and U251 cells (n\u2009=\u20093). **P\u2009<\u20090.01 vs NHA group. C Effect of RBMS3 expression level on recurrent glioma patient survival time from CGGA database. D The subcellular localization of RBMS3 in U87 and U251 cells was shown by IF assay. Scale bar = 10 \u03bcm. E RBMS3 inhibited U87 and U251 cell proliferation shown by CCK8 assay. F, G RBMS3 suppressed the migrat"
+ },
+ {
+  "file": "PMC10651854_Fig4.jpg",
+  "pmcid": "PMC10651854",
+  "year": "2023",
+  "title": "RBMS3-induced circHECTD1 encoded a novel protein to suppress the vasculogenic mimicry formation in glioblastoma multiforme.",
+  "doi": "10.1038/s41419-023-06269-y",
+  "license": "cc by",
+  "figLabel": "Fig. 4",
+  "caption": "RBMS3 bound to and promoted the production of circHECTD1, which had an encoding function.A Relative expression of circHECTD1 in U87 and U251 cells with RBMS3 overexpression was shown by qPCR assay (n\u2009=\u20093). *P\u2009<\u20090.05 vs OV-NC group; **P\u2009<\u20090.01 vs OV-NC group. B The illustration of the putative RBMS3-binding sites on the flanking introns in the circHECTD1-Wt and circHECTD1-Mut minigenes. C RIP analysis of RBMS3 binding to circHECTD1-Wt and circHECTD1-Mut minigenes in U87 and U251 cells (n\u2009=\u20093). *P\u2009<\u20090.05 vs IgG group; **P\u2009<\u20090.01 vs IgG group. D qPCR analysis of circHECTD1 expression in U87 and U"
+ },
+ {
+  "file": "PMC10533267_fig3.jpg",
+  "pmcid": "PMC10533267",
+  "year": "2023",
+  "title": "sNASP Mutation Aggravates to the TLR4-Mediated Inflammation in SLE by TAK1 Pathway.",
+  "doi": "10.1155/2023/4877700",
+  "license": "cc by",
+  "figLabel": "Figure 3",
+  "caption": "sNASP mutation downregulates the protein of TRAF6 expression. The expression of TRAF6 was measured by western blot in peritoneal macrophages and compared among B6.lpr, B6.\u2206sNASP.lpr, B6.WT, and B6.\u2206sNASP mice, and mouse \u03b2-actin was used as control. Following 0/0.5/1/2\u2009hr stimulation with ((a) and (d)) LPS (1\u2009ng/ml), ((b) and (e)) LPS (10\u2009ng/ml), ((c) and (f)) LPS (100\u2009ng/ml). Data were shown as means\u2009\u00b1\u2009SEM. \u2009\u2217P < 0.05, \u2009\u2217\u2217P < 0.01; independent sample t-test. Results shown are representative of 2\u20133 independent experiments."
+ },
+ {
+  "file": "PMC10533267_fig4.jpg",
+  "pmcid": "PMC10533267",
+  "year": "2023",
+  "title": "sNASP Mutation Aggravates to the TLR4-Mediated Inflammation in SLE by TAK1 Pathway.",
+  "doi": "10.1155/2023/4877700",
+  "license": "cc by",
+  "figLabel": "Figure 4",
+  "caption": "sNASP mutation promotes TLR4-induced NF-\u03baB and MAPK activation of the pathways in B6.lpr mice. The expression of phosphorylated and total proteins was measured by western blotting in peritoneal macrophages and compared between B6.lpr and B6.\u2206sNASP.lpr mice, and mouse \u03b2-actin was used as control. Following 0/0.5/1/2\u2009hr stimulation with (a) LPS (1\u2009ng/ml), (b) LPS (10\u2009ng/ml), (c) LPS (100\u2009ng/ml). Data were shown as means\u2009\u00b1\u2009SEM. \u2009\u2217P < 0.05, \u2009\u2217\u2217P < 0.01; independent sample t-test. Results shown are representative of 2\u20133 independent experiments."
+ },
+ {
+  "file": "PMC10501626_ppat1011620g001.jpg",
+  "pmcid": "PMC10501626",
+  "year": "2023",
+  "title": "LGP2 directly interacts with flavivirus NS5 RNA-dependent RNA polymerase and downregulates its pre-elongation activities.",
+  "doi": "10.1371/journal.ppat.1011620",
+  "license": "cc by",
+  "figLabel": "Fig 1",
+  "caption": "SiRNA-mediated knockdown and overexpression of LGP2 affect the replication of ZIKV.(A-D) The LGP2-knockdown CCF-STTG1 cells were infected by ZIKV (MOI = 0.1), and RT-qPCR and virus titer samples were obtained at 12, 24, and 36 hpi. Western blot samples were obtained at 24 hpi. (A) The relative mRNA levels of LGP2 quantified by RT-qPCR. (B) The protein expressions of LGP2 and \u03b2-actin determined by Western blot. (C) The relative quantification of ZIKV genomic RNA. (D) Virus titers of the cell supernatants measured by virus plaque on Vero cells. (E-G) LGP2- and mCherry-overexpressing CCF-STTG1 ce"
+ },
+ {
+  "file": "PMC10501626_ppat1011620g002.jpg",
+  "pmcid": "PMC10501626",
+  "year": "2023",
+  "title": "LGP2 directly interacts with flavivirus NS5 RNA-dependent RNA polymerase and downregulates its pre-elongation activities.",
+  "doi": "10.1371/journal.ppat.1011620",
+  "license": "cc by",
+  "figLabel": "Fig 2",
+  "caption": "LGP2 inhibits ZIKV and TBEV replication independent of IFN induction.(A) Schematic diagram of TBEV and ZIKV replicons. (B-E) 0, 50, 100, 200, 400 ng LGP2 WT- or its mutant (MIV and MV)-overexpressing plasmids were co-transfected with 100 ng viral replicons in 293T cells. Vector plasmid (pCAGGS-HA) was added to ensure the equally total amount (500 ng) of transfected plasmid DNA in each sample. Luciferase activities were detected and relative luciferase activities of replicon transfected with vector were set to 100%. Relative luciferase activities of ZIKV replicon (B) and TBEV replicon (C) upon "
+ },
+ {
+  "file": "PMC10710492_Fig2.jpg",
+  "pmcid": "PMC10710492",
+  "year": "2023",
+  "title": "Promoter swapping of truncated PDGFRB drives Ph-like acute lymphoblastic leukemia.",
+  "doi": "10.1038/s41698-023-00485-7",
+  "license": "cc by",
+  "figLabel": "Fig. 2",
+  "caption": "Oncogenicity of the NRIP1::PDGFRB fusion gene.a Left panel shows Ba/F3 outgrowths transduced with NRIP1::PDGFRB compared to Ba/F3 cells transduced with a mock vector upon IL-3 withdrawal; right panel shows flow cytometry images of Ba/F3 cells transduced with a mock vector, including NRIP1::PDGFRB and PDGFRB WT; transformed clones were detected only in Ba/F3 cells transduced with NRIP1::PDGFRB and PDGFRB WT vectors; FSC forward scatter, SSC side scatter. b Western blot analyses of Ba/F3 cells transduced with NRIP1::PDGFRB or PDGFRB WT vectors; truncated form of PDGFR\u03b2 and phosphorylated PDGFR\u03b2 "
+ },
+ {
+  "file": "PMC10485056_Fig1.jpg",
+  "pmcid": "PMC10485056",
+  "year": "2023",
+  "title": "TNF-\u03b1 and Poly(I:C) induction of A20 and activation of NF-\u03baB signaling are independent of ABCF1 in human airway epithelial cells.",
+  "doi": "10.1038/s41598-023-41990-w",
+  "license": "cc by",
+  "figLabel": "Figure 1",
+  "caption": "ABCF1 silencing on A20 protein expression under basal conditions in HBEC-6KT in vitro. (a) Experimental design schematic. Immortalized human airway epithelial cells grow in cell culture plates, the undergoes ABCF1 siRNA-mediated knockdown followed by pro-inflammatory challenge. Total cell lysates collected from the cells are used for immunoblotting and cell culture supernatant are used to run ELISAs. (b) Heat map of log2 expression data of select genes associated with antiviral and pro-inflammatory responses for VACV-70 samples with and without si-ABCF1. (c) (i) Immunoblot to confirm siRNA-med"
+ },
+ {
+  "file": "PMC10485056_Fig2.jpg",
+  "pmcid": "PMC10485056",
+  "year": "2023",
+  "title": "TNF-\u03b1 and Poly(I:C) induction of A20 and activation of NF-\u03baB signaling are independent of ABCF1 in human airway epithelial cells.",
+  "doi": "10.1038/s41598-023-41990-w",
+  "license": "cc by",
+  "figLabel": "Figure 2",
+  "caption": "ABCF1 silencing on NF-\u03baB p65 protein expression and activation under basal unstimulated condition in HBEC-6KT in vitro. (a) (i) Immunoblot of total NF-\u03baB p65 protein expression with and without si-ABCF1 in HBEC-6KT cells under basal conditions. (ii) Stain-free blot was used to (iii) quantify NF-\u03baB p65 protein expression. (b) (i) Immunoblot of phosphorylated NF-\u03baB p65 (Ser 536) with and without si-ABCF1 in HBEC-6KT cells under basal conditions. (ii) Stain-free blot was used to (iii) quantify NF-\u03baB p65 phosphorylation. All studies n\u2009=\u20093; ns\u2009>\u20090.05."
+ },
+ {
+  "file": "PMC10630453_Fig2.jpg",
+  "pmcid": "PMC10630453",
+  "year": "2023",
+  "title": "DUSP1 protects against ischemic acute kidney injury through stabilizing mtDNA via interaction with JNK.",
+  "doi": "10.1038/s41419-023-06247-4",
+  "license": "cc by",
+  "figLabel": "Fig. 2",
+  "caption": "Protective effect of Dusp1 on kidney after 48\u2009h of reperfusion followed by ischemia.A Identification of Dusp1 knockout mice. B Representative graphs of kidney sections with H&E staining (400\u00d7). C Representative periodic acid-Schiff (PAS)-stained histological sections are presented (400\u00d7). D Representative images of KIM1 immunohistochemistry (400\u00d7). E Quantification of the tubular damage score. F Quantitative analysis of Kim-1 positive tubules. G Serum creatinine measurement. H Blood urea nitrogen measurement. I Representative Western blot and quantitative data showing the Dusp1 protein abundan"
+ },
+ {
+  "file": "PMC10630453_Fig4.jpg",
+  "pmcid": "PMC10630453",
+  "year": "2023",
+  "title": "DUSP1 protects against ischemic acute kidney injury through stabilizing mtDNA via interaction with JNK.",
+  "doi": "10.1038/s41419-023-06247-4",
+  "license": "cc by",
+  "figLabel": "Fig. 4",
+  "caption": "Dusp1 deficiency worsened ischemia-induced proximal tubular mitochondrial injury in vivo.A Representative TEM images of mouse kidney tissues. B Quantitative analysis of damaged mitochondria from electron microscopy images. C Quantitative analysis of mitochondrial matrix density. D Representative images for MitoSOX staining (E) Quantitative analysis of MitoSOX staining. F Representative images and (G) Quantitative analysis of COX I immunohistochemical (IHC) staining. H Representative Western blot of COX I (I) Quantitative data showing the COX I protein abundance in sham or IRI- treated kidneys "
+ },
+ {
+  "file": "PMC10317990_Fig1.jpg",
+  "pmcid": "PMC10317990",
+  "year": "2023",
+  "title": "RUNX3 inactivates oncogenic MYC through disruption of MYC/MAX complex and subsequent recruitment of GSK3\u03b2-FBXW7 cascade.",
+  "doi": "10.1038/s42003-023-05037-0",
+  "license": "cc by",
+  "figLabel": "Fig. 1",
+  "caption": "RUNX3 inhibits the MYC tumorigenic pathway.a Canonical pathway analysis (using Ingenuity Pathway Analysis by QIAGEN) of RNA-sequencing (RNAseq) data of HeLa-RUNX3 treated with 500\u2009ng/ml Dox for 48\u2009h or untreated (mock) in triplicates. Differentially expressed genes (DEGs) were filtered using adjusted p value of <0.01 and log2 fold change of \u00b10.4. Orange and blue bars represent activated and inactivated pathways respectively. b Gene set enrichment analysis (GSEA) of RNAseq from (a). c Immunoblot of lysates (40\u2009\u00b5g) from HeLa-FLAG, HeLa-RUNX3, HeLa-R122C treated with 500\u2009ng/ml doxycycline for 48\u2009"
+ },
+ {
+  "file": "PMC10317990_Fig2.jpg",
+  "pmcid": "PMC10317990",
+  "year": "2023",
+  "title": "RUNX3 inactivates oncogenic MYC through disruption of MYC/MAX complex and subsequent recruitment of GSK3\u03b2-FBXW7 cascade.",
+  "doi": "10.1038/s42003-023-05037-0",
+  "license": "cc by",
+  "figLabel": "Fig. 2",
+  "caption": "RUNX3 promotes MYC protein degradation via the GSK3\u03b2-FBXW7 pathway.a HeLa-RUNX3 and MKN28-RUNX3 were treated with 500\u2009ng/ml and 20\u2009ng/ml Dox, respectively. 18\u2009h after Dox addition, 10\u2009\u00b5M MG132 was added where indicated for 6\u2009h. Immunoblot was performed on 40\u2009\u00b5g lysate. RUNX3 was detected by anti-FLAG antibody. \u03b1-tubulin is the loading control. The data is representative of 3 independent experiments. b HeLa-RUNX3 and MKN28-RUNX3 were treated with 500\u2009ng/ml and 20\u2009ng/ml Dox, respectively. 12\u2009h after Dox addition, cycloheximide (CHX) was added at 50\u2009\u00b5g/ml and 100\u2009\u00b5g/ml for HeLa-RUNX3 and for MKN2"
+ },
+ {
+  "file": "PMC10756753_kiad520F5.jpg",
+  "pmcid": "PMC10756753",
+  "year": "2023",
+  "title": "Redox-mediated activation of ATG3 promotes ATG8 lipidation and autophagy progression in Chlamydomonas reinhardtii.",
+  "doi": "10.1093/plphys/kiad520",
+  "license": "cc by",
+  "figLabel": "Figure 5.",
+  "caption": "Reduced ATG3 mediates ATG8 lipidation in cell-free assays in Chlamydomonas and Saccharomyces. A) Schematic representation of the workflow of the cell-free CrATG8 lipidation assay using the recombinant E2-activating enzyme ATG3 (CrATG3WT, CrATG3C50S, CrATG3C81S, CrATG3C255S, or ScATG3WT), recombinant CrATG8 (CrATG8WT), and total extracts (TEs) from Chlamydomonas WT or Saccharomyces WT and atg3 mutant. B) TEs from Chlamydomonas WT were untreated (\u2212) or treated (+) with DTTred in the absence (\u2212) or presence (+) of recombinant CrATG3WT for 60 min at 25 \u00b0C. C) TEs from Chlamydomonas WT were incubat"
+ },
+ {
+  "file": "PMC10756753_kiad520F6.jpg",
+  "pmcid": "PMC10756753",
+  "year": "2023",
+  "title": "Redox-mediated activation of ATG3 promotes ATG8 lipidation and autophagy progression in Chlamydomonas reinhardtii.",
+  "doi": "10.1093/plphys/kiad520",
+  "license": "cc by",
+  "figLabel": "Figure 6.",
+  "caption": "Autophagy-activating conditions lead to a significant increase of ATG3 abundance in Chlamydomonas. A) Schematic representation showing the effect of NF, cerulenin (Cer), or MV or HL in Chlamydomonas cells. All these treatments result in ROS accumulation that subsequently triggers the activation of autophagy (P\u00e9rez-P\u00e9rez, Couso, and Crespo 2012; Heredia-Mart\u00ednez et al. 2018). B) Immunoblot analysis of Chlamydomonas ATG3 (upper panel) and ATG8 (middle panel) under different ROS-linked stress conditions such as: absence of carotenoids by treatment with 20 \u00b5M NF (first column); fatty acid synthesi"
+ },
+ {
+  "file": "PMC10780770_nutrients1600064f001.jpg",
+  "pmcid": "PMC10780770",
+  "year": "2023",
+  "title": "BMP8B Activates Both SMAD2/3 and NF-\u03baB Signals to Inhibit the Differentiation of 3T3-L1 Preadipocytes into Mature Adipocytes.",
+  "doi": "10.3390/nu16010064",
+  "license": "cc by",
+  "figLabel": "Figure 1",
+  "caption": "Overexpressing BMP8B inhibits adipocyte differentiation. (A) 3T3-L1 preadipocyte differentiation protocol. (B) The expression pattern of Bmp8b during adipogenesis. (C,D) Effective increased and inhibited Bmp8b expression in 3T3-L1 adipocytes. (E) On Day 8, Oil Red O staining revealed lipid contents in cells (Mock, LV-ZsGreen1, and LV-Bmp8b). (F). Quantification of lipid content in cells after adipogenic differentiation (Day 8). (G\u2013J) qRT-PCR analyses of the expression of adipogenic marker genes (Cebp\u03b1, Ppar\u03b3, and Fasn) on Day 0 (G), Day 2 (H), Day 4 (I), and Day 8 (J). (K\u2013M) Protein levels of "
+ },
+ {
+  "file": "PMC10780770_nutrients1600064f002.jpg",
+  "pmcid": "PMC10780770",
+  "year": "2023",
+  "title": "BMP8B Activates Both SMAD2/3 and NF-\u03baB Signals to Inhibit the Differentiation of 3T3-L1 Preadipocytes into Mature Adipocytes.",
+  "doi": "10.3390/nu16010064",
+  "license": "cc by",
+  "figLabel": "Figure 2",
+  "caption": "Knockdown BMP8B promotes adipogenesis. (A) On Day 8, Oil Red O staining revealed lipid contents (Mock, LV-shRNA-scrambled, and LV-shRNA-Bmp8b#1). (B) Quantification of lipid content in cells after adipogenic differentiation (Day 8). (C\u2013F) qRT-PCR analyses of the expression of adipogenic marker genes (Cebp\u03b1, Ppar\u03b3, and Fasn) on Day 0 (C), Day 2 (D), Day 4 (E), and Day 8 (F). (G\u2013I) On the day after induction, the protein levels of PPAR\u03b3 (H) and C/EBP\u03b1 (I) were detected through immunoblotting. Scale bar = 20 \u00b5m. The symbols in the charts represent three biological replicates. The data were presen"
+ },
+ {
+  "file": "PMC10701888_f1.jpg",
+  "pmcid": "PMC10701888",
+  "year": "2023",
+  "title": "Synergistic cytotoxicity of fludarabine, clofarabine, busulfan, vorinostat and olaparib in AML cells.",
+  "doi": "10.3389/fonc.2023.1287444",
+  "license": "cc by",
+  "figLabel": "Figure\u00a01",
+  "caption": "Effects of drugs on molecular markers of apoptosis in patient-derived cell samples. Mononuclear cells were isolated from peripheral blood of patients with leukemia (upper panel) and exposed to the indicated drugs for 48 h prior to analysis by Western blotting (lower panel). F: 0.15 \u00b5M fludarabine; C: 15 nM clofarabine; B: 15 \u00b5g/ml busulfan; S: 0.6 \u00b5M SAHA/vorinostat; O: 7 \u00b5M olaparib. Casp, caspase."
+ },
+ {
+  "file": "PMC10701888_f2.jpg",
+  "pmcid": "PMC10701888",
+  "year": "2023",
+  "title": "Synergistic cytotoxicity of fludarabine, clofarabine, busulfan, vorinostat and olaparib in AML cells.",
+  "doi": "10.3389/fonc.2023.1287444",
+  "license": "cc by",
+  "figLabel": "Figure\u00a02",
+  "caption": "Cytotoxicity of fludarabine (Flu/F), clofarabine (Clo/C), busulfan (Bu/B), vorinostat (SAHA/S), and olaparib (Ola/O) in AML cell lines. Cells were exposed to the indicated concentrations of the drugs, alone or in combination, for 48 h prior to determination of relative cell proliferation by the MTT assay and apoptosis by the Annexin V (Ann V) assay (A). The results are averages of three independent experiments and each experiment was done in duplicate. P values less than 0.05 are indicated by an asterisk (*). (B) To determine drug synergism, cells were exposed to various drug combinations at c"
+ },
+ {
+  "file": "PMC10468065_pone0286266g002.jpg",
+  "pmcid": "PMC10468065",
+  "year": "2023",
+  "title": "Are rapid tests and confirmatory western blot used for cattle and small ruminants TSEs reliable tools for the diagnosis of Chronic Wasting Disease in Europe?",
+  "doi": "10.1371/journal.pone.0286266",
+  "license": "cc by",
+  "figLabel": "Fig 2",
+  "caption": "Confirmatory SAF-immunoblot analysis of proteinase K-treated homogenates on dilution series from brain tissue of positive Moose D.Lane 1 = undiluted; lane 2 = dilution 1:2; lane 3 = dilution 1:4; lane 4 = dilution 1:8; lane 5 = dilution 1:16; lane 6 = dilution 1:32; lane 7 = dilution 1:64; lane 8 = dilution 1:128. Membranes were probed with mAbs 6H4 (A), Sha31 (B), 9A2 (C), SAF84 (D), L42 (E)."
+ },
+ {
+  "file": "PMC10468065_pone0286266g003.jpg",
+  "pmcid": "PMC10468065",
+  "year": "2023",
+  "title": "Are rapid tests and confirmatory western blot used for cattle and small ruminants TSEs reliable tools for the diagnosis of Chronic Wasting Disease in Europe?",
+  "doi": "10.1371/journal.pone.0286266",
+  "license": "cc by",
+  "figLabel": "Fig 3",
+  "caption": "TeSeE\u2122 western blot analysis of proteinase K-treated homogenates on dilution series from brain tissue of positive Moose D (red rectangles) and positive Moose A, B, C.Upper panel short exposition, lower panel longer exposition. Membrane A. Lane 1 = molecular weight; lane 2 = positive classical scrapie; 3 = negative moose control; lane 4 to 10: Moose D; lane 4 = undiluted; lane 5 = dilution 1:2; lane 6 = dilution 1:4; lane 7 = dilution 1:8; lane 8 = dilution 1:16; lane 9 = dilution 1:32; lane 10 = dilution 1:64. Membrane B. Lane 1 = molecular weight; 2 = positive classical scrapie; lane 3 = Moos"
+ },
+ {
+  "file": "PMC10590423_Fig2.jpg",
+  "pmcid": "PMC10590423",
+  "year": "2023",
+  "title": "The involvement of caspases in the process of nuclear removal during lens fiber cell differentiation.",
+  "doi": "10.1038/s41420-023-01680-y",
+  "license": "cc by",
+  "figLabel": "Fig. 2",
+  "caption": "Development-specific patterns of nuclear membrane and nuclear lamina loss that precede nuclear elimination.A\u2013C Lens cryosections were immunolabeled for lamin B (red) and LAP2 (green) at A E10, B E12, and C E15. (Ai-Ci) 40\u00d7 confocal tile acquired in the region of lens fiber cell differentiation. (Aii, iii-Cii, iii) Zoomed in view of the boxed in regions of Ai-Ci denoted by a single asterisk, (Aii-Cii) lamin B, (Aiii-Ciii) LAP2. (Aiv, v-Civ, v) Zoomed in view of the boxed in regions of Ai-Ci denoted by a double asterisk, (Aiv-Civ) lamin B, (Av-Cv) LAP2. Data shows loss of the nuclear membrane pr"
+ },
+ {
+  "file": "PMC10590423_Fig7.jpg",
+  "pmcid": "PMC10590423",
+  "year": "2023",
+  "title": "The involvement of caspases in the process of nuclear removal during lens fiber cell differentiation.",
+  "doi": "10.1038/s41420-023-01680-y",
+  "license": "cc by",
+  "figLabel": "Fig. 7",
+  "caption": "Caspase inhibition prevents disassembly of the nuclear envelope, impairing nuclear condensation.A\u2013C Cryosections of E10 lenses exposed for 48\u2009h in organ culture to A DMSO, vehicle control, B the caspase 3 inhibitor Z-DEVD-FMK, or C the pan-caspase inhibitor Z-VAD-FMK, co-immunolabeled for lamin B (red) and LAP2 (green). (Ai-Ci) Lamin B/LAP2 overlay, images acquired as 40x tiles by confocal microscopy across the region of lens fiber cell differentiation. (Aii, iii-Cii, iii) Zoomed in view of the boxed in regions of Ai-Ci denoted by a single asterisk, (Aii-Cii) lamin B, (Aiii-Ciii) LAP2. (Aiv, v"
+ },
+ {
+  "file": "PMC11406190_fig3.jpg",
+  "pmcid": "PMC11406190",
+  "year": "2023",
+  "title": "TBK1-stabilized ZNF268a recruits SETD4 to methylate TBK1 for efficient interferon signaling.",
+  "doi": "10.1016/j.jbc.2023.105428",
+  "license": "cc by",
+  "figLabel": "Figure\u00a03",
+  "caption": "ZNF268a targets TBK1 to facilitate IRF3 activation.A and B, luciferase reporter assays revealed that ZNF268a KO inhibited various signaling factors overexpression-induced IFN-\u03b2 (A) and ISRE (B) promoter transactivation. C and D, lysates from HEK293T cells transfected with the indicated plasmids for 24\u00a0h were subjected to immunoprecipitation with anti-Flag (C) or HA (D) antibodies followed by Western blot analysis with anti-HA or Flag antibodies. E, lysates from HEK293T cells transfected with Flag-ZNF268a plasmids for 24\u00a0h were subjected to immunoprecipitation with anti-Flag antibody and immuno"
+ },
+ {
+  "file": "PMC11406190_fig4.jpg",
+  "pmcid": "PMC11406190",
+  "year": "2023",
+  "title": "TBK1-stabilized ZNF268a recruits SETD4 to methylate TBK1 for efficient interferon signaling.",
+  "doi": "10.1016/j.jbc.2023.105428",
+  "license": "cc by",
+  "figLabel": "Figure\u00a04",
+  "caption": "Viral infection prevents lysosomal degradation of ZNF268a via TBK1.A, SeV-infected HEK293T cells were subjected to subcellular fractionation, and cytoplasmic Flag-ZNF268a expression was probed by immunoblot. B, cytoplasmic Flag-ZNF268a expression was probed as in (A), while both SeV and VSV were used to infect cells. C, the degradation rate of cytoplasmic ZNF268a from HEK293T cells treated with or without SeV, measured by CHX chase assay. D, IB of endogenous cytoplasmic ZNF268a in parental and TBK1 knockout HEK293T cells infected with SeV for 12\u00a0h. The arrow denotes specific bands. E, IB of en"
+ },
+ {
+  "file": "PMC10448144_f1.jpg",
+  "pmcid": "PMC10448144",
+  "year": "2023",
+  "title": "The identification of high-performing antibodies for Charged multivesicular body protein 2b for use in Western Blot, immunoprecipitation and immunofluorescence.",
+  "doi": "10.12688/f1000research.139755.1",
+  "license": "cc by",
+  "figLabel": "Figure 1. ",
+  "caption": "Charged multivesicular body protein 2b antibody screening by Western Blot.Lysates of U2OS (WT and\nCHMP2B KO) were prepared and 50 \u03bcg of protein were processed for Western Blot with the indicated Charged multivesicular body protein 2b antibodies. The Ponceau stained transfers of each blot are presented to show equal loading of WT and KO lysates and protein transfer efficiency from the acrylamide gels to the nitrocellulose membrane. Antibody dilutions were chosen according to the recommendations of the antibody supplier. When the concentration was not indicated by the supplier, which was the cas"
+ },
+ {
+  "file": "PMC10448144_f2.jpg",
+  "pmcid": "PMC10448144",
+  "year": "2023",
+  "title": "The identification of high-performing antibodies for Charged multivesicular body protein 2b for use in Western Blot, immunoprecipitation and immunofluorescence.",
+  "doi": "10.12688/f1000research.139755.1",
+  "license": "cc by",
+  "figLabel": "Figure 2. ",
+  "caption": "Charged multivesicular body protein 2b antibody screening by immunoprecipitation.U2OS lysates were prepared, and IP was performed using 1.0 \u03bcg of the indicated Charged multivesicular body protein 2b antibodies pre-coupled to Dynabeads protein G or protein A. Samples were washed and processed for Western Blot with the indicated Charged multivesicular body protein 2b antibody. For Western Blot, ab157208** was used at 1/2000. The Ponceau stained transfers of each blot are shown for similar reasons as in\nFigure 1. SM=10% starting material; UB=10% unbound fraction; IP=immunoprecipitated. *Monoclona"
+ },
+ {
+  "file": "PMC10301924_pathogens1200801f001.jpg",
+  "pmcid": "PMC10301924",
+  "year": "2023",
+  "title": "Activation of Inflammasome during Bluetongue Virus Infection.",
+  "doi": "10.3390/pathogens12060801",
+  "license": "cc by",
+  "figLabel": "Figure 1",
+  "caption": "Replicating BTV is required to trigger inflammasome activation. (a,b) Unprimed or primed (LPS, 100 ng/mL for 3 h, or LPS + nigericin) J774.1 cells were infected for 18 or 24 h with the WT or UV-inactivated BTV-8. Then, cell extracts and supernatants were analyzed via Western blotting for the indicated proteins. BTV NS3 was used as a marker of infection. Cell supernatants were also used to quantify IL-1\u03b2 secretion via ELISA (b). (c) Unprimed IFNAR-/- BMDMs were infected with the WT or UV-inactivated BTV-8 for the indicated times. Then, the cell supernatants were analyzed via Western blotting fo"
+ },
+ {
+  "file": "PMC10301924_pathogens1200801f002.jpg",
+  "pmcid": "PMC10301924",
+  "year": "2023",
+  "title": "Activation of Inflammasome during Bluetongue Virus Infection.",
+  "doi": "10.3390/pathogens12060801",
+  "license": "cc by",
+  "figLabel": "Figure 2",
+  "caption": "NLRP3 is involved in the BTV-8-triggered inflammasome. Unprimed or primed (LPS, 100 ng/mL for 3 h) BMDM cells expressing NLRP3 (NLRP3+/+) or not (NLRP3-/-) were mock-infected or infected for 18 h with WT BTV-8. Then, the cell extracts and cell supernatants were analyzed via Western blotting for the indicated proteins. BTV NS3 was used as a marker of infection."
+ },
+ {
+  "file": "PMC10509694_fig6.jpg",
+  "pmcid": "PMC10509694",
+  "year": "2023",
+  "title": "Examining PI3K-signaling-dependent regulation of\u00a0lens organelle free zone formation via immunolocalization and immunoblotting in chick embryos.",
+  "doi": "10.1016/j.xpro.2023.102569",
+  "license": "cc by",
+  "figLabel": "Figure\u00a06",
+  "caption": "Suppression of PI3K/Akt signaling leads to the induction of autophagy and the removal of non-nuclear organelles(A and B) Phosphorylation of Akt is inhibited by LY294002 and MK-2206, leading to the suppression of p70S6K activation and induction of autophagy as shown by the increased expression of the lysosomal marker LAMP1 (A). Inhibition of Akt by MK-2206 also results in the loss of mitochondria as shown by TOM20 and endoplasmic reticulum (ER) as shown by immunoblot for calreticulin (B)."
+ },
+ {
+  "file": "PMC10674287_viruses1502141f002.jpg",
+  "pmcid": "PMC10674287",
+  "year": "2023",
+  "title": "ZBP1 Drives IAV-Induced NLRP3 Inflammasome Activation and Lytic Cell Death, PANoptosis, Independent of the Necroptosis Executioner MLKL.",
+  "doi": "10.3390/v15112141",
+  "license": "cc by",
+  "figLabel": "Figure 2",
+  "caption": "Loss of MLKL does not protect macrophages from IAV-induced activation of PANoptosis molecules. (A,B) Western blot analysis of PANoptosis in IAV-infected wild-type (WT) and different gene-deficient bone marrow-derived macrophages (BMDMs). Western blot analysis of pro- (P45) and activated (P20) caspase-1 (CASP1), pro- (P53) and activated (P30) gasdermin D (GSDMD), pro- (P53) and activated (P34) gasdermin E (GSDME), pro- (P55) and cleaved (P43 and P18) caspase-8 (CASP8), pro- (P35) and cleaved (P20) caspase-7 (CASP7), pro- (P35) and cleaved (P17) caspase-3 (CASP3), phosphorylated MLKL (pMLKL) and"
+ },
+ {
+  "file": "PMC10486525_cells1202175f001.jpg",
+  "pmcid": "PMC10486525",
+  "year": "2023",
+  "title": "Recruitment of the Histone Variant MacroH2A1 to the Pericentric Region Occurs upon Chromatin Relaxation and Is Responsible for Major Satellite Transcriptional Regulation.",
+  "doi": "10.3390/cells12172175",
+  "license": "cc by",
+  "figLabel": "Figure 1",
+  "caption": "The histone variant mH2A1 is recruited to pericentric heterochromatin in mouse senescent cells. (A) Immunofluorescence (IF) confocal images of proliferating and senescent L929 mouse cells stained with Hoechst and antibodies specific for mH2A1, HP1\u03b1 and \u03b3H2AX. Senescence was induced using etoposide treatment (12.5 \u03bcM, 24 h + 4 days of release). Percentage of cells presenting mH2A1 foci at pericentric regions is shown, represented as means \u00b1 standard deviation (SD) from two biological replicates. Scale bar = 10 \u03bcm. (B) Representative images of a senescence-associated \u03b2-galactosidase activity (SA"
+ },
+ {
+  "file": "PMC10486525_cells1202175f003.jpg",
+  "pmcid": "PMC10486525",
+  "year": "2023",
+  "title": "Recruitment of the Histone Variant MacroH2A1 to the Pericentric Region Occurs upon Chromatin Relaxation and Is Responsible for Major Satellite Transcriptional Regulation.",
+  "doi": "10.3390/cells12172175",
+  "license": "cc by",
+  "figLabel": "Figure 3",
+  "caption": "TSA treatment promotes mH2A1 recruitment to pericentric regions in the absence of satellite DSBs. (A) IF confocal images of untreated cells or cells treated with 500 nM of TSA over 48 h, stained with Hoechst and antibodies specific for mH2A1 and HP1\u03b1. Percentage of cells presenting mH2A1 foci at chromocenters is shown, represented as means \u00b1 SD from 3 biological replicates. Scale bar = 10 \u03bcm. (B) Immunoblots of mH2A1, HP1\u03b1, H3K9ac, \u03b3H2AX, and \u03b2-actin in protein extracts prepared from untreated and TSA-treated cells. Apparent molecular weights are indicated. Fold change increase in mH2A1 protei"
+ },
+ {
+  "file": "PMC10605742_cells1202432f003.jpg",
+  "pmcid": "PMC10605742",
+  "year": "2023",
+  "title": "The Muscarinic Acetylcholine M<sub>2</sub> Receptor-Induced Nitration of p190A by eNOS Increases RhoA Activity in Cardiac Myocytes.",
+  "doi": "10.3390/cells12202432",
+  "license": "cc by",
+  "figLabel": "Figure 3",
+  "caption": "Carbachol-induced nitration of p190A by eNOS in NRCM. (A) Quantification of NO production in NRCMs by DAF-FM fluorescence. Cells were transduced with Ad-RGS3L-N460A for 48 h and additionally treated with 10 \u00b5M L-NIO or solvent for 15 min. Thereafter, the cells were stimulated with 1 mM carbachol or solvent for 5 min at 37 \u00b0C. Values are mean + SD (n = 3). * p < 0.05; one-way ANOVA with Tukey\u2019s multiple comparison was performed. (B,C) Activating phosphorylation of eNOS. Cells were transduced with Ad-EGFP or Ad-RGS3L-N460A for 48 h. Thereafter, the cells were stimulated with 1 mM carbachol or so"
+ },
+ {
+  "file": "PMC10605742_cells1202432f002.jpg",
+  "pmcid": "PMC10605742",
+  "year": "2023",
+  "title": "The Muscarinic Acetylcholine M<sub>2</sub> Receptor-Induced Nitration of p190A by eNOS Increases RhoA Activity in Cardiac Myocytes.",
+  "doi": "10.3390/cells12202432",
+  "license": "cc by",
+  "figLabel": "Figure 2",
+  "caption": "Effect of the inhibition of eNOS on the carbachol-induced RhoA activation and RGS3L/p190A complex formation in NRCM. NRCM were transduced with Ad-RGS3L-N460A or Ad-EGFP for 48 h. Before stimulation with or without 1 mM carbachol for 5 min, cells were treated without and with 10 \u00b5M L-NAME (A,B) for 10 min or without and with 10 \u00b5M L-NIO (C,D) for 15 min. Level of RhoA-GTP was measured by the RhoA activation assay. Quantification of RhoA activity (RhoA-GTP/total RhoA) (B,D) as well as representative experiments (A,C) are shown. The mean RhoA-GTP level detected in unstimulated cells was set to 1."
+ },
+ {
+  "file": "PMC10706654_ijms2416814f003.jpg",
+  "pmcid": "PMC10706654",
+  "year": "2023",
+  "title": "Lovastatin Treatment Inducing Apoptosis in Human Pancreatic Cancer Cells by Inhibiting Cholesterol Rafts in Plasma Membrane and Mitochondria.",
+  "doi": "10.3390/ijms242316814",
+  "license": "cc by",
+  "figLabel": "Figure 3",
+  "caption": "Effect of LOVA on plasma membrane raft. (A) Plasma membrane cholesterol content. (B) Lipid raft content of the plasma membrane. (C,D) Effect of LOVA on the activation of EGFR and AKT in whole-cell lysates (C) and plasma membrane raft fractions (D) (Right panels) Semiquantification of Western blot. (E) The effect of LOVA on the interaction between PI3K and AKT in plasma membrane rafts. (Right panel) Semiquantification of Western blot. (F) Effect of LOVA on turnover of membranous EGFR. Error bars: standard deviation from three independent trials. Statistical significance was calculated using the"
+ },
+ {
+  "file": "PMC10706654_ijms2416814f004.jpg",
+  "pmcid": "PMC10706654",
+  "year": "2023",
+  "title": "Lovastatin Treatment Inducing Apoptosis in Human Pancreatic Cancer Cells by Inhibiting Cholesterol Rafts in Plasma Membrane and Mitochondria.",
+  "doi": "10.3390/ijms242316814",
+  "license": "cc by",
+  "figLabel": "Figure 4",
+  "caption": "Effect of LOVA on mitochondrial raft. (A) Cholesterol content in mitochondria. (B) Lipid raft content in the mitochondria. (C,D) Effect of LOVA on mitochondrial raft proteins (C) and BCL2-BAX binding in mitochondrial rafts. (Right panels) Semiquantification of Western blot. (D) Error bars: standard deviation from three independent trials. Statistical significance was calculated using the Mann\u2013Whitney U test. PDAC, pancreatic ductal adenocarcinoma; MIA, MIA-PaCa-2; C, control; LOVA, lovastatin; BCL2, B-cell lymphoma 2; BAX, Bcl-2-associated X protein; F1F0, F1F0 ATP synthase subunit C; cholera "
+ },
+ {
+  "file": "PMC10482945_Fig1.jpg",
+  "pmcid": "PMC10482945",
+  "year": "2023",
+  "title": "Lysine methylation of PPP1CA by the methyltransferase SUV39H2 disrupts TFEB-dependent autophagy and promotes intervertebral disc degeneration.",
+  "doi": "10.1038/s41418-023-01210-4",
+  "license": "cc by",
+  "figLabel": "Fig. 1",
+  "caption": "NPC senescence and impaired autophagic activity are strongly correlated with IDD progression.a IHC staining of p16 and p21 in human NP tissues (Scale bar: 100\u2009\u03bcm, 50\u2009\u03bcm). b Comparison of the number of p16/p21 positive cells in human NP tissues. c Western blot analysis of p53, p21, p16, TFEB, p-TFEB, p62, LC3-II in human NP tissues. d) Linear regression analysis between the p53, p21, p16, TFEB, p-TFEB, p62, LC3-II protein levels and the Pfirrmann MRI grades. e Western blot analysis of p53, p21, p16 in human NPCs treated with 50\u2009\u03bcM TBHP for 24\u2009h. f SA\u2010\u03b2\u2010gal activity staining and analysis of NPCs"
+ },
+ {
+  "file": "PMC10482945_Fig2.jpg",
+  "pmcid": "PMC10482945",
+  "year": "2023",
+  "title": "Lysine methylation of PPP1CA by the methyltransferase SUV39H2 disrupts TFEB-dependent autophagy and promotes intervertebral disc degeneration.",
+  "doi": "10.1038/s41418-023-01210-4",
+  "license": "cc by",
+  "figLabel": "Fig. 2",
+  "caption": "Impaired TFEB-regulated lysosomal dysregulation contributes to NPC senescence.a Representative images and quantification of total LysoTracker Red in NPCs with the indicated treatment (Scale bar: 10\u2009\u03bcm). b Representative images and quantification of Magic Red dye in NPCs with the indicated treatment (Scale bar: 10\u2009\u03bcm). c IF staining of TFEB in NPCs with the indicated treatment and the quantification of TFEB expression in the nucleus labeled with DAPI (Scale bar: 10\u2009\u03bcm). d Cellular fractionation analysis of TFEB in NPCs with the indicated treatment. e Western blot analysis of p-TFEB and TFEB in "
+ },
+ {
+  "file": "PMC10748214_vaccines1101820f003.jpg",
+  "pmcid": "PMC10748214",
+  "year": "2023",
+  "title": "Immunization Effects of a Novel \u03b1-Synuclein-Based Peptide Epitope Vaccine in Parkinson's Disease-Associated Pathology.",
+  "doi": "10.3390/vaccines11121820",
+  "license": "cc by",
+  "figLabel": "Figure 3",
+  "caption": "Epitope treatment initiated an immune response. (A,B) Western blot analysis measuring the expression of IgG (heavy chain [50 kDa] and light chain [25 kDa]) in the spleen (n = 5 per group). (C,D) Immunofluorescence staining measuring the expression of IgG reactivity (green) co-stained with DAPI (blue) in the spleen (n = 5 per group). (E,F) Quantitative measurement of (E) IL-10 and (F) IgG levels in the plasma (n = 5 per group). Scale bar present 100 \u03bcm. Comparisons: # control (CTL) with saline-treated (Veh) \u03b1-syn-induced PD model; * Veh group with epitope treated group [non-carrier protein (N) "
+ },
+ {
+  "file": "PMC10748214_vaccines1101820f004.jpg",
+  "pmcid": "PMC10748214",
+  "year": "2023",
+  "title": "Immunization Effects of a Novel \u03b1-Synuclein-Based Peptide Epitope Vaccine in Parkinson's Disease-Associated Pathology.",
+  "doi": "10.3390/vaccines11121820",
+  "license": "cc by",
+  "figLabel": "Figure 4",
+  "caption": "Epitope treatment reversed the \u03b1-syn and autophagy levels in the brain. (A,B) Western blot analysis showing the expression of \u03b1-syn in the striatum and SNpc (n = 5 per group). (C\u2013F) Western blot analysis showing the expression of autophagy-related markers, i.e., (D) beclin-1, (E) LC3B-II/I, and (F) p62 in the striatum and SNpc (n = 5 per group). (G,H) Immunofluorescence staining measuring the expression of \u03b1-syn (green) co-stained with DAPI (blue) in the striatum and SNpc (n = 5 per group). Scale bar present 50 \u03bcm. Comparisons: # control (CTL) with saline-treated (Veh) \u03b1-syn-induced PD model; "
+ },
+ {
+  "file": "PMC10510463_iid3985fig0001.jpg",
+  "pmcid": "PMC10510463",
+  "year": "2023",
+  "title": "KDM2B regulates inflammation and oxidative stress of sepsis via targeting NF-\u03baB and AP-1 pathways.",
+  "doi": "10.1002/iid3.985",
+  "license": "cc by",
+  "figLabel": "Figure 1",
+  "caption": "KDM2B knockdown alleviates cytotoxicity in sepsis\u2010associated AKI. (A) Western blot was performed to evaluate KDM2B expression in HK\u20102 cells. (B) The cell viability was evaluated in LPS\u2010induced HK\u20102 cells. (C) The LDH release was measured in LPS\u2010induced HK\u20102 cells transfected with si\u2010KDM2B#1 or si\u2010KDM2B#2. The data from three repeated experiments were used for the statistical analysis. Error bar, mean\u2009\u00b1\u2009SD; *p\u2009<\u2009.05, **p\u2009<\u2009.01, ***p\u2009<\u2009.001. AKI, acute kidney injury; LDH, layered double hydroxide; LPS, lipopolysaccharide."
+ },
+ {
+  "file": "PMC10510463_iid3985fig0003.jpg",
+  "pmcid": "PMC10510463",
+  "year": "2023",
+  "title": "KDM2B regulates inflammation and oxidative stress of sepsis via targeting NF-\u03baB and AP-1 pathways.",
+  "doi": "10.1002/iid3.985",
+  "license": "cc by",
+  "figLabel": "Figure 3",
+  "caption": "KDM2B knockdown reduces oxidative stress in sepsis\u2010associated AKI. (A) ELISA was performed to measure the level of SOD, MDA, GSH, and H2O2 in LPS\u2010induced HK\u20102 cells. (B) iNOS and COX\u20102 were measured using western blot in LPS\u2010induced HK\u20102 cells. Three repeated experiments were used for analysis. Error bar, mean\u2009\u00b1\u2009SD; *p\u2009<\u2009.05, **p\u2009<\u2009.01. AKI, acute kidney injury; LPS, lipopolysaccharide."
+ },
+ {
+  "file": "PMC10713253_fig1.jpg",
+  "pmcid": "PMC10713253",
+  "year": "2023",
+  "title": "Targeted Imaging of Endometriosis and Image-Guided Resection of Lesions Using Gonadotropin-Releasing Hormone Analogue-Modified Indocyanine Green.",
+  "doi": "10.1155/2023/6674054",
+  "license": "cc by",
+  "figLabel": "Figure 1",
+  "caption": "Expression of GnRHR in the endometriotic tissues and cell lines. (a) Representative IHC staining for GnRHR in human normal endometrium (EM), ovary endometriosis (OE), and deep infiltrating endometriosis (DIE). (b) Western blot showing GnRHR expression in immortalized human endometriotic epithelial cell line 12Z and endometrial stromal cells (ESC). (c) Representative fluorescence microscopy images and (d) flow cytometry analysis of 12Z cells after incubation with GnRHa-FITC. Scale bar, 50\u2009\u03bcm."
+ },
+ {
+  "file": "PMC10424845_f2.jpg",
+  "pmcid": "PMC10424845",
+  "year": "2023",
+  "title": "Gelsevirine is a novel STING-specific inhibitor and mitigates STING-related inflammation in sepsis.",
+  "doi": "10.3389/fimmu.2023.1190707",
+  "license": "cc by",
+  "figLabel": "Figure\u00a02",
+  "caption": "Gelsevirine (GS) binds to the STING and inhibits STING activation. The in silico virtual simulation analysis of the binding between STING-CTD dimer (4F5D) and GS compared with c-di-GMP (A, left); the in silico simulation analysis of the binding site of the STING-CTD dimer (4F5D) with GS (A, right). Biacore analysis of hSTING-CTD and GS binding. Fitting the binding data to a steady-state 1:1 binding model yielded the binding affinity (Kd) (B, C). Chemical structures of biotin-GS (D). Raw264.7 and THP-1 cells were pretreated with GS (10\u03bcM) or biotin-GS (10\u03bcM) for 6 hrs and then stimulated with 2"
+ },
+ {
+  "file": "PMC10424845_f3.jpg",
+  "pmcid": "PMC10424845",
+  "year": "2023",
+  "title": "Gelsevirine is a novel STING-specific inhibitor and mitigates STING-related inflammation in sepsis.",
+  "doi": "10.3389/fimmu.2023.1190707",
+  "license": "cc by",
+  "figLabel": "Figure\u00a03",
+  "caption": "Gelsevirine (GS) promotes K48-linked ubiquitination of STING. HEK293T cells were treated with or without GS (10 \u03bcM) for extra 2hrs after transfecting with plasmids expressing STING-HA and UB-flag for 24 hrs. Then, immunoprecipitation (IP) and immunoblot (IB) analysis were carried out (A). Raw264.7 was pretreated with or without GS (10 \u03bcM) for 6 hrs and then treated with 2\u20193\u2019-cGAMP (5 \u03bcg/ml) for 3 hrs. Then, IP, and IB analyses were performed (B). HEK293T cells were transfected with plasmids expressing STING-HA for 24 hrs. Next, 10 \u03bcM GS was added for 2hrs. Then, IP and IB analyses of SUMRF1, S"
+ },
+ {
+  "file": "PMC10289407_f5.jpg",
+  "pmcid": "PMC10289407",
+  "year": "2023",
+  "title": "Glucose-dependent effect of insulin receptor isoforms on tamoxifen antitumor activity in estrogen receptor-positive breast cancer cells.",
+  "doi": "10.3389/fendo.2023.1081831",
+  "license": "cc by",
+  "figLabel": "Figure\u00a05",
+  "caption": "IRB induces p21CIP1/waf1 and ERK1/2 phosphorylation according to glucose levels and insulin stimulation after TAM exposure. MCF7KOIGFIR-IRA, MCF7KOIGFIR-IRA and MCF7KOIGFIR-IRB were cultured as indicated. Untreated or exposed to 10\u03bcM TAM were collected after 48 hrs and protein lysates have been prepared. SDS-page was used for protein separation and the nitrocellulose membrane was stained using the primary antibodies directed against the indicated proteins (A). Immunoblot image was used to measure the different protein expressions by densitometric analysis employing Image J software, for p21CIP"
+ },
+ {
+  "file": "PMC10665393_Fig1.jpg",
+  "pmcid": "PMC10665393",
+  "year": "2023",
+  "title": "USP35 promotes HCC development by stabilizing ABHD17C and activating the PI3K/AKT signaling pathway.",
+  "doi": "10.1038/s41420-023-01714-5",
+  "license": "cc by",
+  "figLabel": "Fig. 1",
+  "caption": "Multiple USPs regulate the stability of ABHD17C.A Normalized luciferase activity of 293T cells transfected with ABHD17C-Nluc and individual USPs. Cells expressing USP35, USP38, or USP48 exhibited the highest luciferase activity. B Immunoblot results confirmed the overexpression of USP35, USP38, and USP48 in HEK293T cells, and that the expression of ABHD17C was the highest in the USP35 overexpressing cells. C The quantification results in B. RLU relative light units."
+ },
+ {
+  "file": "PMC10665393_Fig2.jpg",
+  "pmcid": "PMC10665393",
+  "year": "2023",
+  "title": "USP35 promotes HCC development by stabilizing ABHD17C and activating the PI3K/AKT signaling pathway.",
+  "doi": "10.1038/s41420-023-01714-5",
+  "license": "cc by",
+  "figLabel": "Fig. 2",
+  "caption": "The expression levels of USP35 and ABHD17C are increased in human HCC samples and positively correlated with HCC and activated PI3K/AKT pathway.A Bioinformatic analysis results indicated that the mRNA levels of USP35 and ABHD17C were upregulated in the HCC tissues compared to non-tumorous (NT) tissues in the TCGA-LIHC database cohort. B The mRNA levels of USP35 and ABHD17C were also upregulated in the HCC tissues compared to non-tumorous (NT) tissues in the GSE36376 cohort. C Correlation analysis results showed a significant correlation between the expression of USP35 and ABHD17C in HCC sample"
+ },
+ {
+  "file": "PMC10755782_fig2.jpg",
+  "pmcid": "PMC10755782",
+  "year": "2023",
+  "title": "Antisense oligonucleotides targeting the miR-29b binding site in the GRN mRNA increase progranulin translation.",
+  "doi": "10.1016/j.jbc.2023.105475",
+  "license": "cc by",
+  "figLabel": "Figure\u00a02",
+  "caption": "Time course and dose curve experiments for selected ASOs.A, ASOs increase progranulin protein levels within several hours. H4 cells were treated with 10\u00a0\u03bcM ASO for the indicated times, and progranulin levels in cell lysates were determined by Western blot. B, dose curve of ASO treatment in H4 cells (24\u00a0h). Progranulin levels were measured in cell lysates by ELISA. Data from two experiments were normalized to the untreated control group of each respective experiment, and data are presented as means\u00a0\u00b1 SD; individual data points represent biological replicates. C, ASOs increase progranulin protei"
+ },
+ {
+  "file": "PMC10755782_fig4.jpg",
+  "pmcid": "PMC10755782",
+  "year": "2023",
+  "title": "Antisense oligonucleotides targeting the miR-29b binding site in the GRN mRNA increase progranulin translation.",
+  "doi": "10.1016/j.jbc.2023.105475",
+  "license": "cc by",
+  "figLabel": "Figure\u00a04",
+  "caption": "ASOs increase progranulin translation.A, GRN mRNA levels in H4 cells following ASO treatment (5\u00a0\u03bcM, 24\u00a0h), as determined by qPCR. B, GRN mRNA distribution in each of 16 sucrose gradient fractions from ASO-treated H4 cells (5\u00a0\u03bcM, 22\u00a0h) analyzed by qPCR. Fraction 1: hydrosoluble fraction; fractions 2, 3, and 4: 40S, 60S, and monosomes, respectively; fractions 5 to 10: light polyribosomes; and fractions 11 to 16: heavy polyribosomes. Data are plotted as a fraction of total mRNA on the gradient. UV traces are shown on the right side. C, Western blot showing immunoprecipated, newly synthesized, AHA"
+ },
+ {
+  "file": "PMC10641988_Fig1.jpg",
+  "pmcid": "PMC10641988",
+  "year": "2023",
+  "title": "NeuroD1 administration ameliorated neuroinflammation and boosted neurogenesis in a mouse model of subarachnoid hemorrhage.",
+  "doi": "10.1186/s12974-023-02949-w",
+  "license": "cc by",
+  "figLabel": "Fig. 1",
+  "caption": "ND1\u2013GFP-attenuated reactive astrocyte-mediated neuroinflammation following SAH. A Representative immunofluorescent images showed the C3-labeled GFAP-positive astrocytes and the morphological analysis of astrocytes (enlarged) in the hippocampus of the ND1\u2013GFP group and the GFP group at 14 dpi. N\u2009=\u20096 per group. Scale bar, 50um. B Dendritic branch count of the astrocytes. C Soma volume measurement of the astrocytes. D Cellular perimeter analysis of the astrocytes. E Sum dendritic length of the astrocytes. F\u2013H Representative western blot and quantification analysis showed the protein levels of C3 "
+ },
+ {
+  "file": "PMC10641988_Fig2.jpg",
+  "pmcid": "PMC10641988",
+  "year": "2023",
+  "title": "NeuroD1 administration ameliorated neuroinflammation and boosted neurogenesis in a mouse model of subarachnoid hemorrhage.",
+  "doi": "10.1186/s12974-023-02949-w",
+  "license": "cc by",
+  "figLabel": "Fig. 2",
+  "caption": "ND1\u2013GFP reversed astrocyte-induced activation of neurotoxic microglia and reduced the inflammatory cytokines. A Representative immunofluorescent images revealed the activation of iNOS+Iba-1+ microglia in the hippocampus at 14 dpi after NeuroD1 treatment. n\u2009=\u20096 per group. Scale bar, 50\u00a0\u03bcm. B Immunofluorescent staining showed that the expression of C1q in mice with or without ND1\u2013GFP treatment. C\u2013F Representative western blot and quantification analysis showed the protein levels of iNOS, TNF-a and IL-18 in the hippocampus from different groups after SAH. #P\u2009<\u20090.05 and ##\nP\u2009<\u20090.01 indicated compa"
+ },
+ {
+  "file": "PMC10334825_F5.jpg",
+  "pmcid": "PMC10334825",
+  "year": "2023",
+  "title": "RNF157 attenuates CD4<sup>+</sup> T cell-mediated autoimmune response by promoting HDAC1 ubiquitination and degradation.",
+  "doi": "10.7150/thno.86307",
+  "license": "cc by",
+  "figLabel": "Figure 5",
+  "caption": "RNF157 promoted the degradation of HDAC1 in CD4+ T cells. (A) Immunoprecipitation (IP) and immunoblot (IB) analysis of HEK293 cells that were transfected with indicated plasmids for 24 h. (B) Purified na\u00efve CD4+ T cells from WT mice were isolated, infected with control retrovirus (-) or retrovirus exrepssiong Flag-RNF157 (+), and stimulated with anti-CD3 plus anti-CD28 for 12 h. IP and IB analysis were then carried out. (C) Purified na\u00efve CD4+ T cells from Rnf157fl/fl and Rnf157CKO mice were stimulated under standard Th0, Th1, Th2, Th17 or Treg conditions and harvested on day 5. HDAC1 expressi"
+ },
+ {
+  "file": "PMC10334825_F6.jpg",
+  "pmcid": "PMC10334825",
+  "year": "2023",
+  "title": "RNF157 attenuates CD4<sup>+</sup> T cell-mediated autoimmune response by promoting HDAC1 ubiquitination and degradation.",
+  "doi": "10.7150/thno.86307",
+  "license": "cc by",
+  "figLabel": "Figure 6",
+  "caption": "RNF157 ubiquitinates HDAC1 in CD4+ T cells. (A) Denature- Immunoprecipitation (IP) and immunoblot (IB) analysis of Rnf157fl/fl and Rnf157CKO CD4+ T cells stimulated with anti-CD3 and anti-CD28 for 3 h. MG132 was added to inhabit ubiquitin-proteasome. (B) Denature-IP and IB analysis of HEK 293T cells transfected with Myc-HDAC1, HA- ubiquitin (ub), and increasing doses of expression vector for Flag-RNF157 (wedge). MG132 was added to inhabit ubiquitin-proteasome. (C) Denature- Immunoprecipitation (IP) and immunoblot (IB) analysis (with anti-K48 or K63 linkage polyubiquitin) of Rnf157fl/fl and Rnf"
+ },
+ {
+  "file": "PMC10243194_fig1.jpg",
+  "pmcid": "PMC10243194",
+  "year": "2023",
+  "title": "Hazara orthonairovirus nucleoprotein facilitates viral cell-to-cell spread by modulating tight junction protein, claudin-1.",
+  "doi": "10.3389/fmicb.2023.1192956",
+  "license": "cc by",
+  "figLabel": "Figure 1",
+  "caption": "Effects of HAZV infection on tight-junction proteins. (A) HeLa cells and A549 cells were infected with HAZV at the MOIs of 1.0 and 0.1, respectively. After 48\u2009h, expression of the indicated mRNAs was measured by RT-qPCR. Data are the means from three independent experiments, and are shown as the relative value (mock\u2009=\u20091). Error bars indicate standard deviations. p-values were calculated by the Student\u2019s t-test. *p\u2009<\u20090.05, compared with values of mock cells. (B) HAZV was inoculated into HeLa cells (MOI of 1.0), A549 cells (MOI of 0.1), and MDCK cells (MOI of 1.0) for 48\u2009h, and lysates were subj"
+ },
+ {
+  "file": "PMC10243194_fig2.jpg",
+  "pmcid": "PMC10243194",
+  "year": "2023",
+  "title": "Hazara orthonairovirus nucleoprotein facilitates viral cell-to-cell spread by modulating tight junction protein, claudin-1.",
+  "doi": "10.3389/fmicb.2023.1192956",
+  "license": "cc by",
+  "figLabel": "Figure 2",
+  "caption": "Effects of CLDN1 on the growth of HAZV. (A,E) Lysates of the indicated cell lines were subjected to immunoblot using anti-CLDN1 Ab. Actin was used as a loading control. (B) HeLa/ctrl and HeLa/CLDN1 were infected with HAZV at an MOI of 0.1 for the indicated hours, and the virus titers were determined by plaque assay. PFU/mL values are shown as the means from three independent experiments. Relative PFU/mL values are also shown (HeLa/ctrl\u2009=\u20091). p-values were calculated by the Student\u2019s t-test. *p\u2009<\u20090.05 compared with values of HeLa/ctrl. Error bars indicate standard deviations. (C,D) HeLa/ctrl an"
+ },
+ {
+  "file": "PMC10015710_Fig2.jpg",
+  "pmcid": "PMC10015710",
+  "year": "2023",
+  "title": "Fowl adenovirus serotype 4 enters leghorn male hepatocellular cells via the clathrin-mediated endocytosis pathway.",
+  "doi": "10.1186/s13567-023-01155-z",
+  "license": "cc by",
+  "figLabel": "Figure 2",
+  "caption": "FAdV-4 entry into LMH cells depends on clathrin-mediated endocytosis. A\u00a0Western blot analysis after the entry of FAdV-4 into chlorpromazine-treated cells. \u03b2-Actin was used as the internal control. B\u00a0qPCR analysis after the entry of FAdV-4 into chlorpromazine-treated cells. C\u00a0CLSM analysis of F-actin (red), anti-FAdV-4 fibre 2 (green) and DAPI (blue) in FAdV-4-infected LMH cells pretreated with chlorpromazine. D\u00a0Western blot analysis of the protein expression of CHC after the entry of FAdV-4 in cells transfected with CHC shRNA and mock control vectors. E\u00a0qPCR analysis after the entry of FAdV-4 "
+ },
+ {
+  "file": "PMC10015710_Fig3.jpg",
+  "pmcid": "PMC10015710",
+  "year": "2023",
+  "title": "Fowl adenovirus serotype 4 enters leghorn male hepatocellular cells via the clathrin-mediated endocytosis pathway.",
+  "doi": "10.1186/s13567-023-01155-z",
+  "license": "cc by",
+  "figLabel": "Figure 3",
+  "caption": "FAdV-4 entry depends on dynamin. A\u00a0Western blot analysis after the entry of FAdV-4 into dynasore-treated cells. \u03b2-Actin was used as the internal control. B\u00a0qPCR analysis after the entry of FAdV-4 into dynasore-treated cells. C\u00a0CLSM analysis of F-actin (red), anti-FAdV-4 fibre 2 (green) and DAPI (blue) in FAdV-4-infected LMH cells pretreated with dynasore. Bars, 20\u00a0\u03bcm. *, P\u2009<\u20090.05; **, P\u2009<\u20090.01."
+ },
+ {
+  "file": "PMC10179266_ijms2408064f001.jpg",
+  "pmcid": "PMC10179266",
+  "year": "2023",
+  "title": "The Prohibitin-Binding Compound Fluorizoline Activates the Integrated Stress Response through the eIF2\u03b1 Kinase HRI.",
+  "doi": "10.3390/ijms24098064",
+  "license": "cc by",
+  "figLabel": "Figure 1",
+  "caption": "ISR inhibition by ISRIB increases cell resistance to fluorizoline-induced apoptosis. (A,C,E) HeLa and HAP1 (B,D,F) cells were pretreated with 15 \u00b5M ISRIB for 1 h. Then, HeLa and HAP1 cells were either untreated (-) or treated with the indicated doses of fluorizoline (F). (A,B) Cell viability was measured using flow cytometry after 24 h of fluorizoline treatment, and it is expressed as the mean \u00b1 SEM (n \u2265 3) of the percentage of non-apoptotic cells (Ann-APC\u2212). Protein extracts from (C) HeLa and (D) HAP1 cells either untreated (-) or treated for the indicated times with 10 and 5 \u00b5M fluorizoline,"
+ },
+ {
+  "file": "PMC10179266_ijms2408064f002.jpg",
+  "pmcid": "PMC10179266",
+  "year": "2023",
+  "title": "The Prohibitin-Binding Compound Fluorizoline Activates the Integrated Stress Response through the eIF2\u03b1 Kinase HRI.",
+  "doi": "10.3390/ijms24098064",
+  "license": "cc by",
+  "figLabel": "Figure 2",
+  "caption": "PERK activation is not required for fluorizoline-induced ISR activation and apoptosis. (A,C,E) HeLa and (B,D,F) HAP1 cells were either untreated (-) or pretreated (where indicated) with 2.5 \u00b5M AMG44 for 1 h. Then, cells were either untreated (-) or treated with (A,C) 10 \u00b5M fluorizoline (F) or 10 \u00b5M thapsigargin (TG) and with (B,D) 5 \u00b5M fluorizoline or 5 \u00b5M of thapsigargin. Other doses of fluorizoline are indicated in the figure. (A\u2013D) Protein extracts from HeLa and HAP1 cells either untreated (-) or treated with fluorizoline for 4 h were analyzed with Western blot. \u03b2-Actin was used as a loadin"
+ },
+ {
+  "file": "PMC10608838_metabolites1301043f003.jpg",
+  "pmcid": "PMC10608838",
+  "year": "2023",
+  "title": "<i>Lactobacillus johnsonii</i> Attenuates Liver Steatosis and Bile Acid Dysregulation in Parenteral Nutrition-Fed Rats.",
+  "doi": "10.3390/metabo13101043",
+  "license": "cc by",
+  "figLabel": "Figure 3",
+  "caption": "Dysregulation of bile acid metabolism is improved by L. johnsonii treatment in TPN-fed rats. (A,B) The bile acid profiles in the liver (A) and serum (B) of rats from the control, TPN, and TPN + L. johnsonii (LJ) groups. (C) Percentage of GCDCA levels in the liver from different groups. (D) The hepatic expression of Cyp7a1, Abcb11, Abcc2, Abcc3, Nr1h4, and Shp in rats from different groups. (E) Western blot analyses and densitometric quantification of CYP7A1 in liver. (F,H) The ileal expression of Slc10a2 (F), Nr1h4 (G), and Fgf19 (H) in rats from different groups. * p < 0.05, ** p < 0.01, *** "
+ },
+ {
+  "file": "PMC10608838_metabolites1301043f005.jpg",
+  "pmcid": "PMC10608838",
+  "year": "2023",
+  "title": "<i>Lactobacillus johnsonii</i> Attenuates Liver Steatosis and Bile Acid Dysregulation in Parenteral Nutrition-Fed Rats.",
+  "doi": "10.3390/metabo13101043",
+  "license": "cc by",
+  "figLabel": "Figure 5",
+  "caption": "L. johnsonii treatment attenuates TPN-induced hepatocyte apoptosis by deconjugating GCDCA. (A) TUNEL staining on liver sections of rats in the control, TPN, and TPN + L. johnsonii (LJ) groups at 400\u00d7 magnification. White arrows indicate TUNEL positive cells. (B,C) Western blot analyses and densitometric quantification of cleaved caspase-3 in the liver. (D) The caspase 3/7 activity of HepG2 cells after treatment with the supernatants from the control, GCDCA, GCDCA + LJ protein, and GCDCA + LJ + caffeic acid phenethyl ester (CAPE) groups. (E) The percentage of remaining GCDCA in culture medium a"
+ },
+ {
+  "file": "PMC9605769_F1.jpg",
+  "pmcid": "PMC9605769",
+  "year": "2022",
+  "title": "Unconventional secretion of tau by VAMP8 impacts its intra- and extracellular cleavage.",
+  "doi": "10.3389/fcell.2022.912118",
+  "license": "cc by",
+  "figLabel": "FIGURE 1",
+  "caption": "Overexpression of VAMP8 increases the cleavage of Tau by Caspase 3 and increases the amount of active caspase-3 in the cell lysate. For all the figures, GFP alone corresponds to GFP-empty vector. (A) Schematic representation of Tau constructs and Tau antibodies. All the experiments were carried out with 0N4R Tau isoform. The constructs TauNT and TauMBD-CT were produced from 0N4R. For the antibodies, the isoform 2N4R was used for consistency with the literature. For B and C, N2a cells were transfected either with Flag-Tau and GFP-empty or Flag-Tau and GFP-VAMP8 plasmids. (B) Representative West"
+ },
+ {
+  "file": "PMC9605769_F3.jpg",
+  "pmcid": "PMC9605769",
+  "year": "2022",
+  "title": "Unconventional secretion of tau by VAMP8 impacts its intra- and extracellular cleavage.",
+  "doi": "10.3389/fcell.2022.912118",
+  "license": "cc by",
+  "figLabel": "FIGURE 3",
+  "caption": "Increased secretion of active caspase-3 upon the overexpression of Tau and VAMP8. (A) N2a cells were transfected either with Flag-Tau and GFP-empty or Flag-Tau and GFP-VAMP8 plasmids for 48\u00a0h. Representative Western blot with A0024 for staining of extracellular Tau (ExTau), the antibody C3 for total caspase-3 and the antibody CC3 for cleaved caspase-3 of the medium revealing that the secretion of total caspase 3 was similar with Tau alone or Tau and VAMP8 overexpression and that cleaved caspase-3 was increased for Tau and VAMP8. (B,C) Densitometry analysis of C3 and CC3/C3 ratio in the medium."
+ },
+ {
+  "file": "PMC10412805_fig1.jpg",
+  "pmcid": "PMC10412805",
+  "year": "2023",
+  "title": "Caspase-4 dimerisation and D289 auto-processing elicit an interleukin-1\u03b2-converting enzyme.",
+  "doi": "10.26508/lsa.202301908",
+  "license": "cc by",
+  "figLabel": "Figure 1.",
+  "caption": "Dimerisation and IDL cleavage are required for caspase-4 proteolytic activity.(A) Schematic of caspase-4 dimerisation with the DmrB system, which allows controlled dimerisation by AP20187 (AP). All DmrB constructs were N-terminally V5-tagged. (B) Schematic of band sizes generated by cleavage at D270 and D289. These putative cleavage sites were mutated (D\u2192A) to prevent auto-processing. An IDLuncl construct encoding mutations at both D270 and D289 sites was also included. (C) Caspase-4 activity was measured by relative fluorescence (RFU) generated by Ac-WEHD-AFC substrate cleavage. Caspase-4 was"
+ },
+ {
+  "file": "PMC10412805_fig2.jpg",
+  "pmcid": "PMC10412805",
+  "year": "2023",
+  "title": "Caspase-4 dimerisation and D289 auto-processing elicit an interleukin-1\u03b2-converting enzyme.",
+  "doi": "10.26508/lsa.202301908",
+  "license": "cc by",
+  "figLabel": "Figure 2.",
+  "caption": "Dimerisation induces caspase-4 auto-processing and cleavage of GSDMD and IL-1\u03b2 in cellulo and in a fully recombinant in vitro system.(A, B) Caspase-4 constructs were co-expressed with (A) V5-GSDMD or (B) pro-IL-1\u03b2 in HEK293T cells and caspase-4 was dimerised by cell exposure to AP20187. Substrate cleavage was analysed by Western blot of the whole cell lysates. (C) Caspase-1, 4, and 11 DmrB fusion constructs were co-expressed with human or murine pro-IL-1\u03b2 in HEK293T cells, which were exposed to AP20187 to induce caspase dimerisation and activation. Substrate cleavage was analysed by Western bl"
+ },
+ {
+  "file": "PMC10139118_ijms2407135f005.jpg",
+  "pmcid": "PMC10139118",
+  "year": "2023",
+  "title": "Conventional and State-of-the-Art Detection Methods of Bovine Spongiform Encephalopathy (BSE).",
+  "doi": "10.3390/ijms24087135",
+  "license": "cc by",
+  "figLabel": "Figure 5",
+  "caption": "Western blot detection of PrPres from proteinase K-treated and ultracentrifuged brain homogenates, using a core antibody. Ovine scrapie, ovine BSE, and bovine C-type BSE are shown. The lower molecular weight of the unglycosylated protein band in ovine or bovine BSE compared to scrapie is evident. M-molecular mass markers 20 and 30 kDa. Reprinted from Ref. [79]."
+ },
+ {
+  "file": "PMC10637820_f2.jpg",
+  "pmcid": "PMC10637820",
+  "year": "2023",
+  "title": "Triptolide inhibits epithelial ovarian tumor growth by blocking the hedgehog/Gli pathway.",
+  "doi": "10.18632/aging.205110",
+  "license": "cc by",
+  "figLabel": "Figure 2",
+  "caption": "Triptolide inhibits the Hh pathway activity in EOC cells. (A) SAG (1 \u03bcM) and GANT61 (10 \u03bcM) effects on Gli1mRNA expression EOC cells in vitro. (B, C) Western blot was used to measure the protein levels of Ptch1, Gli1, and Bcl2 in SKOV3, A2780, and Ovcar8 cells for 48 h after TPL or GANT61 administration, GANT61 was used as a positive control, GAPDH was used for normalization. (D, E) The time-dependent effect of TPL (4 nM) on the protein levels of Ptch1, Gli1, and Bcl2 was carried out by Western blot, and GAPDH was used for normalization. (F) The schematic composite screen is used to recognize "
+ },
+ {
+  "file": "PMC10637820_f4.jpg",
+  "pmcid": "PMC10637820",
+  "year": "2023",
+  "title": "Triptolide inhibits epithelial ovarian tumor growth by blocking the hedgehog/Gli pathway.",
+  "doi": "10.18632/aging.205110",
+  "license": "cc by",
+  "figLabel": "Figure 4",
+  "caption": "Triptolide overcomes SMO mutant-induced drug resistance. (A\u2013C) The BODIPY-cyclopamine (5 nM) competitive binding assay was separately examined by fluorescent microscope and flow cytometry, Cyclopamine (5 \u03bcM) was used as a positive control. (C) Quantification of flow cytometry following BODIPY-cyclopamine competitive binding assay analysis was exhibited. Scale bar: 100 \u03bcm. (D, E) Western blot was used to detect the effect of TPL on the expression of Gli1 and ptch1 in NIH3T3 cells after overexpression of SMO473H, and GDC0449 (1 \u03bcM) was used to control. All results were derived from three indepen"
+ },
+ {
+  "file": "PMC11292187_f1.jpg",
+  "pmcid": "PMC11292187",
+  "year": "2023",
+  "title": "A guide to selecting high-performing antibodies for human Midkine for use in Western blot and immunoprecipitation.",
+  "doi": "10.12688/f1000research.130587.4",
+  "license": "cc by",
+  "figLabel": "Figure 1. ",
+  "caption": "Midkine antibody screening by Western blot on culture media.A) Schematic of the protocol used to concentrate the culture media. B) Concentrated media of HAP1 (WT and\nMDK KO) were prepared, and ~30 \u03bcg of protein was processed for Western blot with the indicated Midkine antibodies. The Ponceau stained transfers of each blot are presented to show equal loading of WT and KO lysates and protein transfer efficiency from the acrylamide gels to the nitrocellulose membrane. Antibody dilutions were chosen according to the recommendations of the antibody supplier. An exceptions was given to antibody GTX1"
+ },
+ {
+  "file": "PMC11292187_f2.jpg",
+  "pmcid": "PMC11292187",
+  "year": "2023",
+  "title": "A guide to selecting high-performing antibodies for human Midkine for use in Western blot and immunoprecipitation.",
+  "doi": "10.12688/f1000research.130587.4",
+  "license": "cc by",
+  "figLabel": "Figure 2. ",
+  "caption": "Midkine antibody screening by immunoprecipitation on culture media.Concentrated culture media were prepared as in 1A). Immunoprecipitation was performed using 1.0 \u03bcg of the indicated Midkine antibodies pre-coupled to either protein A or protein G magnetic beads. Samples were washed and processed for Western blot with the indicated Midkine antibody. For Western blot, AF-258-PB was used at 1/500, NBP2-66948** at 1/500, MA5-32538** at 1/200 and ab52637** at 1/200. The Ponceau stained transfers of each blot are shown. SM = 10% starting material; UB = 10% unbound fraction; IP = immunoprecipitate; H"
+ },
+ {
+  "file": "PMC10716122_Fig2.jpg",
+  "pmcid": "PMC10716122",
+  "year": "2023",
+  "title": "Nuclear cGAS restricts L1 retrotransposition by promoting TRIM41-mediated ORF2p ubiquitination and degradation.",
+  "doi": "10.1038/s41467-023-43001-y",
+  "license": "cc by",
+  "figLabel": "Fig. 2",
+  "caption": "cGAS promotes TRIM41-mediated ubiquitination and degradation of ORF2p.a, b cGAS promotes ORF2p degradation via the proteasome pathway. Six hours post-transfection with the indicated plasmids, cells were treated with 10\u2009\u00b5M MG132 for 12\u2009h, followed by Western blot analysis. c Analysis of ORF2p ubiquitination levels in HeLa cells overexpressing cGAS. Six hours post-transfection of a control vector or cGAS expression vector together with an ORF2p-Flag vector, cells were treated with 10\u2009\u00b5M MG132 for 18\u2009h and then lysed for use in co-IP and Western blot experiments. d The effect of knocking out cGAS"
+ },
+ {
+  "file": "PMC10716122_Fig4.jpg",
+  "pmcid": "PMC10716122",
+  "year": "2023",
+  "title": "Nuclear cGAS restricts L1 retrotransposition by promoting TRIM41-mediated ORF2p ubiquitination and degradation.",
+  "doi": "10.1038/s41467-023-43001-y",
+  "license": "cc by",
+  "figLabel": "Fig. 4",
+  "caption": "cGAS is critical for senescence-associated repression in L1 retrotransposition.a Analysis of the L1 retrotransposition efficiency in control or cGAS-knockout stress-induced premature senescent (SIPS) HeLa\u00a0cells. WT or cGAS-knockout cells transfected with the pEGFP-LRE3 reporter were treated with 10\u2009\u00b5g/mL etoposide for 20\u2009min on day 2 post-transfection, and harvested for FACS analysis on day 9. n\u2009=\u20093 independent experiments. b Analysis of L1 retrotransposition efficiency in control or cGAS-overexpressed SIPS cells. n\u2009=\u20096 independent experiments. c Analysis of CHK2 and cGAS phosphorylation level"
+ },
+ {
+  "file": "PMC10454486_ijms2412838f001.jpg",
+  "pmcid": "PMC10454486",
+  "year": "2023",
+  "title": "Elexacaftor Mediates the Rescue of F508del CFTR Functional Expression Interacting with MSD2.",
+  "doi": "10.3390/ijms241612838",
+  "license": "cc by",
+  "figLabel": "Figure 1",
+  "caption": "Detection of full-length WT and F508del CFTR proteins by Western blot. Detection of WT (A) and F508del CFTR (B) in lysates of untransfected (untr.) and transiently transfected HEK-t cells treated with DMSO (control), VX809, VX661, CORR4A, and VX445 is shown in the upper panels on the left. Expression of the housekeeper protein actin in the same samples is shown in the lower panels. The molecular weight of the proteins of the molecular weight marker that was run in the SDS-PAGE is indicated on the left of each blot. Black and white arrowheads indicate the positions of bands B and C, respectivel"
+ },
+ {
+  "file": "PMC10454486_ijms2412838f003.jpg",
+  "pmcid": "PMC10454486",
+  "year": "2023",
+  "title": "Elexacaftor Mediates the Rescue of F508del CFTR Functional Expression Interacting with MSD2.",
+  "doi": "10.3390/ijms241612838",
+  "license": "cc by",
+  "figLabel": "Figure 3",
+  "caption": "Effect of correctors VX809, VX661, CORR4A, and VX445 on the expression of CFTR single domains. Western blots of MSD1 (A), WT (B), del508F NBD1 (C), R domain (D), MSD2 (E), and NBD2 (F). CFTR domains in untransfected (untr) and in transiently transfected in HEK-t cells treated with DMSO (control) or with 5 \u03bcM VX809, 5 \u03bcM VX661, 10 \u03bcM CORR4A, and 5 \u03bcM VX445, respectively. In the lower blots, we show the expression of actin, used as a housekeeping protein. The molecular weight of the protein of the molecular weight marker that was run in the SDS-PAGE is indicated on the left of each blot. The bar"
+ },
+ {
+  "file": "PMC10701771_mol213512fig0001.jpg",
+  "pmcid": "PMC10701771",
+  "year": "2023",
+  "title": "KLF12 transcriptionally regulates PD-L1 expression in non-small cell lung cancer.",
+  "doi": "10.1002/1878-0261.13512",
+  "license": "cc by",
+  "figLabel": "Fig. 1",
+  "caption": "KLF12 correlated with PD\u2010L1 upregulation in NSCLC. (A) NCI\u2010H460 were gathered and labeled with PE anti\u2010human PD\u2010L1antibody, cells with low PD\u2010L1 membrane surface expression (relative fluorescence intensity was about 102) were gated by gate P4 (violet), and cells with high PD\u2010L1 membrane surface (relative fluorescence intensity was about 104) expression were gated by gate P5 (green). The two groups of cells were sorted and gathered by flow cytometry under aseptic conditions, then cells were sent for gene chip analysis (n\u2009=\u20092). (B) The differential expression of transcription regulation protein\u2010"
+ },
+ {
+  "file": "PMC10701771_mol213512fig0002.jpg",
+  "pmcid": "PMC10701771",
+  "year": "2023",
+  "title": "KLF12 transcriptionally regulates PD-L1 expression in non-small cell lung cancer.",
+  "doi": "10.1002/1878-0261.13512",
+  "license": "cc by",
+  "figLabel": "Fig. 2",
+  "caption": "KLF12 bound to PD\u2010L1 promoter and upregulated PD\u2010L1 transcription. (A) NCI\u2010H1299 cells and 293T cells were transfected with PD\u2010L1 promoter luciferase reporter plasmids and KLF12\u2010HA for 24\u2009h. Simultaneously, NCI\u2010H460 cells were transfected with PD\u2010L1 promoter luciferase reporter plasmids and KLF12 siRNA for 24\u2009h. Then, their relative luciferase activity was detected using the dual\u2010luciferase reporter assay. The experiments were performed in quadruplicate. (B) The PD\u2010L1 promoter region containing CACCC\u2010box was retrieved from NCBI database (up). And the binding of KLF12 to PD\u2010L1 promoter was dete"
+ },
+ {
+  "file": "PMC10382519_Fig2.jpg",
+  "pmcid": "PMC10382519",
+  "year": "2023",
+  "title": "Identification of genotype-biochemical phenotype correlations associated with fructose 1,6-bisphosphatase deficiency.",
+  "doi": "10.1038/s42003-023-05160-y",
+  "license": "cc by",
+  "figLabel": "Fig. 2",
+  "caption": "Biochemical consequences of the G164D and F194S mutations of FBP1 in association with decreased protein expression and aggregation in ER due to protein misfolding.In vitro functional analysis of the G164D and F194S FBP1 mutants in FBP1-KO HepG2 cells. FBP1 protein expression was examined. a Protein expression analysis demonstrated that Myc-tagged FBP1 was decreased in G164D, F194S, and cotransfected constructs compared with that in the WT construct. RT\u2012qPCR analysis detected sufficient quantities of mRNA among the constructs (n\u2009=\u20092). b Immunofluorescence analysis showed that G164D and F194S FB"
+ },
+ {
+  "file": "PMC10136447_cells1201130f005.jpg",
+  "pmcid": "PMC10136447",
+  "year": "2023",
+  "title": "Altered Epigenetic Profiles in the Placenta of Preeclamptic and Intrauterine Growth Restriction Patients.",
+  "doi": "10.3390/cells12081130",
+  "license": "cc by",
+  "figLabel": "Figure 5",
+  "caption": "FAN1, CRABP1, HIST1H4L and NAPRT1 proteins in IUR, PE and control placentas. A representative western blot for these proteins is shown in (A,B). CRABP1 protein was decreased in the IUGR placenta (C). HIST1H4L protein was decrease while NAPRT1 protein was increased in the PE placenta (D,E). FAN1 protein was increased in IUGR and decreased in PE Placenta (F,G). Representative data are shown with ** p \u2264 0.05."
+ },
+ {
+  "file": "PMC10743494_ijms2417271f003.jpg",
+  "pmcid": "PMC10743494",
+  "year": "2023",
+  "title": "Oncolytic Effect of Zika Virus in Neuroendocrine Pancreatic Tumors: New Perspectives for Therapeutic Approaches.",
+  "doi": "10.3390/ijms242417271",
+  "license": "cc by",
+  "figLabel": "Figure 3",
+  "caption": "Time course of MIN6 infection with production of viral particles: MIN6 were infected with ZIKV and analyzed at T0, 24 h, and 48 h after infection by (A) confocal microscopy (63\u00d7). Viral Zika glycoprotein E (red) showed cytoplasmic distribution (nuclei in blue, DAPI). (B) Western blot analysis on MIN6 expression of glycoprotein E after ZIKV infection. (C) Relative intensity of normalized glycoprotein E vs. actin."
+ },
+ {
+  "file": "PMC10743494_ijms2417271f004.jpg",
+  "pmcid": "PMC10743494",
+  "year": "2023",
+  "title": "Oncolytic Effect of Zika Virus in Neuroendocrine Pancreatic Tumors: New Perspectives for Therapeutic Approaches.",
+  "doi": "10.3390/ijms242417271",
+  "license": "cc by",
+  "figLabel": "Figure 4",
+  "caption": "Evaluation of NCAM expression: (A) Western blot analysis on MIN6, ASPC1, and PANC1. NCAM expression is evident in MIN6 (NET model) and absent in the others (adenocarcinoma model). (B) Immunofluorescence analysis using confocal microscopy (63\u00d7) of NCAM (red) with clear staining, distributed on cell membrane (nuclei in blue, DAPI)."
+ },
+ {
+  "file": "PMC10511514_Fig1.jpg",
+  "pmcid": "PMC10511514",
+  "year": "2023",
+  "title": "Microglia-dependent neuroprotective effects of 4-octyl itaconate against rotenone-and MPP+-induced neurotoxicity in Parkinson's disease.",
+  "doi": "10.1038/s41598-023-42813-8",
+  "license": "cc by",
+  "figLabel": "Figure 1",
+  "caption": "Itaconate suppresses inflammatory reactions in activated microglia. (A\u2013F) BV2 cells were exposed to LPS\u2009\u00b1\u2009OI for 3 or 24\u00a0h at indicated concentrations. (A) Nitrite level in supernatant 3\u00a0h and 24\u00a0h after indicated treatment was tested by Griess assay (mean\u2009\u00b1\u2009SEM, one-way ANOVA, *p\u2009<\u20090.05, ***p\u2009<\u20090.001, ****p\u2009<\u20090.0001; n\u2009\u2265\u20093 independent experiments). (B,C) Supernatant of BV2 cells was collected 24\u00a0h after treatment to detect the release of different inflammatory cytokines, including IL-6 and TNF-\u03b1 in the medium by ELISA assay (mean\u2009\u00b1\u2009SEM, one-way ANOVA, ****p\u2009<\u20090.0001; n\u2009=\u20094 independent experim"
+ },
+ {
+  "file": "PMC10511514_Fig2.jpg",
+  "pmcid": "PMC10511514",
+  "year": "2023",
+  "title": "Microglia-dependent neuroprotective effects of 4-octyl itaconate against rotenone-and MPP+-induced neurotoxicity in Parkinson's disease.",
+  "doi": "10.1038/s41598-023-42813-8",
+  "license": "cc by",
+  "figLabel": "Figure 2",
+  "caption": "Activation of Nrf2 pathway by OI in activated microglia. BV2 cells were exposed to different concentrations (5, 25, 50\u00a0\u03bcM) of OI\u2009\u00b1\u2009100\u00a0ng/ml LPS for 3\u00a0h and 24\u00a0h. Nrf2 protein levels in the whole cell were tested by western blot at 3\u00a0h (A) and 24\u00a0h (B). The blots shown are representative images from at least three independent experiments. \u03b1/\u03b2 tubulin was used as a loading control. (C) Western blot analysis compared Nrf2 expression after being exposed to LPS with 50\u00a0\u03bcM OI at 3\u00a0h and 24\u00a0h. \u03b2-actin was used as a loading control. Western blot images are representative of three independent experime"
+ },
+ {
+  "file": "PMC10110470_F1.jpg",
+  "pmcid": "PMC10110470",
+  "year": "2023",
+  "title": "USP14 promotes the malignant progression and ibrutinib resistance of mantle cell lymphoma by stabilizing XPO1.",
+  "doi": "10.7150/ijms.80467",
+  "license": "cc by",
+  "figLabel": "Figure 1",
+  "caption": "USP14 interference impeded MCL cell proliferation. qRT-PCR (A) and western blot (B) tested USP14 expression. ***P<0.001 vs Wil2-s. The transfection efficacy sh-USP14 was detected by qRT-PCR (C) and western blot (D). (E) CCK8 and (F) EdU assays judged the cell viability and proliferation respectively. ***P<0.001 vs sh-NC."
+ },
+ {
+  "file": "PMC10110470_F2.jpg",
+  "pmcid": "PMC10110470",
+  "year": "2023",
+  "title": "USP14 promotes the malignant progression and ibrutinib resistance of mantle cell lymphoma by stabilizing XPO1.",
+  "doi": "10.7150/ijms.80467",
+  "license": "cc by",
+  "figLabel": "Figure 2",
+  "caption": "Interference with USP14 induced G2/M cycle arrest and apoptosis of MCL cells. Flow cytometry analysis measured cell cycle (A) as well as apoptosis (B). Analysis of the proteins associated with cycle and apoptosis by western blot. ***P<0.001 vs sh-NC."
+ },
+ {
+  "file": "PMC10264620_f3.jpg",
+  "pmcid": "PMC10264620",
+  "year": "2023",
+  "title": "Effect of the metal ion-induced carbonylation modification of mitochondrial membrane channel protein VDAC on cell vitality, seedling growth and seed aging.",
+  "doi": "10.3389/fpls.2023.1138781",
+  "license": "cc by",
+  "figLabel": "Figure\u00a03",
+  "caption": "Carbonylation detection and metal binding ability of wild type and site-directed mutated GST-UpVDAC recombinant proteins. (A) Detection of carbonylation modification of WT-UpVDAC with different treatments: 1\u00d7, 0.2 mM CuSO4\u00a0+\u00a00.5 mM H2O2; 2\u00d7, 0.4 mM CuSO4\u00a0+\u00a01 mM H2O2; 4\u00d7, 0.8 mM CuSO4\u00a0+\u00a02 mM H2O2. Cu-MCO, Cu+H2O2 treatment. (B) Detection of carbonylation of UpVDAC proteins with different His site mutations after treatment with 2\u00d7 CuSO4 and H2O2. WT, wild-type UpVDAC protein. (C) IMAC analysis of the metal binding capacity of WT and His site mutant UpVDAC. Column-trapped proteins were eluted wit"
+ },
+ {
+  "file": "PMC10264620_f4.jpg",
+  "pmcid": "PMC10264620",
+  "year": "2023",
+  "title": "Effect of the metal ion-induced carbonylation modification of mitochondrial membrane channel protein VDAC on cell vitality, seedling growth and seed aging.",
+  "doi": "10.3389/fpls.2023.1138781",
+  "license": "cc by",
+  "figLabel": "Figure\u00a04",
+  "caption": "Growth status of yeast overexpressing WT/His-site mutated-UpVDAC under metal salt treatment. (A) Confirmation of yeast transformants by PCR. (B) Protein expression of yeast transformants detected by Western blot. (C) Proteins expression of yeast transformants at different induction times determined by Western blot. (D) Growth status of yeast strains under Cu2+/Cu2++H2O2 (Cu-MCO)/Fe2+/Fe2++H2O2 (Cu-MCO) treatment with indicated concentrations. pYES, yeast overexpressing pYES2 empty vector; WT-V, yeast overexpressing wild-type UpVDAC protein."
+ },
+ {
+  "file": "PMC10315040_Fig5.jpg",
+  "pmcid": "PMC10315040",
+  "year": "2023",
+  "title": "Integrating network pharmacology and experimental verification to explore the pharmacological mechanisms of asparagus against polycystic ovary syndrome.",
+  "doi": "10.1186/s13048-023-01210-5",
+  "license": "cc by",
+  "figLabel": "Fig. 5",
+  "caption": "ASP ameliorates inflammatory response and oxidative stress in KGN cells. A Western blot was performed to detect the expression of IL-1B and IL-6 in ASP-treated KGN cells. \u03b2-actin was used as a normalization standard. B The effects of ASP on inflammatory factors in LPS treated KGN cells were determined by Western blot analysis. \u03b2-actin was used as a normalization standard. C CCK-8 assay to examine the viability of KGN cells after treatment with different concentrations of H2O2, IC50 value was calculated. D DCFH-DA staining showed the accumulation of ROS. Scale bar, 100\u00a0\u03bcm"
+ },
+ {
+  "file": "PMC10315040_Fig6.jpg",
+  "pmcid": "PMC10315040",
+  "year": "2023",
+  "title": "Integrating network pharmacology and experimental verification to explore the pharmacological mechanisms of asparagus against polycystic ovary syndrome.",
+  "doi": "10.1186/s13048-023-01210-5",
+  "license": "cc by",
+  "figLabel": "Fig. 6",
+  "caption": "ASP reverses DHEA induced decrease of PRKCA in PCOS granulosa cells. A-C qRT-PCR and Western blot were performed to detect the expression of PRKCA in KGN cells. \u03b2-actin was used as a normalization standard. D Estrus status of mice in the DHEA and control groups (n\u2009=\u20096 per group). E ELISA assay for T and E2 in mouse serum. F Histological staining of ovaries from DHEA and control mice. G qRT-PCR was performed to detect the expression of PRKCA in PCOS mouse models"
+ },
+ {
+  "file": "PMC10675439_viruses1502158f006.jpg",
+  "pmcid": "PMC10675439",
+  "year": "2023",
+  "title": "A Distinct Anti-EBV DNase Profile in Patients with Undifferentiated Nasopharyngeal Carcinoma Compared to Classical Antigens.",
+  "doi": "10.3390/v15112158",
+  "license": "cc by",
+  "figLabel": "Figure 6",
+  "caption": "Immunoblot\u2013ECL analysis of antibody responses to recombinant EBV DNase in patients with UCNT. The results obtained showed differences in the intensity of the IgA and IgG response between groups of patients who have undergone (O) or not (N) treatment. (A) IgA reactivity in children (1\u201317); (B) IgG reactivity in children (1\u201318); (C) IgA reactivity in young adults (1\u201319); (D) IgG reactivity in young adults (1\u201319); (E) IgA reactivity in adults (1\u201317); (F) IgG reactivity in adults (1\u201318). BA00/3 represents the absence of reactivity of the control serum of a European EBV-negative individual. TU115 r"
+ },
+ {
+  "file": "PMC10033651_Fig1.jpg",
+  "pmcid": "PMC10033651",
+  "year": "2023",
+  "title": "USP10 deubiquitinates RUNX1 and promotes proneural-to-mesenchymal transition in glioblastoma.",
+  "doi": "10.1038/s41419-023-05734-y",
+  "license": "cc by",
+  "figLabel": "Fig. 1",
+  "caption": "USP10 deubiquitinates RUNX1, which is highly expressed in GBM and positively correlates with MES features.A DUB siRNA library screening revealed that siRNA-mediated inhibition of multiple DUB genes decreased RUNX1 protein levels. **p\u2009<\u20090.01. B Four Flag-tagged DUBs (USP4, USP7, USP10, and USP36) were expressed in HEK293T cells, and cell lysates were analyzed by IP with Flag beads followed by IB with antibodies against RUNX1 and Flag. C Increasing amounts of USP10-WT or USP10-C424A were transfected into HEK293T cells and RUNX1 expression was detected by Western blot. D Heatmap showing the gene "
+ },
+ {
+  "file": "PMC10033651_Fig5.jpg",
+  "pmcid": "PMC10033651",
+  "year": "2023",
+  "title": "USP10 deubiquitinates RUNX1 and promotes proneural-to-mesenchymal transition in glioblastoma.",
+  "doi": "10.1038/s41419-023-05734-y",
+  "license": "cc by",
+  "figLabel": "Fig. 5",
+  "caption": "USP10 stabilizes RUNX1 through deubiquitination.A Expression of USP10 and RUNX1 in LN229 and GBM2 cells after different treatments. B Western blot showing the expression of indicated proteins in LN229 and GBM2 cells after indicated treatments. C Expression of indicated proteins in U251 and GBM1 cells after different treatments. D LN229 and GBM2 cells were co-transfected with HA-Ub, ShCtrl or shUSP10 and cell lysates subjected to IP with RUNX1 antibody, followed by IB with antibodies against HA and RUNX1. Cells were treated with 20\u2009\u03bcM MG132 for 8\u2009h. E U251 and GBM1 cells were co-transfected wit"
+ },
+ {
+  "file": "PMC10352194_Fig1.jpg",
+  "pmcid": "PMC10352194",
+  "year": "2023",
+  "title": "Cellular protection from H<sub>2</sub>O<sub>2</sub> toxicity by Fv-Hsp70: protection via catalase and gamma-glutamyl-cysteine synthase.",
+  "doi": "10.1007/s12192-023-01349-6",
+  "license": "cc by",
+  "figLabel": "Fig. 1",
+  "caption": "A Schematic of Fv-Hs70 recombinant constructs. Fv-Hsp70, Fv-Hsp70 minus the ATPase domain, and Fv-Hsp70 minus the ATPase and Lid domains. The left margin shows the amino acid deletions resulting in the Fv-Hsp70 BD and Fv-Hsp70 BD-L. B Western blot of all recombinant protein constructs in A compared with Hsp70. Recombinant proteins 100 kD Fv-Hsp70, 56 kD Fv-70 BD, and 46 kD Fv-Hsp70 BD-L are compared with Hsp70"
+ },
+ {
+  "file": "PMC10352194_Fig4.jpg",
+  "pmcid": "PMC10352194",
+  "year": "2023",
+  "title": "Cellular protection from H<sub>2</sub>O<sub>2</sub> toxicity by Fv-Hsp70: protection via catalase and gamma-glutamyl-cysteine synthase.",
+  "doi": "10.1007/s12192-023-01349-6",
+  "license": "cc by",
+  "figLabel": "Fig. 4",
+  "caption": "A Western blot analysis of the Hsp70 and Hsp27 induction after treatment with 50 \u03bcM BSO or 1 mM 3AT 4 h prior to 350 \u03bcM H2O2 and 1 \u03bcM Fv-Hsp70 treatment. Cells were harvested 30 min after treatment was completed. All westerns were analyzed from a single experiment. The results are representative of three experiments. 1, Control untreated; 2, BSO treatment only; 3, H2O2 only; 4, BSO + H2O2 + Fv-Hsp70; 5, H2O2 + Fv-Hsp70; 6, 3AT only; 7, 3AT + H2O2 + Fv-Hsp70; 8, H2O2 + Fv-Hsp70. Another band is noted above Hsp27 which represents phosphorylated Hsp27 discovered after probing the blot with polycl"
+ },
+ {
+  "file": "PMC10779295_ijms2500243f002.jpg",
+  "pmcid": "PMC10779295",
+  "year": "2023",
+  "title": "Elevated Expression of HSP72 in the Prefrontal Cortex and Hippocampus of Rats Subjected to Chronic Mild Stress and Treated with Imipramine.",
+  "doi": "10.3390/ijms25010243",
+  "license": "cc by",
+  "figLabel": "Figure 2",
+  "caption": "Levels of (A) mRNA and (B) protein expression of HSP72 in PFC of rats subjected to the CMS (stress) for 8 weeks and simultaneously treated with IMI (10 mg/kg, ip) for the last 5 weeks. Results were determined by real-time PCR and Western blot methods. Rats were sacrificed 24 h after the last administration of IMI or saline (sal). Results are expressed as a percentage of sham/sal group \u00b1 standard error of mean (SEM); n = 6; (C) representative blots; * p < 0.05 relative to sham/sal, # p < 0.05 relative to stress/IMI resp group; stress/IMI resp\u2014group of CMS rats that responded to IMI treatment (r"
+ },
+ {
+  "file": "PMC10779295_ijms2500243f003.jpg",
+  "pmcid": "PMC10779295",
+  "year": "2023",
+  "title": "Elevated Expression of HSP72 in the Prefrontal Cortex and Hippocampus of Rats Subjected to Chronic Mild Stress and Treated with Imipramine.",
+  "doi": "10.3390/ijms25010243",
+  "license": "cc by",
+  "figLabel": "Figure 3",
+  "caption": "Levels of (A) mRNA and (B) protein expression of HSP72 in HIP of rats subjected to the CMS (stress) for 8 weeks and simultaneously treated with IMI (10 mg/kg, ip) for the last 5 weeks. Results were determined by real-time PCR and Western blot. Rats were sacrificed 24 h after the last administration of IMI or saline (sal). Results are expressed as a percentage of sham/sal group \u00b1 standard error of mean (SEM); n = 6; (C) representative blots; * p < 0.05 relative to sham/sal, # p < 0.05 relative to stress/IMI resp group; stress/IMI resp\u2014group of CMS rats that responded to IMI treatment (reversed "
+ },
+ {
+  "file": "PMC10739886_Fig3.jpg",
+  "pmcid": "PMC10739886",
+  "year": "2023",
+  "title": "RNF115/BCA2 deficiency alleviated acute liver injury in mice by promoting autophagy and inhibiting inflammatory response.",
+  "doi": "10.1038/s41419-023-06379-7",
+  "license": "cc by",
+  "figLabel": "Fig. 3",
+  "caption": "Rnf115 knockout upregulates hepatocyte autophagy, decreases mitochondria damage and apoptosis in ALI mice.a Representative ultrastructural images of the liver in different mice with LPS/D-GalN treatment for 5\u2009h by TEM. b Representative images of TUNEL (green) and Hoechst staining (blue) of the nuclei in the livers of different mice. c Quantification of TUNEL-positive cells per 1000 nuclei. d and e Representative Western blot of Lc3b and Rnf115 in the liver tissue extracts obtained from different ALI mice. f The expression of Beclin1 protein in liver tissues was detected by immunohistochemistry"
+ },
+ {
+  "file": "PMC10739886_Fig4.jpg",
+  "pmcid": "PMC10739886",
+  "year": "2023",
+  "title": "RNF115/BCA2 deficiency alleviated acute liver injury in mice by promoting autophagy and inhibiting inflammatory response.",
+  "doi": "10.1038/s41419-023-06379-7",
+  "license": "cc by",
+  "figLabel": "Fig. 4",
+  "caption": "RNF115 interacts with LC3B via FAEL71-74 LIR domain.a, b HEK293T cells were co-transfected with indicated plasmids for 24\u2009h. Cell lysates were subjected to IP using an anti-GFP, and indicated proteins were detected in the immunoprecipitates by western blotting. Simultaneously, 10% cell lysates were used for immunoblotting. c HEK293T cells were incubated with MG132 for 4\u2009h and EBSS for 30\u2009min, then cell lysates were subjected to IP using an anti-LC3B or a control IgG. The endogenous RNF115 and LC3B proteins were detected in the immunoprecipitates by western blotting. d Recombinant GST-LC3B fusi"
+ },
+ {
+  "file": "PMC10380564_ijms2411683f001.jpg",
+  "pmcid": "PMC10380564",
+  "year": "2023",
+  "title": "Neurotrophin Analog ENT-A044 Activates the p75 Neurotrophin Receptor, Regulating Neuronal Survival in a Cell Context-Dependent Manner.",
+  "doi": "10.3390/ijms241411683",
+  "license": "cc by",
+  "figLabel": "Figure 1",
+  "caption": "(a) Cell tox assay performed on PC12 cells after 24 h and treatment with the tested compound ENT-A044 (500 nM). Quantification of cell tox+ cells (green)/Hoechst+ cells (blue), one-way ANOVA, * p < 0.05, *** p < 0.001 mean \u00b1 SEM of triplicate measurements. (b) Representative blots determined via Western blot analysis of lysates from PC12 cells after 20 min of treatment with NGF (100 ng/mL), synthetic analogs and the compound ENT-A044 (500 nM). Quantification analysis of pAkt and pErk expression (one-way ANOVA against control serum free, mean \u00b1 SEM of triplicate measurements)."
+ },
+ {
+  "file": "PMC10380564_ijms2411683f002.jpg",
+  "pmcid": "PMC10380564",
+  "year": "2023",
+  "title": "Neurotrophin Analog ENT-A044 Activates the p75 Neurotrophin Receptor, Regulating Neuronal Survival in a Cell Context-Dependent Manner.",
+  "doi": "10.3390/ijms241411683",
+  "license": "cc by",
+  "figLabel": "Figure 2",
+  "caption": "(a) Cell tox assay on stable transfected NIH-3T3-TrkB cells after 24 h and treatment with the tested compound ENT-A044 (500 nM). ANA12, i.e., the TrkB inhibitor, was also used. (b) Quantification of cell tox+ cells (green)/Hoechst+ cells (blue), t-test against control serum free, *** p < 0.001, mean \u00b1 SEM of triplicate measurements. (c) Representative blots determined via Western blot analysis of lysates belonging to primary mouse cultures of astrocytes after 20 min of treatment with BDNF (500 ng/mL) and the tested compound ENT-A044 (500 nM) (d) Quantification analysis of pTrkB and pAkt expres"
+ },
+ {
+  "file": "PMC10728138_Fig1.jpg",
+  "pmcid": "PMC10728138",
+  "year": "2023",
+  "title": "Acetylation is required for full activation of the NLRP3 inflammasome.",
+  "doi": "10.1038/s41467-023-44203-0",
+  "license": "cc by",
+  "figLabel": "Fig. 1",
+  "caption": "NLRP3 Acetylation at Lys24 is indispensable for NLRP3 inflammasome activation.a, b Immunoblot analysis of acetylation level of NLRP3 from peritoneal macrophage treated with LPS (100\u2009ng/mL,3\u2009h) along or with ATP (5\u2009mM,1\u2009h), MSU (200\u2009\u03bcg/mL, 6\u2009h), Imiquimod (40 ug/mL,1\u2009h), nigericin (10\u2009\u03bcM,1\u2009h), Flagellin transfection (2\u2009\u03bcg/mL, 1\u2009h) or poly (dA:dT) transfection (1\u2009\u03bcg/mL, 16\u2009h). c ELISA of IL-1\u03b2 in supernatants and Immunoblot analysis of whole cell lysis from HEK293T cells reconstituted with NLRP3 inflammasome and stimulated with nigericin (10\u2009\u03bcM,1\u2009h). n\u2009=\u20093 biologically independent experiments. d"
+ },
+ {
+  "file": "PMC10728138_Fig2.jpg",
+  "pmcid": "PMC10728138",
+  "year": "2023",
+  "title": "Acetylation is required for full activation of the NLRP3 inflammasome.",
+  "doi": "10.1038/s41467-023-44203-0",
+  "license": "cc by",
+  "figLabel": "Fig. 2",
+  "caption": "Lys24 acetylation of NLRP3 promotes inflammasome activation.a\u2013c BMDMs from Nlrp3WT/WT (n\u2009=\u20093) or Nlrp3K24/K24R (n\u2009=\u20093) mice were treated with LPS (100\u2009ng/mL, 3\u2009h) with ATP (5\u2009mM, 1\u2009h), nigericin (10\u2009\u03bcM, 1\u2009h), MSU (200\u2009\u03bcg/mL, 6\u2009h), Flagellin transfection (2\u2009\u03bcg/mL, 1\u2009h) or poly (dA:dT) transfection (1\u2009\u03bcg/mL, 16\u2009h). a, b ELISA analysis of IL-1\u03b2 and TNF-\u03b1 in supernatants. c Release of LDH in supernatants. d\u2013h\nNlrp3WT/WT or Nlrp3K24/K24R male mice of 6\u20138\u2009weeks were injected with Saline (n\u2009=\u20093 biologically independent mice) or LPS (20\u2009mg/kg, i.p.) (n\u2009=\u20097 biologically independent mice) for 12\u2009h. d, e"
+ },
+ {
+  "file": "PMC10520887_fig1.jpg",
+  "pmcid": "PMC10520887",
+  "year": "2023",
+  "title": "Porcine IKK\u03b5 is involved in the STING-induced type I IFN antiviral response of the cytosolic DNA signaling pathway.",
+  "doi": "10.1016/j.jbc.2023.105213",
+  "license": "cc by",
+  "figLabel": "Figure\u00a01",
+  "caption": "pIKK\u03b5 positively regulates pSTING-induced type I IFN response.A\u2013C, the pIKK\u03b5\u2212/\u2212 3D4/21\u00a0cells, pTBK1\u2212/\u22123D4/21\u00a0cells, pTBK1\u2212/\u2212/pIKK\u03b5\u2212/\u22123D4/21\u00a0cells, and control 3D4/21\u00a0cells in 24-well plates (3\u00a0\u00d7 105\u00a0cells/well) were transfected with 2\u20323\u2032-cGAMP (2\u00a0\u03bcg/ml) by using Lipofectamine 2000 for 0 to 12\u00a0h, respectively. The harvested cells were measured by RT\u2013qPCR for downstream gene expressions. D\u2013F, pIKK\u03b5\u2212/\u2212 3D4/21\u00a0cells (D), pTBK1\u2212/\u2212 3D4/21\u00a0cells (E), pIKK\u03b5\u2212/\u2212pTBK1\u2212/\u2212 3D4/21\u00a0cells (F), and 3D4/21\u00a0cells in 24-well plate (3\u00a0\u00d7 105\u00a0cells/well) were transfected with 2\u20323\u2032-cGAMP (1 and 2\u00a0\u03bcg/ml) for 8\u00a0h. The "
+ },
+ {
+  "file": "PMC10520887_fig2.jpg",
+  "pmcid": "PMC10520887",
+  "year": "2023",
+  "title": "Porcine IKK\u03b5 is involved in the STING-induced type I IFN antiviral response of the cytosolic DNA signaling pathway.",
+  "doi": "10.1016/j.jbc.2023.105213",
+  "license": "cc by",
+  "figLabel": "Figure\u00a02",
+  "caption": "pIKK\u03b5 deficiency impairs Psting-mediated antiviral response.A\u2013D, pIKK\u03b5\u2212/\u2212 3D4/21\u00a0cells and 3D4/21\u00a0cells in 24-well plates (3\u00a0\u00d7 105\u00a0cells/well) were stimulated with transfection of 2\u20323\u2032-cGAMP (2\u00a0\u03bcg/ml) for 8\u00a0h. The stimulated cells were infected with HSV1-GFP (0.01 MOI) for 36\u00a0h. The GFP signals were visualized by fluorescence microscopy (A). The infected cells were harvested to measure the protein expressions by Western blotting (B), GFP signals by flow cytometry (C), and the HSV1 gB gene expression by RT\u2013qPCR (D). E and F, the viral titer in the supernatant from HSV1-infected cells was measur"
+ },
+ {
+  "file": "PMC10631120_Fig6.jpg",
+  "pmcid": "PMC10631120",
+  "year": "2023",
+  "title": "Comprehensive analysis of the UDP-glucuronate decarboxylase (UXS) gene family in tobacco and functional characterization of NtUXS16 in Golgi apparatus in Arabidopsis.",
+  "doi": "10.1186/s12870-023-04575-3",
+  "license": "cc by",
+  "figLabel": "Fig. 6",
+  "caption": "Immunoblot analyses of NtUXS16 in microsomal proteins from non-transformed and of NtUXS16-mRFP-expressing BY-2 cells. Notes: Equal amounts of microsomal proteins from non-transformed\u00a0BY-2 cells (WT) or transformed BY-2 cells expressing NtUXS16-mRFP were separated by SDS-PAGE, transferred to PVDF membranes and probed with anti-RFP antibody (A) or antibodies of NtUXS16 (B)"
+ },
+ {
+  "file": "PMC10376983_biomolecules1301129f003.jpg",
+  "pmcid": "PMC10376983",
+  "year": "2023",
+  "title": "Polypeptide Substrate Accessibility Hypothesis: Gain-of-Function R206H Mutation Allosterically Affects Activin Receptor-like Protein Kinase Activity.",
+  "doi": "10.3390/biom13071129",
+  "license": "cc by",
+  "figLabel": "Figure 3",
+  "caption": "Wild-type and R206H ALK2 signaling in response to FK506, inhibitor of FKBP12. FK506 competes with the type I BMP receptor HLH/GS domain for FKBP12 binding, thereby dissociating FKBP12 from the receptor and promoting Smad phosphorylation. Immunoblot detection of pSmad1/5/8 induction following treatment of mouse embryonic fibroblasts with increasing concentrations of FK506 (0.001, 0.01, 0.1, 1.0 \u00b5M) is shown minus BMP4 except for positive controls (BMP4; 100 ng/mL). pSmad1/5/8 was normalized to \u03b2-actin (lower panels)."
+ },
+ {
+  "file": "PMC10376983_biomolecules1301129f007.jpg",
+  "pmcid": "PMC10376983",
+  "year": "2023",
+  "title": "Polypeptide Substrate Accessibility Hypothesis: Gain-of-Function R206H Mutation Allosterically Affects Activin Receptor-like Protein Kinase Activity.",
+  "doi": "10.3390/biom13071129",
+  "license": "cc by",
+  "figLabel": "Figure 7",
+  "caption": "Western blot analyses of BMP signaling by ALK2 forms in Drosophila S2 cells. Comparable, high-level expression of ALK2 constructs (left panel). Robust signaling observed with less active R206H, but undetectable with significantly more active truncated (\u0394GS or HLH-deleted) form of the receptor kinase (right panel)."
+ },
+ {
+  "file": "PMC10313560_Fig2.jpg",
+  "pmcid": "PMC10313560",
+  "year": "2023",
+  "title": "Filamin-A-interacting protein 1 (FILIP1) is a dual compartment protein linking myofibrils and microtubules during myogenic differentiation and upon mechanical stress.",
+  "doi": "10.1007/s00441-023-03776-4",
+  "license": "cc by",
+  "figLabel": "Fig. 2",
+  "caption": "FILIP1 expression and localization in differentiating cultured C2C12 myotubes. a, a'\u00a0Representative western blots showing the levels of FLNc, FILIP1, EB3, tyrosylated tubulin (Tyr-tub) and acetylated tubulin (Ac-tub) in proliferating C2C12 myoblasts (0\u00a0days) and myotubes differentiated for the indicated time (1\u20138\u00a0days). GAPDH was used as loading control and for normalization. b\u2013b''''\u00a0Quantification of the data presented in (a\u2013a'), expressed as mean\u2009\u00b1\u2009SD. n\u2009=\u20093. In all individual experiments maximum relative expression of each protein was set to 1.0. c\u2013e'''\u00a0Immunolocalization of FLNc, FILIP1 an"
+ },
+ {
+  "file": "PMC10313560_Fig3.jpg",
+  "pmcid": "PMC10313560",
+  "year": "2023",
+  "title": "Filamin-A-interacting protein 1 (FILIP1) is a dual compartment protein linking myofibrils and microtubules during myogenic differentiation and upon mechanical stress.",
+  "doi": "10.1007/s00441-023-03776-4",
+  "license": "cc by",
+  "figLabel": "Fig. 3",
+  "caption": "FILIP1 is localized in EPS-induced sarcomeric lesions. a\u2013a''\u00a0Immunolocalization of FLNc and FILIP1 in overnight mechanoadapted C2C12 myotubes (a\u2013a''), followed by twitch stimulation for 2\u00a0h (b\u2013b'') or 4\u00a0h (c\u2013c''). Arrowheads indicate the presence of both FLNc and FILIP1 in EPS-induced lesions. Note that incidence and size of lesions as well as the presence of FILIP1 in the lesions increase with the intensity of the applied stimulus and duration of pacing. Bars: 10\u00a0\u03bcm. d\u00a0Representative western blots showing the levels of FLNc and FILIP1 in mechanoadapted C2C12 myotubes treated with EPS for the "
+ },
+ {
+  "file": "PMC10744682_jof0901183f001.jpg",
+  "pmcid": "PMC10744682",
+  "year": "2023",
+  "title": "Analysis of Nuclear Dynamics in Nematode-Trapping Fungi Based on Fluorescent Protein Labeling.",
+  "doi": "10.3390/jof9121183",
+  "license": "cc by",
+  "figLabel": "Figure 1",
+  "caption": "Generation of fluorescently labeled A. oligospora strains. (A) Schematic presentation of the plasmid construct used to generate histone H2B\u2013EGFP-labeled strains. (B) Fluorescence observation of conidium, hyphae, and traps. Red arrow: conidium. Yellow arrow: hyphae. Blue arrow: traps. Bar: 100 \u03bcm. (C) PCR was used to verify the successful generation of the H2B\u2013EGFP-labeled strains. The plasmid construct was integrated into the A. oligospora wild-type strain (WT: ATCC 24927). The wild-type and transformant strains are shown in WT and Lanes 1\u20134, respectively. Amplification with primer pairs F1/R2"
+ },
+ {
+  "file": "PMC10662044_f2.jpg",
+  "pmcid": "PMC10662044",
+  "year": "2023",
+  "title": "Hepatocyte-specific regulation of autophagy and inflammasome activation via MyD88 during lethal <i>Ehrlichia</i> infection.",
+  "doi": "10.3389/fimmu.2023.1212167",
+  "license": "cc by",
+  "figLabel": "Figure\u00a02",
+  "caption": "CASP1, in HCs, is negatively regulated by MyD88 in fatal infection. (A, B) Immunoblot of pro and cleaved CASP1 in uninfected and E japonica-infected primary WT and MyD88-/- HCs at 24 hr p.i. (C) Relative mRNA expression of Casp1 in uninfected and infected primary WT and MyD88-/- HCs at 24 hr p.i. (D) Relative mRNA expression of IL-1\u03b2 in uninfected and infected primary WT and MyD88-inhibited HCs at 24 hr p.i. Data is from three independent experiments represented as Mean \u00b1 SD (**P<0.01, ***P<0.001)."
+ },
+ {
+  "file": "PMC10662044_f3.jpg",
+  "pmcid": "PMC10662044",
+  "year": "2023",
+  "title": "Hepatocyte-specific regulation of autophagy and inflammasome activation via MyD88 during lethal <i>Ehrlichia</i> infection.",
+  "doi": "10.3389/fimmu.2023.1212167",
+  "license": "cc by",
+  "figLabel": "Figure\u00a03",
+  "caption": "CASP 3 and CASP11, in HCs, is positively regulated by MyD88 in fatal infection. (A, B) Immunoblot analysis of cleaved CASP3 protein at 24 hr p.i., normalized to \u03b2-actin, in uninfected and E japonica-infected primary WT and MyD88-/- HCs cultured in the presence or absence of CASP1 inhibitor. (C) Relative mRNA expression of active CASP11 production in uninfected and E japonica-infected primary WT and MyD88-inhibited HCs at 24 hr p.i. (D, E) Immunoblot of pro and cleaved CASP11 in uninfected and E japonica-infected primary WT and MyD88-/- HCs at 24 hr p.i. (F, G) Immunoblot analysis of pro and cl"
+ },
+ {
+  "file": "PMC10622527_Fig1.jpg",
+  "pmcid": "PMC10622527",
+  "year": "2023",
+  "title": "Glucocorticoids alleviate particulate matter-induced COX-2 expression and mitochondrial dysfunction through the Bcl-2/GR complex in A549 cells.",
+  "doi": "10.1038/s41598-023-46257-y",
+  "license": "cc by",
+  "figLabel": "Figure 1",
+  "caption": "PM induces COX-2 expression, and GR suppresses PM-induced COX-2 expression in A549 cells. (A) A549 cells were treated with PM (300\u00a0\u00b5g/ml) as indicated for 24\u00a0h and analyzed by qPCR. (B) A549 cells were pretreated with dexamethasone (0.1\u00a0\u00b5M) and/or RU486 (1\u00a0\u00b5M) for 1\u00a0h before treatment with PM for 24\u00a0h and analyzed by Western blot. (C) A549 cells were transfected with COX-2-Luc and treated as indicated. After treatment, luciferase expression was determined. (D) The production of PGE2 was measured. Values represent the mean\u2009\u00b1\u2009SEM (N\u2009=\u20093). *P\u2009<\u20090.05. All experiments were repeated three times. The"
+ },
+ {
+  "file": "PMC10622527_Fig4.jpg",
+  "pmcid": "PMC10622527",
+  "year": "2023",
+  "title": "Glucocorticoids alleviate particulate matter-induced COX-2 expression and mitochondrial dysfunction through the Bcl-2/GR complex in A549 cells.",
+  "doi": "10.1038/s41598-023-46257-y",
+  "license": "cc by",
+  "figLabel": "Figure 4",
+  "caption": "Glucocorticoid increases Bcl-2/GR complex formation in PM-treated A549 cells. (a) The whole cell lysates were immunoprecipitated with GR antibody, and western blot was performed with Bcl2 or GR antibody after immunoprecipitation. (b) A549 cells were treated with PM (300\u00a0\u00b5g/ml) as indicated for 24\u00a0h and immunostaining was followed using anti-GR or Bcl2 antibody. (c) Cells were stained with Tom20, and immunostaining was followed using anti-GR antibody. The inset shows GR on the mitochondria. Values represent the mean\u2009\u00b1\u2009SEM (N\u2009=\u20093). *P\u2009<\u20090.05, **P\u2009<\u20090.005, ***P\u2009<\u20090.001. All experiments were repea"
+ }
+]

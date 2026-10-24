@@ -1,0 +1,125 @@
+{
+ "description": "SynthID Detector (synthid.com, public since Oct 7 2026) results, uploaded by hand by the team on Oct 23 2026. Fixed, realistic scenarios only; no automated or iterative queries, per the service terms.",
+ "generator": "Gemini app image generation (model: Auto, Gemini 3 family; exact image model not exposed on a free account)",
+ "rows": [
+  {
+   "id": "A",
+   "scenario": "Whole AI blot (film style), original download",
+   "synthid": "detected",
+   "c2pa": "present"
+  },
+  {
+   "id": "B",
+   "scenario": "Whole AI blot, re-saved",
+   "synthid": "detected",
+   "c2pa": "stripped"
+  },
+  {
+   "id": "C",
+   "scenario": "Whole AI blot, resized to 50%",
+   "synthid": "detected",
+   "c2pa": "stripped"
+  },
+  {
+   "id": "D",
+   "scenario": "Whole AI blot, JPEG quality 60",
+   "synthid": "detected",
+   "c2pa": "stripped"
+  },
+  {
+   "id": "E",
+   "scenario": "Whole AI blot, 70% crop",
+   "synthid": "detected",
+   "c2pa": "stripped"
+  },
+  {
+   "id": "F",
+   "scenario": "Whole AI blot, contrast adjusted",
+   "synthid": "detected",
+   "c2pa": "stripped"
+  },
+  {
+   "id": "G",
+   "scenario": "Whole AI blot as one panel of a 2x2 figure",
+   "synthid": "detected",
+   "c2pa": "stripped"
+  },
+  {
+   "id": "H",
+   "scenario": "Whole AI blot, PDF round trip",
+   "synthid": "detected",
+   "c2pa": "stripped"
+  },
+  {
+   "id": "L",
+   "scenario": "Whole AI blot (clean digital style), re-saved",
+   "synthid": "detected",
+   "c2pa": "stripped"
+  },
+  {
+   "id": "M",
+   "scenario": "Whole AI blot (clean digital style), figure panel size 344x192, JPEG",
+   "synthid": "detected",
+   "c2pa": "stripped"
+  },
+  {
+   "id": "I",
+   "scenario": "Single AI band, tight crop (155x65)",
+   "synthid": "not enough details",
+   "c2pa": "stripped"
+  },
+  {
+   "id": "K",
+   "scenario": "Single AI lane strip, figure size JPEG (85x120)",
+   "synthid": "not enough details",
+   "c2pa": "stripped"
+  },
+  {
+   "id": "O",
+   "scenario": "Single AI band, clean style (195x80)",
+   "synthid": "not enough details",
+   "c2pa": "stripped"
+  },
+  {
+   "id": "P",
+   "scenario": "Single faint AI band, clean style (180x75)",
+   "synthid": "not enough details",
+   "c2pa": "stripped"
+  },
+  {
+   "id": "S1",
+   "scenario": "AI band pasted into a published CC BY blot (ALK2 figure, JPEG)",
+   "synthid": "pending",
+   "c2pa": "stripped"
+  },
+  {
+   "id": "S2",
+   "scenario": "AI band pasted into a published CC BY blot (PMC10674287, JPEG)",
+   "synthid": "pending",
+   "c2pa": "stripped"
+  },
+  {
+   "id": "S3",
+   "scenario": "AI band pasted into a published CC BY blot (PMC10033651, JPEG)",
+   "synthid": "pending",
+   "c2pa": "stripped"
+  },
+  {
+   "id": "S4",
+   "scenario": "AI band pasted into a published CC BY blot (PMC10243194, JPEG)",
+   "synthid": "pending",
+   "c2pa": "stripped"
+  },
+  {
+   "id": "S0",
+   "scenario": "Published CC BY blot, untouched (negative control)",
+   "synthid": "pending",
+   "c2pa": "none"
+  }
+ ],
+ "notes": [
+  "J and N (larger single lane strips) were uploaded but their exact verdict wording was not recorded; both were not detected.",
+  "Small sample: a case study, not a benchmark.",
+  "Pasted band composites use openly licensed figures; we made every edit ourselves for this test. The published figures are unaltered and their authors are not implicated."
+ ]
+}

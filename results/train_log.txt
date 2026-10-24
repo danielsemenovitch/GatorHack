@@ -1,0 +1,42 @@
+featurized 3635 images in 183s
+train AUROC by scoring rule: {'top': 0.664, 'outlier': 0.605} -> top
+{
+ "n_train_images": 2035,
+ "n_test_images": 1600,
+ "n_train_papers": 42,
+ "n_test_papers": 22,
+ "threshold": 0.938,
+ "image_auroc": 0.543,
+ "precision": 0.716,
+ "recall": 0.087,
+ "f1": 0.155,
+ "false_flag_rate_clean": 0.077,
+ "detect_rate_by_method": {
+  "clean": 0.077,
+  "copy_move": 0.078,
+  "cross_splice": 0.106,
+  "ai_splice": 0.093,
+  "intensify": 0.108,
+  "erase": 0.05
+ },
+ "detect_rate_by_last_publish_step": {
+  "png": 0.081,
+  "pdf_roundtrip": 0.096,
+  "jpeg": 0.087
+ },
+ "window_auroc_localization": 0.836,
+ "held_out_method": {
+  "ai_splice": {
+   "auroc": 0.516,
+   "detect_rate": 0.093,
+   "false_flag_rate": 0.061
+  },
+  "erase": {
+   "auroc": 0.512,
+   "detect_rate": 0.067,
+   "false_flag_rate": 0.079
+  }
+ },
+ "seconds": 306,
+ "score_method": "top"
+}

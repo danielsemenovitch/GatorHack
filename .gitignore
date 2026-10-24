@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.env
+web/node_modules/
+web/dist/
+results/feature_cache.joblib
+data/benchmark/
+data/real_figures/*.jpg
+data/real_panels/*.png
