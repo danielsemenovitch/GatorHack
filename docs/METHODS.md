@@ -17,11 +17,11 @@ This is written so you can explain every part in your own words and answer judge
 **Likely questions**
 - *Isn't this just a handful of uploads?* Yes. It's a case study, and we say so. Each composite takes about two minutes to make, and the pattern was consistent.
 - *Did you try to break SynthID?* No. Fixed, realistic publishing steps only, uploaded by hand. We reported what we saw to Google.
-- *Is it fair to call it a miss?* For the pasted band composites the detector answered "not detected," not "not enough details," so yes. For lone bands it honestly declines. Both are gaps for science.
+- *Is it fair to call it a miss?* For lone bands it honestly declines ("not enough details"), which is still a gap for science. For the pasted band composites, quote exactly what `results/synthid_manual.json` says for rows S1 to S4: "not detected" is a miss; "not enough details" is a decline; "detected" means the watermark survived and the pitch must say so.
 
 ## 2. The benchmark
 
-See `docs/DATA_CARD.md`. In one sentence: 3,161 blot images from 55 CC BY papers, clean or forged five ways (copy move, cross splice, AI splice, intensify, erase), each pushed through a random publishing chain, each with a pixel mask, split by paper.
+See `docs/DATA_CARD.md` for the exact counts (written automatically from the data). In one sentence: thousands of blot images from CC BY papers, clean or forged five ways (copy move, cross splice, AI splice, intensify, erase), each pushed through a random publishing chain, each with a pixel mask, split by paper.
 
 **Likely questions**
 - *Why generated forgeries and not real fraud cases?* Real cases are few, legally sensitive, and don't come with pixel masks. Generated forgeries let us measure detection exactly. The tradeoff is realism, which is why we hold out a whole forgery type in testing.
@@ -43,7 +43,7 @@ See `docs/DATA_CARD.md`. In one sentence: 3,161 blot images from 55 CC BY papers
   Each measure is compared with the panel's other bands, or with its background. A gradient boosted tree model scores each window.
 - **Small convolutional network (JAX, CPU).** Same windows, but the network sees the pixels directly: intensity relative to the panel background, plus a noise residual normalized by the panel's typical noise. It's about 40,000 parameters, trained with real band windows as hard negatives so it can't cheat by flagging "anything that is a band."
 
-**Panel score.** The mean of the 3 most suspicious band windows. The flag line is set on clean TRAINING panels so that 5% of them would be flagged. Test papers never touch the threshold.
+**Panel score.** The mean of the 3 most suspicious band windows (for the CNN, on the raw logit scale, optionally relative to the panel's own median band window; the rule is picked on calibration papers). The flag line is set on clean panels from separate CALIBRATION papers (held out from training) so that 5% of them would be flagged. Test papers never touch the threshold or the rule. In the app every score is shown on a 0 to 100 scale where the flag line is exactly 50.
 
 **Explanations.** When a band is flagged, the app lists the hand built measures that deviate most at that spot, in plain language ("its noise level differs from the rest of the blot").
 
