@@ -77,11 +77,11 @@ def find_image_reuse(images: list[Image.Image], max_comparisons: int = 4000) -> 
             if min(a.information, b.information) < 2.0:
                 continue
             distance = (a.phash ^ b.phash).bit_count()
-            if distance > 8:
+            if distance > 20:
                 continue
             score = float(structural_similarity(a.gray, b.gray, data_range=255))
             # Hash screening alone is insufficient; require strong full-frame agreement.
-            if score >= 0.92:
+            if score >= 0.95:
                 findings.append({
                     **base, "method": "near_duplicate", "similarity": round(score, 4),
                     "phash_distance": distance,
