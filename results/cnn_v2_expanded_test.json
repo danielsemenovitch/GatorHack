@@ -1,0 +1,34 @@
+{
+  "model": "frozen production CNN v2",
+  "note": "Same rebuilt expanded benchmark and held-out test papers as pending CNN v3.",
+  "n_calibration_papers": 35,
+  "n_test_papers": 72,
+  "saved_v2_operating_point": {
+    "n": 2761,
+    "auroc": 0.6516,
+    "clean_false_flag_rate": 0.0237,
+    "detect_by_method": {
+      "clean": 0.0237,
+      "copy_move": 0.1772,
+      "cross_splice": 0.2298,
+      "ai_splice": 0.2422,
+      "intensify": 0.3824,
+      "erase": 0.0255
+    },
+    "threshold": 0.99655369
+  },
+  "recalibrated_on_expanded_clean_calibration_papers": {
+    "n": 2761,
+    "auroc": 0.6516,
+    "clean_false_flag_rate": 0.0365,
+    "detect_by_method": {
+      "clean": 0.0365,
+      "copy_move": 0.193,
+      "cross_splice": 0.2609,
+      "ai_splice": 0.264,
+      "intensify": 0.4278,
+      "erase": 0.0453
+    },
+    "threshold": 0.99461628
+  }
+}

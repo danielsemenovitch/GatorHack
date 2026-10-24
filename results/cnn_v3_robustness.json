@@ -1,0 +1,49 @@
+{
+ "n_panels": 353,
+ "threshold": 0.5,
+ "rows": [
+  {
+   "transform": "none",
+   "label": "None (straight after the edit)",
+   "detect_rate": 0.47,
+   "false_flag_rate": 0.031
+  },
+  {
+   "transform": "resave",
+   "label": "Re-saved",
+   "detect_rate": 0.47,
+   "false_flag_rate": 0.031
+  },
+  {
+   "transform": "resize_50",
+   "label": "Resized to 50%",
+   "detect_rate": 0.051,
+   "false_flag_rate": 0.011
+  },
+  {
+   "transform": "jpeg_q85",
+   "label": "JPEG quality 85",
+   "detect_rate": 0.453,
+   "false_flag_rate": 0.057
+  },
+  {
+   "transform": "jpeg_q60",
+   "label": "JPEG quality 60",
+   "detect_rate": 0.425,
+   "false_flag_rate": 0.065
+  },
+  {
+   "transform": "contrast",
+   "label": "Contrast adjusted",
+   "detect_rate": 0.53,
+   "false_flag_rate": 0.127
+  },
+  {
+   "transform": "pdf_roundtrip",
+   "label": "PDF round trip",
+   "detect_rate": 0.439,
+   "false_flag_rate": 0.045
+  }
+ ],
+ "note": "One AI generated band pasted into each held out real panel, then one publishing step."
+}

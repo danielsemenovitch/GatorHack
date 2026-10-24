@@ -20,15 +20,14 @@ from .imgio import load_rgb, to_gray
 from .panels import find_panels
 from .provenance import read_c2pa
 
-_DETECTOR = None
+_DETECTORS = {}
 
 
-def detector():
-    global _DETECTOR
-    if _DETECTOR is None:
+def detector(version: str = "v3"):
+    if version not in _DETECTORS:
         from .detector import load_best
-        _DETECTOR = load_best()
-    return _DETECTOR
+        _DETECTORS[version] = load_best(version)
+    return _DETECTORS[version]
 
 
 def _data_url(im: Image.Image, fmt: str = "PNG") -> str:
@@ -100,10 +99,14 @@ def _blot_candidates(fig: Image.Image, mode: str = "auto"):
     return result
 
 
-def analyze(data: bytes, filename: str = "upload", max_panels: int = 24,
-            blot_mode: str = "auto") -> dict[str, Any]:
+def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
+            blot_mode: str = "auto", cnn_version: str = "v3") -> dict[str, Any]:
     if blot_mode not in ("auto", "blot", "off"):
         raise ValueError("blot_mode must be 'auto', 'blot', or 'off'")
+    if cnn_version not in ("v2", "v3"):
+        raise ValueError("cnn_version must be v2 or v3")
+    if not (1 <= max_panels <= 256):
+        raise ValueError("max_panels must be between 1 and 256")
     t0 = time.time()
     is_pdf = filename.lower().endswith(".pdf") or data[:4] == b"%PDF"
     mime = "image/png" if filename.lower().endswith(".png") else "image/jpeg"
@@ -114,6 +117,7 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 24,
     reuse = find_image_reuse([im for _, im in figures])
     report_figs, all_panels_gray, panel_refs = [], [], []
     n_panels = 0
+    skipped_panels = 0
     det = None
     for fi, (label, fig) in enumerate(figures):
         fig_entry = {
@@ -124,18 +128,21 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 24,
             "blot_screen": "not_assessed",
             "blot_note": "No confidently identified Western blot panels. Other image types are not scored by the Western blot CNN.",
         }
-        for p, crop in _blot_candidates(fig, blot_mode):
+        candidates = _blot_candidates(fig, blot_mode)
+        for candidate_i, (p, crop) in enumerate(candidates):
             if n_panels >= max_panels:
-                fig_entry["blot_note"] = "Panel analysis limit reached; remaining panels not assessed."
+                skipped_panels += len(candidates) - candidate_i
+                fig_entry["blot_note"] = "Panel analysis limit reached; remaining candidate panels not assessed."
+                fig_entry["blot_screen"] = "partial" if fig_entry["panels"] else "not_assessed_limit"
                 break
             if det is None:
-                det = detector()
+                det = detector(cnn_version)
             res = det.analyze(crop)
             all_panels_gray.append(to_gray(crop))
             panel_refs.append((fi, p.id))
             fig_entry["panels"].append({
                 **p.to_dict(), "global_index": n_panels,
-                "score": round(res.score, 3), "flagged": bool(res.score > det.threshold),
+                "score": round(float(res.score), 6), "flagged": bool(res.score > det.threshold),
                 "bands": res.bands, "heat": _data_url(_heat_overlay(res.heat, det.threshold)),
                 "crop": _data_url(crop),
                 "why": [{"feature": f, "value": round(v, 2)} for f, v in res.top_features],
@@ -149,22 +156,54 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 24,
             n_panels += 1
         report_figs.append(fig_entry)
 
-    band_duplicates = find_duplicates(all_panels_gray) if all_panels_gray else []
+    # Higher-precision *review candidate* operating point. The original
+    # library's 0.5 noise threshold produced many benign matches on genuine
+    # published blot strips. This intentionally sacrifices recall to avoid
+    # overwhelming reviewers with weak matches.
+    band_duplicates = (find_duplicates(all_panels_gray, threshold=0.90, shape_floor=0.90)
+                       if all_panels_gray else [])
     for d in band_duplicates:
+        # d.b.id == -1 is a matched image location, NOT a detected band.
         for side in ("a", "b"):
-            fi, pid = panel_refs[d[side]["panel"]]
-            d[side]["figure"], d[side]["panel_id"] = fi, pid
+            loc = d[side]
+            fi, pid = panel_refs[loc["panel"]]
+            loc["figure"], loc["panel_id"] = fi, pid
+            loc["figure_label"] = report_figs[fi]["label"]
+            gray = all_panels_gray[loc["panel"]]
+            hh, ww = gray.shape
+            x0 = max(0, int(loc["x"]) - 4)
+            y0 = max(0, int(loc["y"]) - 4)
+            x1 = min(ww, int(loc["x"] + loc["w"]) + 4)
+            y1 = min(hh, int(loc["y"] + loc["h"]) + 4)
+            loc["crop"] = _data_url(Image.fromarray(gray[y0:y1, x0:x1].astype(np.uint8)))
+            loc["is_detected_band"] = bool(isinstance(loc.get("id"), int) and loc["id"] >= 0)
     flagged = [p for f in report_figs for p in f["panels"] if p["flagged"]]
     # Never call absence of findings "authentic" or "clean".
     verdict = "suspicious" if flagged or band_duplicates or reuse else ("no_blots" if n_panels == 0 else "no_findings")
+    per_figure = [
+        {"figure": f["id"], "label": f["label"],
+         "analyzed_panels": len(f["panels"]),
+         "flagged_panels": sum(bool(p["flagged"]) for p in f["panels"])}
+        for f in report_figs
+    ]
+    # Many flags in one figure may share an ordinary imaging/processing cause.
+    widespread = [r for r in per_figure if r["analyzed_panels"] >= 4
+                  and r["flagged_panels"] >= 3
+                  and r["flagged_panels"] / r["analyzed_panels"] >= 0.5]
     return {
-        "filename": filename, "verdict": verdict, "blot_mode": blot_mode,
+        "filename": filename, "verdict": verdict, "blot_mode": blot_mode, "cnn_version": cnn_version,
         "summary": {
             "figures": len(report_figs), "panels": n_panels,
+            "skipped_panels": skipped_panels, "max_panels": max_panels,
+            "per_figure": per_figure, "widespread_flag_figures": widespread,
             "flagged_panels": len(flagged), "duplicate_pairs": len(band_duplicates),
             "image_reuse_pairs": len(reuse),
-            "max_splice_score": round(max((p["score"] for f in report_figs for p in f["panels"]), default=0), 3),
-            "threshold": round(det.threshold, 3) if det is not None else None,
+            "max_splice_score": round(max((p["score"] for f in report_figs for p in f["panels"]), default=0), 6),
+            "threshold": round(float(det.threshold), 6) if det is not None else None,
+            "score_kind": ("threshold-centered display index" if getattr(det, "space", None) == "logit"
+                           else "uncalibrated CNN patch score") if det is not None else None,
+            "score_is_probability": False,
+            "model_version": cnn_version if n_panels else None,
             "content_credentials": provenance.get("present", False),
         },
         "provenance": provenance, "figures": report_figs,
@@ -172,8 +211,12 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 24,
         "checks": {
             "whole_image_reuse": "completed" if len(figures) >= 2 else "not_applicable_single_image",
             "local_region_reuse": "not_implemented",
-            "blot_cnn": "experimental" if n_panels else "not_assessed",
+            "blot_cnn": ("partially_assessed" if skipped_panels else "experimental") if n_panels
+                        else ("not_assessed_limit" if skipped_panels else "not_assessed"),
+            "blot_panel_limit": "reached" if skipped_panels else "not_reached",
             "blot_mode": blot_mode,
+            "cnn_version": cnn_version,
+            "band_duplicate_policy": "conservative_noise_0.90_shape_0.90",
             "c2pa": "not_assessed" if is_pdf else "checked_on_uploaded_file",
         },
         "synthid": {
@@ -187,6 +230,9 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 24,
             "Whole-image matching does not detect copied patches within different figures.",
             "The user-confirmed Western blot mode relaxes a heuristic gate; it does not validate modality classification.",
             "No universal fake-image or AI-origin model is being run.",
+            "The CNN score is an uncalibrated anomaly index, not a percentage probability of manipulation.",
+            "Multiple flags in one figure may share a benign imaging or processing cause.",
+            "A copied-band candidate's matched location is not necessarily a separately detected band.",
             "No finding is not evidence that an image is authentic.",
         ],
         "seconds": round(time.time() - t0, 2),

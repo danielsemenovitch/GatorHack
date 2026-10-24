@@ -11,6 +11,8 @@ export function reportToHtml(report) {
   const figs = report.figures || [];
   const matches = report.image_reuse || [];
   const checks = report.checks || {};
+  const fmt = (n) => Number.isFinite(Number(n)) ? Number(n).toFixed(4) : "n/a";
+  const duplicates = report.duplicates || [];
   const pairs = matches.map((m, i) => {
     const a = figs[m.a.figure], b = figs[m.b.figure];
     if (!a || !b) return "";
@@ -22,12 +24,27 @@ export function reportToHtml(report) {
       '</figcaption></figure><figure><img src="' + safeImg(b.image) + '"><figcaption>' + esc(b.label) +
       '</figcaption></figure></div><p>' + esc(m.note) + ' ' + esc(m.limitations) + '</p></article>';
   }).join("");
+  const duplicatedBands = duplicates.map((d, i) =>
+    '<article><h3>Blot match candidate ' + (i + 1) + '</h3>' +
+    '<p>' + esc(d.a.figure_label || "figure") + ', panel ' + esc(d.a.panel_id + 1) +
+    ', band ' + esc(d.a.id + 1) + ' compared with ' + esc(d.b.figure_label || "figure") +
+    ', panel ' + esc(d.b.panel_id + 1) +
+    (d.b.is_detected_band ? ', band ' + esc(d.b.id + 1) : ', matched image location') + '</p>' +
+    '<p>Residual correlation ' + esc(fmt(d.noise_similarity)) +
+    ', pixel-shape correlation ' + esc(fmt(d.shape_similarity)) +
+    '. Neither is a probability of copying. Repeated natural patterns can match.</p>' +
+    (safeImg(d.a.crop) && safeImg(d.b.crop)
+      ? '<div class="pair"><figure><img src="' + safeImg(d.a.crop) +
+        '"><figcaption>Source band crop</figcaption></figure><figure><img src="' +
+        safeImg(d.b.crop) + '"><figcaption>Matched region (not necessarily a band)</figcaption></figure></div>'
+      : '<p>Matched image crops unavailable in this older report.</p>') +
+    '</article>').join("");
   const all = figs.map((fig) =>
     '<article><h3>' + esc(fig.label) + '</h3><p>' + esc(fig.width) + ' × ' + esc(fig.height) +
     ' pixels. Western blot screening: ' + esc(fig.blot_screen || (fig.panels?.length ? "experimental" : "not assessed")) +
     '. ' + esc(fig.blot_note || "") + '</p><img class="overview" src="' + safeImg(fig.image) + '">' +
-    (fig.panels || []).map((p) => '<p>Panel ' + esc(p.id + 1) + ': experimental anomaly score ' +
-      esc(p.score) + ', flagged for review: ' + (p.flagged ? "yes" : "no") +
+    (fig.panels || []).map((p) => '<p>Panel ' + esc(p.id + 1) + ': experimental anomaly index ' +
+      esc(fmt(p.score)) + ', flagged for review: ' + (p.flagged ? "yes" : "no") +
       '</p><div class="pair"><img src="' + safeImg(p.crop) + '"><img src="' + safeImg(p.heat) + '"></div>').join("") +
     '</article>').join("");
   const rows = Object.entries(checks).map(([key, status]) =>
@@ -49,7 +66,17 @@ export function reportToHtml(report) {
     'No result proves fabrication; no findings do not establish authenticity.</p>' +
     '<h2>Checks performed</h2><table><thead><tr><th>Check</th><th>Status</th></tr></thead><tbody>' + rows +
     '</tbody></table><h2>Provenance</h2><p>' + esc(provenance.summary || "Not assessed") + '</p>' +
-    '<h2>Potential image reuse</h2>' + (pairs || '<p>No whole-image reuse was identified among the extracted figures.</p>') +
+    '<h2>Potential whole-image reuse</h2>' + (pairs || '<p>No whole-image reuse was identified among the extracted figures.</p>') +
+    '<h2>Experimental copied-band candidates</h2>' +
+      (duplicatedBands || '<p>No copied-band candidate met the detector threshold, or the method was not run.</p>') +
+    '<h2>Western blot screen summary</h2><p>Model: ' + esc(report.summary?.model_version || report.cnn_version || 'unknown') +
+    ' (experimental); panel review threshold: ' + esc(fmt(report.summary?.threshold)) +
+    '; scored panels: ' + esc(report.summary?.panels) + '; flagged panels: ' +
+    esc(report.summary?.flagged_panels) +
+    '; unassessed candidates due to limit: ' + esc(report.summary?.skipped_panels || 0) +
+    '. These scores are not probabilities of tampering.</p>' +
+    (report.summary?.widespread_flag_figures?.length ?
+      '<p>Numerous panels in the same figure were flagged. Shared imaging and publishing artifacts may explain multiple alerts.</p>' : '') +
     '<h2>Figure inventory and blot-specific screening</h2>' + all + '<h2>Limitations</h2><ul>' + limits +
     '</ul><p>Prepared by Below the Watermark for evidence review. No allegation about any original author is implied.</p></body></html>';
 }

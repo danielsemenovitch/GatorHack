@@ -1,0 +1,49 @@
+{
+ "model": "cnn",
+ "n_train_images": 5899,
+ "n_test_images": 2761,
+ "n_train_papers": 151,
+ "n_test_papers": 72,
+ "threshold": 4.6318,
+ "image_auroc": 0.703,
+ "false_flag_rate_clean": 0.041,
+ "detect_rate_by_method": {
+  "clean": 0.041,
+  "copy_move": 0.234,
+  "cross_splice": 0.314,
+  "ai_splice": 0.354,
+  "intensify": 0.487,
+  "erase": 0.198
+ },
+ "auroc_by_panel_size": {
+  "small (<10k px)": {
+   "n": 1737,
+   "auroc": 0.712
+  },
+  "medium": {
+   "n": 912,
+   "auroc": 0.731
+  },
+  "large (>=40k px)": {
+   "n": 112,
+   "auroc": 0.632
+  }
+ },
+ "top_patch_on_edit": 0.705,
+ "calibration_auroc_by_rule": {
+  "top": 0.721,
+  "outlier": 0.697,
+  "z": 0.628
+ },
+ "held_out_method": {
+  "ai_splice": {
+   "auroc": 0.717,
+   "detect_rate": 0.379,
+   "false_flag_rate": 0.075,
+   "note": "from the first model version"
+  }
+ },
+ "score_rule": "top",
+ "n_calib_papers": 35,
+ "seconds": 2257
+}
