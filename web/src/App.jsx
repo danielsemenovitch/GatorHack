@@ -277,6 +277,9 @@ function cellClass(v) {
   return "unsure";
 }
 
+// Which hand run SynthID row used the same publishing step (whole AI blot).
+const ROB_TO_SYNTHID = { none: "A", resave: "B", resize_50: "C", jpeg_q60: "D", contrast: "F", pdf_roundtrip: "H" };
+
 function GapPage({ results }) {
   const sid = results?.synthid_manual;
   const det = results?.cnn_metrics || results?.detector_metrics;
@@ -350,14 +353,26 @@ function GapPage({ results }) {
             </table>
           </div>
           {rob && (
-            <div className="scroll">
-              <table className="matrix">
-                <thead><tr><th>One publishing step after the edit</th><th>Pasted AI bands caught</th><th>Clean panels flagged</th></tr></thead>
-                <tbody>{rob.rows.map((r) => (
-                  <tr key={r.transform}><td>{r.label}</td><td className="cell">{Math.round(r.detect_rate * 100)}%</td><td className="cell">{Math.round(r.false_flag_rate * 100)}%</td></tr>
-                ))}</tbody>
-              </table>
-            </div>
+            <>
+              <h2>Same publishing steps, side by side</h2>
+              <div className="prose"><p>We pasted one Gemini lane into each of {rob.n_panels} held out test panels, applied one publishing step, and ran our detector with its fixed flag line. The SynthID column is the hand test on a whole AI blot from the table above; SynthID could not check single bands at all.</p></div>
+              <div className="scroll">
+                <table className="matrix">
+                  <thead><tr><th>Publishing step</th><th>SynthID, whole AI blot</th><th>Our detector, pasted AI band</th><th>Our detector, clean panels flagged</th></tr></thead>
+                  <tbody>{rob.rows.map((r) => {
+                    const sidRow = sid?.rows.find((x) => x.id === ROB_TO_SYNTHID[r.transform]);
+                    const v = sidRow ? sidRow.synthid : "not tested";
+                    return (
+                      <tr key={r.transform}><td>{r.label}</td>
+                        <td className={`cell ${sidRow ? cellClass(v) : "unsure"}`}>{v}</td>
+                        <td className="cell">{Math.round(r.detect_rate * 100)}%</td>
+                        <td className="cell">{Math.round(r.false_flag_rate * 100)}%</td></tr>
+                    );
+                  })}</tbody>
+                </table>
+              </div>
+              <p className="sub" style={{ marginTop: 10 }}>Our detector keeps its signal through compression, contrast and PDF export but loses it when the figure is downscaled. SynthID survives all of these on whole images, and none of them matter if the AI region is a single band.</p>
+            </>
           )}
         </>
       ) : <p className="sub">Detector results appear here once the model is trained.</p>}
