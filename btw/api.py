@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -27,12 +27,12 @@ def health():
 
 
 @app.post("/api/analyze")
-async def analyze_upload(file: UploadFile = File(...)):
+async def analyze_upload(file: UploadFile = File(...), blot_mode: str = Form('auto')):
     data = await file.read()
     if len(data) > MAX_BYTES:
         raise HTTPException(413, "File too large (25 MB max).")
     try:
-        return JSONResponse(analyze(data, file.filename or "upload"))
+        return JSONResponse(analyze(data, file.filename or "upload", blot_mode=blot_mode))
     except Exception as e:  # surface a readable error to the UI
         raise HTTPException(422, f"Could not analyze this file: {e}")
 
