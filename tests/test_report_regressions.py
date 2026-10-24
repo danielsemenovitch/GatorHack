@@ -44,7 +44,7 @@ def fake_candidates(number):
 
 def test_retains_score_precision_and_records_skipped_candidates(monkeypatch):
     monkeypatch.setattr(review, "_blot_candidates", fake_candidates(5))
-    monkeypatch.setattr(review, "detector", MockCNN)
+    monkeypatch.setattr(review, "detector", lambda version="v3": MockCNN())
     monkeypatch.setattr(review, "find_duplicates", lambda _, **kwargs: [])
     result = review.analyze(png(), "synth.png", max_panels=2)
     assert result["summary"]["panels"] == 2
@@ -58,7 +58,7 @@ def test_retains_score_precision_and_records_skipped_candidates(monkeypatch):
 
 def test_many_flags_are_marked_as_correlated_candidates(monkeypatch):
     monkeypatch.setattr(review, "_blot_candidates", fake_candidates(5))
-    monkeypatch.setattr(review, "detector", MockCNN)
+    monkeypatch.setattr(review, "detector", lambda version="v3": MockCNN())
     monkeypatch.setattr(review, "find_duplicates", lambda _, **kwargs: [])
     result = review.analyze(png(), "synth.png")
     assert result["summary"]["skipped_panels"] == 0
@@ -68,7 +68,7 @@ def test_many_flags_are_marked_as_correlated_candidates(monkeypatch):
 
 def test_duplicate_contains_two_evidence_crops_not_band_zero(monkeypatch):
     monkeypatch.setattr(review, "_blot_candidates", fake_candidates(2))
-    monkeypatch.setattr(review, "detector", MockCNN)
+    monkeypatch.setattr(review, "detector", lambda version="v3": MockCNN())
     monkeypatch.setattr(review, "find_duplicates", lambda _, **kwargs: [{
         "a": {"panel": 0, "id": 4, "x": 2, "y": 2, "w": 13, "h": 10},
         "b": {"panel": 1, "id": -1, "x": 8, "y": 3, "w": 13, "h": 10},
