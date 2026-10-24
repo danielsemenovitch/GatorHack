@@ -39,6 +39,7 @@ function BlotMark() {
 }
 
 const pct = (v, total) => `${(100 * v) / total}%`;
+const scoreFmt = (v) => Number.isFinite(Number(v)) ? Number(v).toFixed(4) : "n/a";
 
 /* The figure on the lightbox: panels, heat, band boxes, duplicate links. */
 function Stage({ fig, duplicates = [], showHeat = true, activeBand, onBand, threshold }) {
@@ -60,7 +61,7 @@ function Stage({ fig, duplicates = [], showHeat = true, activeBand, onBand, thre
             return (
               <button key={key} type="button"
                 className={`band ${hot ? "hot" : ""} ${activeBand === key ? "active" : ""}`}
-                aria-label={`Band in panel ${p.id + 1}, suspicion ${Math.round(b.score * 100)} out of 100`}
+                aria-label={`Band in panel ${p.id + 1}, experimental anomaly index ${scoreFmt(b.score)}`}
                 onClick={() => onBand(key, p, b)}
                 style={{ left: pct(p.x + b.x - 2, W), top: pct(p.y + b.y - 2, H),
                          width: pct(b.w + 4, W), height: pct(b.h + 4, H) }} />
@@ -103,7 +104,7 @@ function Report({ report }) {
   const [active, setActive] = useState(null);
   const s = report.summary;
   const thr = s.threshold;
-  const flagged = report.figures.flatMap((f) => f.panels.filter((p) => p.flagged));
+  const flagged = report.figures.flatMap((f) => f.panels.filter((p) => p.flagged).map((p) => ({...p, figure_label: f.label})));
   const prov = report.provenance || {};
   const imageReuse = report.image_reuse || [];
   const title = report.verdict === "suspicious" ? "Potential findings for human review" :
@@ -117,7 +118,9 @@ function Report({ report }) {
     <section className="report" aria-live="polite">
       <div>
         <h2>{title}</h2>
-        <p className="sub">{sub}</p>
+        <p className="sub">{sub} These are review candidates, not independent findings of manipulation.</p>
+        {!!s.skipped_panels && <p role="status"><strong>Incomplete screening:</strong> {s.skipped_panels} candidate blot panels were skipped after the {s.max_panels}-panel processing limit. This does not mean those panels are clean.</p>}
+        {(s.widespread_flag_figures || []).length > 0 && <p role="status"><strong>Concentrated alerts:</strong> Many panels in {s.widespread_flag_figures.map(f => f.label).join(", ")} were flagged. Shared background, scanner or publishing artifacts may be responsible; inspect the entire figure before drawing conclusions.</p>}
         {report.credit && <p className="credit" style={{ marginTop: -12, marginBottom: 16 }}>{report.credit}</p>}
         <div className="toolbar">
           <label className="toggle"><input type="checkbox" checked={showHeat} onChange={(e) => setShowHeat(e.target.checked)} disabled={!s.panels} /> Show blot heat</label>
@@ -126,7 +129,7 @@ function Report({ report }) {
         {report.figures.map((fig) => (
           <div key={fig.id} style={{ marginBottom: 20 }}>
             <p className="sub" style={{ marginBottom: 6 }}><strong>{fig.label}</strong> — {fig.width} × {fig.height} px
-              {fig.blot_screen === "experimental" ? " · Experimental blot screen" : " · Blot model not applied"}</p>
+              {fig.blot_screen === "experimental" ? " · Experimental blot screen" : fig.blot_screen === "partial" ? " · Partially screened" : fig.blot_screen === "not_assessed_limit" ? " · Not assessed (limit reached)" : " · Blot model not applied"}</p>
             <div className="lightbox">
               <Stage fig={fig} duplicates={report.duplicates || []} showHeat={showHeat} threshold={thr || 0.5}
                      activeBand={active?.key} onBand={(key, p, b) => setActive({ key, p, b })} />
@@ -155,14 +158,12 @@ function Report({ report }) {
         )}
         {active && (
           <div className="detail">
-            <h3>Band in panel {active.p.id + 1}: <span className="score">{Math.round(active.b.score * 100)}</span> / 100</h3>
-            <Meter value={active.b.score} threshold={thr} />
+            <h3>Band in panel {active.p.id + 1}: <span className="score">{scoreFmt(active.b.score)}</span></h3>
+            <p>Experimental band anomaly index; panel review threshold {scoreFmt(thr)}. This is not a probability of editing.</p>
             <p className="sub" style={{ margin: 0 }}>
               {active.b.score > thr ? "Above the experimental review threshold. Investigate the underlying pixels and controls." : "Below the experimental review threshold. That does not establish an unmodified band."}
             </p>
-            {active.p.why?.length > 0 && active.b.score > thr && (
-              <ul>{[...new Set(active.p.why.map((w) => WHY[w.feature]).filter(Boolean))].slice(0, 3).map((t) => <li key={t}>{t}</li>)}</ul>
-            )}
+            <p className="sub">Local texture and band intensity can vary naturally; no causal explanation for a CNN flag is established.</p>
           </div>
         )}
         {flagged.length > 0 && (
@@ -174,7 +175,7 @@ function Report({ report }) {
                   <img className="heat" src={p.heat} alt="" style={{ left: 6, top: 6, width: "calc(100% - 12px)", height: "calc(100% - 12px)" }} />
                 </div>
                 <figcaption>
-                  <span>Panel {p.id + 1}: <span className="score">{Math.round(p.score * 100)}</span></span>
+                  <span>{p.figure_label}, panel {p.id + 1}: index <span className="score">{scoreFmt(p.score)}</span></span>
                   <button className="btn ghost small" type="button" onClick={() => downloadDataUrl(p.crop, `panel_${p.global_index + 1}.png`)}>Download for SynthID</button>
                 </figcaption>
               </figure>
@@ -188,8 +189,7 @@ function Report({ report }) {
           <span className={`state ${s.flagged_panels ? "bad" : "info"}`}>{!s.panels ? "Not assessed" : s.flagged_panels ? `${s.flagged_panels} review flags` : "No flags found"}</span>
           <p>Experimental model for confidently identified Western blots only. It misses many edits and can falsely flag natural bands.</p>
           {s.panels > 0 && thr != null && <div className="row" style={{ display: "block" }}>
-            <Meter value={s.max_splice_score} threshold={thr} />
-            <p style={{ margin: 0 }}>Highest experimental panel score {Math.round(s.max_splice_score * 100)}; review threshold {Math.round(thr * 100)}.</p>
+            <p style={{ margin: 0 }}>Highest panel anomaly index <strong>{scoreFmt(s.max_splice_score)}</strong>; review threshold <strong>{scoreFmt(thr)}</strong>. These are uncalibrated model indices, not percentages or probabilities.</p>
           </div>}
         </div>
         <div className="check">
@@ -201,8 +201,17 @@ function Report({ report }) {
           <h3>Copied blot bands</h3>
           <span className={`state ${s.duplicate_pairs ? "bad" : "info"}`}>{!s.panels ? "Not assessed" : s.duplicate_pairs ? `${s.duplicate_pairs} candidate pairs` : "No match identified"}</span>
           <p>Experimental within-blot noise template matching; unreliable after resizing and compression. Repeated patterns can be legitimate.</p>
-          {report.duplicates.slice(0, 3).map((d, i) => (
-            <p key={i}>Panel {d.a.panel_id + 1} band {d.a.id + 1} matches panel {d.b.panel_id + 1} band {d.b.id + 1}{d.transform !== "none" ? ` (${d.transform.replace("_", " ")})` : ""}, noise match {Math.round(d.noise_similarity * 100)}%.</p>
+          {(report.duplicates || []).slice(0, 5).map((d, i) => (
+            <div key={i} style={{ marginBottom: 18 }}>
+              <p><strong>Candidate {i + 1}:</strong> {d.a.figure_label || "Figure"} panel {d.a.panel_id + 1} band {d.a.id + 1} compared with {d.b.figure_label || "Figure"} panel {d.b.panel_id + 1}{d.b.is_detected_band ? ` band ${d.b.id + 1}` : " matched image region"}.
+                {d.transform !== "none" ? ` Transformation: ${d.transform.replace("_", " ")}.` : ""}
+              </p>
+              {d.a.crop && d.b.crop && <div style={{ display: "flex", gap: 10 }}>
+                <figure style={{ width: "50%", margin: 0 }}><img src={d.a.crop} alt="Source band crop" style={{ width: "100%" }} /><figcaption>Source region</figcaption></figure>
+                <figure style={{ width: "50%", margin: 0 }}><img src={d.b.crop} alt="Matched image region" style={{ width: "100%" }} /><figcaption>Matched region</figcaption></figure>
+              </div>}
+              <p className="sub">Noise correlation {scoreFmt(d.noise_similarity)}; shape correlation {scoreFmt(d.shape_similarity)}. Neither is a probability that pixels were copied.</p>
+            </div>
           ))}
         </div>
         <div className="check">
