@@ -112,14 +112,19 @@ class CnnDetector:
         X, pos, band, _ = cnn.extract(gray)
         h, w = gray.shape
         wins = [(x, y, cnn.P, cnn.P) for x, y in pos]
+        # The panel-level top-k score uses band-rich patches only when there
+        # are at least 3 of them. Heat must use that SAME eligibility mask;
+        # otherwise the UI can highlight an unrelated label or background
+        # patch which did not contribute to the reported panel score.
+        eligible = band if band.sum() >= 3 else np.ones(len(band), dtype=bool)
         if self.space == "logit":
             z = cnn.predict(self.params, X, logits=True) if len(X) else np.zeros(0, np.float32)
             r, raw = cnn.relative(z, band, self.score_method)
             probs = self._display(r).astype(np.float32)
-            heat = heatmap(wins, probs, (max(h, cnn.P), max(w, cnn.P)))[:h, :w]
+            heat = heatmap(wins, np.where(eligible, probs, 0.0), (max(h, cnn.P), max(w, cnn.P)))[:h, :w]
             return self._finish(gray, heat, band, wins, probs, pos, float(self._display(raw)))
         probs = cnn.predict(self.params, X) if len(X) else np.zeros(0, np.float32)
-        heat = heatmap(wins, probs, (max(h, cnn.P), max(w, cnn.P)))[:h, :w]
+        heat = heatmap(wins, np.where(eligible, probs, 0.0), (max(h, cnn.P), max(w, cnn.P)))[:h, :w]
         pb = probs[band] if band.sum() >= 3 else probs
         if self.score_method == "outlier" and len(pb):
             heat = np.clip(heat - float(np.median(pb)), 0, 1)  # same scale as the panel score
@@ -142,7 +147,9 @@ class CnnDetector:
         try:
             fw, FX = window_features(gray)
             if len(probs):
-                i = int(np.argmax(probs)); cx, cy = pos[i][0] + cnn.P // 2, pos[i][1] + cnn.P // 2
+                eligible = band if band.sum() >= 3 else np.ones(len(probs), dtype=bool)
+                i = int(np.argmax(np.where(eligible, probs, -1.0)))
+                cx, cy = pos[i][0] + cnn.P // 2, pos[i][1] + cnn.P // 2
                 j = int(np.argmin([abs(x + ww / 2 - cx) + abs(y + hh / 2 - cy) for x, y, ww, hh in fw]))
                 dev = sorted(zip(FEATURE_NAMES, FX[j].tolist()), key=lambda t: -abs(t[1]))[:4]
         except Exception:
