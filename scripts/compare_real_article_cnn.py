@@ -97,10 +97,13 @@ def main():
 
     result = {}
     for label, weights in [("v2", v2), ("v3", v3)]:
-        cnn.WEIGHTS = weights
-        review._DETECTOR = None
+        if label == "v3":
+            import shutil
+            shutil.copy2(v3, ROOT / "models" / "splice_cnn_v3.npz")
+        review._DETECTORS.clear()
         print("BEGIN", label, flush=True)
-        rep = review.analyze(data, "Nazim_et_al_2018_CC_BY.pdf", max_panels=64, blot_mode="auto")
+        rep = review.analyze(data, "Nazim_et_al_2018_CC_BY.pdf", max_panels=64,
+                             blot_mode="auto", cnn_version=label)
         per_figure = rep["summary"]["per_figure"]
         result[label] = {
             "summary": {k: v for k, v in rep["summary"].items()
