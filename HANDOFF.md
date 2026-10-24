@@ -1,20 +1,52 @@
 # HANDOFF: Below the Watermark (Gator Hack V, UF AI Days 2026)
 
-This is the continuity document for teammates and future assistants. **The current product direction and LIVE STATUS were updated Saturday Oct 24, 2026, around 3:40pm ET.** Historical model and benchmark notes below are retained as evidence; read the new strategy and hard constraints before editing.
+This is the continuity document for teammates and future assistants. **The current product direction was set Oct 24, and the LIVE STATUS and MVP implementation notes were updated around 4:30pm ET.** Historical model and benchmark notes below are retained as evidence; read the new strategy and hard constraints before editing.
 
 ---
 
 ## LIVE STATUS (read first)
 
 <!-- LIVE -->
-- **Updated Sat Oct 24, 2026, approx. 3:40pm ET: PRODUCT DIRECTION CHANGED.** Read **CURRENT PRODUCT DIRECTION** directly below before following any older TODO below. We are building a scientific-image integrity *review assistant* with a WESTERN BLOT specialty, not claiming a reliable general fraud or AI-image detector. No PowerPoint is needed now.
-- **Repo:** https://github.com/danielsemenovitch/GatorHack ; `main` still contains the production v2 CNN. The experimental code is only on `experiment/classifier-stress-20261024`, not deployed or merged.
-- **New scale stress experiment FINISHED successfully** (GitHub Actions run https://github.com/danielsemenovitch/GatorHack/actions/runs/40124259884). On 103 NEW deterministic test pairs, native: old CNN 37/103 detected, 4/103 clean false flags; scale-augmented logistic head 48/103 detected, 9/103 false flags. At 50% resize: 1/103 versus 3/103 detected, with 0/103 versus 6/103 false flags. **Not a satisfactory improvement; do not deploy the experimental head.** Its test set and operating point differ from the older `results/robustness.json` experiment; never conflate their percentages. Results currently live in the successful Actions log/artifact, NOT in `main/results`.
-- **Uploaded bundle 2 (440 figures from 241 new papers) was validated and provided to ChatGPT as `btw_real_blots_bundle2.json` but has NOT been imported into the repo or used to train CNN v3.** A prior chat generated a standalone audit/import patch and a preliminary presentation; neither should be mistaken for production code or a trained model. Keep JSON bundle out of git.
-- **Current product pivot priority:** get the existing PDF/image -> panel/report workflow working end-to-end; design and IMPLEMENT universal provenance + cross-figure duplication/near-duplicate checks with explicit confidence/limitations; create a reproducible downloadable review report; add user-friendly unsupported/insufficient-quality states. Do not run blot CNN over non-blot figures. Validate the general detectors before claiming they work.
-- **Pending external/manual:** hand-upload SynthID round 4 S0-S4 and enter exact outcomes in `results/synthid_manual.json`; Devpost submission and team roster; video; optional Google disclosure; Monday in-person finalist attendance. SynthID remains manual only, never automate or iterate to evade it.
-- **Deadline:** Sun Oct 25 at 5pm ET; submit by 4pm. Working product and honest demo come before uncertain additional model training.
+- **Updated Sat Oct 24, 2026 approx. 4:30pm ET: SCIENTIFIC INTEGRITY MVP MERGED TO MAIN.** The Oct 24 product pivot is now partly IMPLEMENTED, not only planned. Read the **IMPLEMENTED MVP UPDATE** below, then the CURRENT PRODUCT DIRECTION and hard constraints.
+- **Merged code:** [PR #1](https://github.com/danielsemenovitch/GatorHack/pull/1), squash commit `6569b9b18668b18a7095e6afaccd8943fb1d7831`. The main branch now includes `btw/generic_duplicates.py`, updated `btw/report.py` and `btw/api.py`, `web/src/reportExport.js`, UI controls, synthetic regression tests, and CI workflow.
+- **Implemented and tested:** exact decoded-RGB whole-image duplicates and conservative perceptual-hash + structural-similarity near-duplicates **between images extracted from the same PDF**; side-by-side comparison in React; self-contained downloadable HTML evidence report; three blot modes (automatic, user-confirmed, skip); explicit no-blot-model/unsupported states. We did NOT implement local copied-patch detection for microscopy. Real-world sensitivity/specificity of new general detectors is not established.
+- **CI:** GitHub Actions run [40129747946](https://github.com/danielsemenovitch/GatorHack/actions/runs/40129747946) passed **8 synthetic tests** and `npm run build`. Blot-routing coverage on original 241 selected kept panels: **154/241 automatic**, **198/241 user-confirmed**. This is a selection/recall proxy on old blot panels, NOT validated cross-modality specificity.
+- **Classifier:** original CNN v2 model unchanged. The completed scale-aware logistic-head stress experiment lives separately on `experiment/classifier-stress-20261024` with [run 40124259884](https://github.com/danielsemenovitch/GatorHack/actions/runs/40124259884); it did not solve half-resolution weakness and is NOT deployed.
+- **Dataset:** bundle 2 (440 figures / 241 new papers) was uploaded in chat and validated but is **not** in repo or the CNN benchmark; no v3 retraining has occurred. Do not commit the 72MB JSON. The prior pitch slides are not a current priority.
+- **NEXT PRIORITY:** exercise the merged tool on a representative real CC BY figure/PDF and a controlled reused-image PDF, inspect the exported report UI, refine any false modality classification and protect C2PA validation; prepare an honest video/Devpost submission. If time, build/validate localized non-blot copy-move matching. Avoid spending all remaining time retraining.
+- **Still manual for Daniel/team:** SynthID round 4 S0–S4 at synthid.com, Devpost roster and submission, video, optional disclosure after results, and in-person attendance if finalist.
+- **Deadline:** Sun Oct 25 at 5pm ET; submit by 4pm. No automated SynthID use and no private AKT blot.
 <!-- /LIVE -->
+
+---
+
+## IMPLEMENTED MVP UPDATE — Oct 24, after PR #1 merge
+
+This section OVERRIDES any older phrases below describing whole-image duplication, report export or routing controls as entirely "proposed." **Those features have now been implemented in `main`; localized microscopy manipulation detection has NOT.** Keep the original pivot plan below as architecture and historical reasoning.
+
+### What is actually shipping in `main`
+
+1. **General image reuse:** `btw/generic_duplicates.py` fingerprints the decoded pixel array with SHA-256 for exact reuse, then uses a DCT perceptual hash (candidate search) plus grayscale structural similarity (`skimage.metrics.structural_similarity`) to confirm conservative whole-image near matches. This works across figures extracted from **the same uploaded PDF**; a single uploaded image cannot be compared to any outside corpus. Crops, internal patches, rotations and partial overlaps are not covered.
+2. **General PDF/image workflow:** `btw/report.py` extracts embedded raster images via PyMuPDF, preserves their page/image label, presents previews and whole-image reuse pairs, and returns `image_reuse` and a `checks` object showing performed/skipped screens. Output is evidence for reviewers, never an authenticity verdict. A PDF with no embedded raster remains without applicable analysis; scans/vector figures may require different extraction.
+3. **Blot model safety and control:** `_blot_candidates()` limits automatic CNN analysis to blot-like grayscale/banded panels. Upload form parameter `blot_mode` can be `auto` (default), `blot` (user confirms the file contains blots, with relaxed gating but still technical checks), or `off` (skip CNN). In the UI this is a selector above the upload button. User selection is **not independent modality validation**. The JAX CNN weights were not changed.
+4. **HTML evidence report:** `web/src/reportExport.js` generates a standalone, printable HTML file containing the inspected figures, provenance message, image reuse comparisons, scores for screened blots, checks run/skipped and limitations, with escaped user-facing text. Frontend `Report` provides the download button. A dedicated binary PDF report exporter has NOT been implemented; HTML can be printed to PDF by the browser.
+5. **UI:** `web/src/App.jsx` shows reuse pairs side by side with source labels, updates the upload language to general scientific figures, removes categorical "Clear" descriptions for unassessed screens, and labels blot outputs experimental.
+6. **Tests and build:** `tests/test_integrity_mvp.py` covers exact duplicates, a JPEG near-duplicate, unrelated control, non-blot image mode, repeated PDF-embedded images with correct page labels, low-information near-match control, skip and invalid mode, and user-confirmed non-blot safety. `.github/workflows/scientific_integrity_mvp.yml` runs pytest, audits routing on committed blot panels, and builds React.
+
+**Latest verified CI (Oct 24):** `8 passed`; Vite React production build passed; routing identified `154/241` original selected blot panels automatically and `198/241` in user-confirmed mode. This covers previously kept real blot panels only, not negative microscopy cases in a real external dataset. General duplicate matcher tests use controlled synthetic images; they are **not a clinical/research-publication validation benchmark**.
+
+**Usage:**
+```bash
+pip install -r requirements.txt
+pip install "jax[cpu]" optax    # only when experimental blot CNN is needed
+uvicorn btw.api:app --port 8000
+cd web && npm ci && npm run build
+```
+Use the frontend upload selector; backend accepts `POST /api/analyze` multipart field `file` and optional `blot_mode=auto|blot|off`. The `report.image_reuse` entries identify pairs with `a.figure`, `b.figure`, `method` and `similarity`. `report.checks` records unsupported/not assessed screens. No model metrics have changed.
+
+**Known gaps, in priority order:** (1) run a complete live demo using a CC BY figure/PDF and a clearly labeled synthetic PDF with a duplicated figure; test HTML export; (2) implement/validate cross-figure *localized* copy-move matching for microscopy only if time; (3) test provenance states including malformed credential handling and avoid any implication that byte scanning validates signatures; (4) make modality routing more robust; (5) benchmark exact/near-image checks on real scientific negative examples; (6) add metadata diagnostics and PDF-export only if useful; (7) consider CNN v3 after product and submission are safe. Do not present these as completed.
+
+**Developer caution:** The repository handoff still contains historical TODO statements from before this merge. For exact status use this section, the latest LIVE block, and the actual current branch/CI. The handoff should be updated after meaningful new code merges.
 
 ---
 
@@ -44,7 +76,7 @@ This is the continuity document for teammates and future assistants. **The curre
 | Graphs, diagrams, photographic panels, other raster figures | C2PA, duplicates of whole figures/crops, resolution/metadata context | GENERAL CHECKS PROPOSED; input/PDF figure extraction exists | Reused templates, labels and scale bars are not manipulation; graph data cannot be verified from pixels alone |
 | Full article PDF | Extract embedded raster figures and associate page/source; run appropriate per-image checks; compile one review report | Embedded-raster extraction IMPLEMENTED; generic per-image checks & export PROPOSED | Scanned/vector-only content may be missed; currently PDF-level C2PA not checked |
 
-**What code really does TODAY (audit, not aspirations):**
+**Historical pre-MVP code audit (some points superseded by IMPLEMENTED MVP UPDATE above):**
 - `btw/api.py` exposes POST `/api/analyze`, accepts uploads up to 25 MB; `btw/report.py` handles an image or embedded raster images in a PDF with PyMuPDF, returns report JSON and figure previews.
 - `btw/panels.py` uses OpenCV-connected non-white regions and a *blot-likeness heuristic*. It does **not** classify arbitrary scientific modality types.
 - `btw/cnn.py`/`btw/detector.py` evaluate **blot patches** (relative intensity and noise residual), make localized heat maps; production model is `models/splice_cnn.npz`. There is no general synthetic-image detector.
