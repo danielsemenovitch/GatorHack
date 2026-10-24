@@ -1,13 +1,20 @@
 # HANDOFF: Below the Watermark (Gator Hack V, UF AI Days 2026)
 
-This file is the complete state of the project as of **Saturday Oct 24, 2026, about 2:40pm ET** (it is updated after every work step; the "Live status" section right below says what is running right now), written so a teammate or another AI assistant can continue without any other context. Read it top to bottom once before touching anything.
+This file is the complete state of the project as of **Saturday Oct 24, 2026, about 2:25pm ET** (it is updated after every work step; the "Live status" section right below says what is running right now), written so a teammate or another AI assistant can continue without any other context. Read it top to bottom once before touching anything.
 
 ---
 
 ## LIVE STATUS (read first)
 
 <!-- LIVE -->
-- 2:40pm: bundle 2 collected in Daniel's Chrome (440 figures, 241 new papers, 71 MB) and waiting in the Europe PMC tab for Daniel's OK to download. Robustness eval for CNN v2 done (section 6). Code for CNN v3 (logit space scoring, display scale with flag line at 0.5, three score rules, localization metric) is written and smoke tested, not trained yet.
+- **Stopped at 2:25pm Sat** (Claude usage ran out). Everything below is pushed.
+- **Bundle 2 is SAVED** at `C:\Users\danie\Downloads\btw_real_blots_bundle2.json` (72 MB: 440 CC BY figures from 241 NEW papers, 2015 to 2022; PMCIDs from bundle 1 were skipped). Bundle 1 is also there as `btw_real_blots_bundle.json`. **Next step, top priority:** copy bundle 2 into the repo folder (do NOT commit the json, it is big; the unpacked figures in `data/real_figures` are fine to commit) and run
+  `python -m scripts.build_benchmark --bundle btw_real_blots_bundle2.json --n-clean 3 --n-forged 1`
+  (fewer variants per panel because there are about 5x more panels; keeps CNN training near 1 hour on 2 CPU cores). Back up v2 first (`cp results/cnn_metrics.json results/cnn_metrics_v2.json; cp models/splice_cnn.npz models/splice_cnn_v2.npz`), then `EPOCHS=6 python -m scripts.train_cnn` (CNN v3), `python -m scripts.train_detector`, `python -m scripts.eval_robustness`, `python -m scripts.eval_duplicates`, `python -m scripts.make_examples`, `python -m scripts.results_table`, `cd web && npm run build`. Compare v3 with v2 (test AUROC, AI splice caught at the flag line, clean false flags) and keep the better one honestly.
+- **Daniel said yes** to generating about 5 more AI blots in Gemini (X ray film, digital imager white background, fluorescent greyscale, faint low contrast, doublet bands; no labels) for `data/ai_sources/`. Not done. Do it BEFORE rebuilding the benchmark if there is time; it diversifies the AI splice class.
+- The Gap page sentence under the side by side table ("keeps its signal through compression... loses it when downscaled") is hard coded in `web/src/App.jsx` to match v2's robustness numbers. Recheck after v3.
+- Docs: `docs/pitch_outline.md` (new) has slide by slide content and judge Q&A. The video hook and the disclosure email no longer reference the private AKT blot; both have [placeholders] for the round 4 SynthID results. Slides not built yet (a Claude "Slides" artifact type is available on Daniel's account).
+- Shell tip: `pkill -f` kills its own shell here; kill by PID instead.
 <!-- /LIVE -->
 
 ---
@@ -133,7 +140,7 @@ Upload each at synthid.com by hand and record the exact verdict wording ("detect
 
 - **Collection:** Europe PMC REST API, query `(METHODS:"western blot" OR METHODS:"immunoblot") AND OPEN_ACCESS:y AND LICENSE:"cc by" AND SRC:MED AND HAS_FT:y`, figures whose caption mentions western blot or immunoblot, up to 2 per paper. Images come from `https://europepmc.org/api/fulltextRepo?pmcId=..&type=FILE&fileName=<graphic href>.jpg&mimeType=image/jpeg` (web resolution, about 750 px wide). Our build machine could not reach these hosts, so collection ran as a browser console script (`scripts/collect_europepmc.js`) that downloads one JSON bundle. Chrome blocks repeated automatic downloads per site, so run it on a site that hasn't downloaded yet (https://example.com works).
 - **Bundle 1** (in repo, unpacked): 120 figures, 79 papers, years mostly 2023. After panel extraction: 360 panels, **241 kept** (from 55 papers) by `filter_panels()` (blot score >= 0.72, grey, at least 2 bands, not text heavy, not tiny or huge).
-- **Bundle 2: NOT saved.** It was collected in Chrome (315 figures, 205 papers) but Chrome blocked the automatic download; rerun `scripts/collect_europepmc.js` on a fresh site (put the PMCIDs from metadata.json into SKIP) and click Chrome's "allow downloads" prompt if it appears. Once you have it: 315 more figures from 205 more papers (2016 to 2022). **Not yet used.** If the file exists, run `python -m scripts.build_benchmark --bundle path/to/btw_real_blots_bundle2.json --n-clean 6 --n-forged 3`. That merges metadata, re-extracts and filters all panels, and rebuilds the benchmark. Then retrain (section 6). More papers should help most with the false flag problem, since the clean false flag rate rises on unseen papers. If it didn't save, rerun the script in a browser.
+- **Bundle 2: SAVED but not yet used** (see LIVE STATUS): `C:\Users\danie\Downloads\btw_real_blots_bundle2.json`, 440 figures from 241 new papers (2015 to 2022). If the file exists, run `python -m scripts.build_benchmark --bundle path/to/btw_real_blots_bundle2.json --n-clean 6 --n-forged 3`. That merges metadata, re-extracts and filters all panels, and rebuilds the benchmark. Then retrain (section 6). More papers should help most with the false flag problem, since the clean false flag rate rises on unseen papers. If it didn't save, rerun the script in a browser.
 - **Current benchmark** (built from bundle 1, `--n-clean 6 --n-forged 3`): 4,725 images (3,279 forged, 1,446 clean); train 2,654 / test 2,071; split by paper with an md5 hash (about 30% test). Each forgery has a mask in `data/benchmark/masks`. Median panel is only about 7,200 px, and bands are often about 13x6 px. **That's the core difficulty.**
 - `docs/DATA_CARD.md` numbers are now written automatically by `python -m scripts.results_table` from `data/benchmark/index.json`.
 
