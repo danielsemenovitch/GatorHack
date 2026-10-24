@@ -54,7 +54,7 @@ def test_unrelated_images_not_marked_as_reused():
 
 
 def test_nonblot_upload_skips_cnn(monkeypatch):
-    def forbidden():
+    def forbidden(*args, **kwargs):
         raise AssertionError("Blot model was incorrectly run on a nonblot image")
     monkeypatch.setattr(report, "detector", forbidden)
     result = report.analyze(encode(image()), "microscopy.png")
@@ -67,7 +67,7 @@ def test_nonblot_upload_skips_cnn(monkeypatch):
 
 
 def test_pdf_cross_page_reuse_and_source_labels(monkeypatch):
-    def forbidden():
+    def forbidden(*args, **kwargs):
         raise AssertionError("Blot model was incorrectly run on a nonblot PDF")
     monkeypatch.setattr(report, "detector", forbidden)
     png = encode(image())
@@ -93,7 +93,7 @@ def test_low_information_not_overclaimed_as_near_duplicate():
 
 
 def test_blot_mode_off_and_invalid(monkeypatch):
-    def forbidden():
+    def forbidden(*args, **kwargs):
         raise AssertionError("Blot model should not be called")
     monkeypatch.setattr(report, "detector", forbidden)
     sample = encode(image())
@@ -108,7 +108,7 @@ def test_blot_mode_off_and_invalid(monkeypatch):
 
 
 def test_user_selected_mode_does_not_force_cnn_on_unrelated_photograph(monkeypatch):
-    def forbidden():
+    def forbidden(*args, **kwargs):
         raise AssertionError("Blot model should not be called for this photograph")
     monkeypatch.setattr(report, "detector", forbidden)
     got = report.analyze(encode(image()), "microscopy.png", blot_mode="blot")
