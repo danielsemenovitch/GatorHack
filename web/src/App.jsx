@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { downloadReviewReport } from "./reportExport";
 
 const API = import.meta.env.VITE_API || "";
 
@@ -103,13 +104,14 @@ function Report({ report }) {
   const s = report.summary;
   const thr = s.threshold;
   const flagged = report.figures.flatMap((f) => f.panels.filter((p) => p.flagged));
-  const prov = report.provenance;
-  const title = report.verdict === "suspicious" ? "This figure needs a closer look"
-    : report.verdict === "no_blots" ? "No blot panels found in this file" : "Nothing suspicious found";
-  const sub = report.verdict === "suspicious"
-    ? `${s.flagged_panels} of ${s.panels} blot panels have regions that do not match the rest of their blot${s.duplicate_pairs ? `, and ${s.duplicate_pairs} band pair${s.duplicate_pairs > 1 ? "s look" : " looks"} copied` : ""}.`
-    : report.verdict === "no_blots" ? "Upload a figure that contains a western blot or gel."
-    : `Checked ${s.panels} blot panel${s.panels === 1 ? "" : "s"}. No band level edits or copied bands stood out.`;
+  const prov = report.provenance || {};
+  const imageReuse = report.image_reuse || [];
+  const title = report.verdict === "suspicious" ? "Potential findings for human review" :
+    "Figure inventory and available checks";
+  const sub = imageReuse.length
+    ? `${imageReuse.length} potential whole-image reuse pair${imageReuse.length === 1 ? "" : "s"} found. Image reuse can be legitimate; compare captions and methods.`
+    : s.panels ? `${s.panels} Western blot panel${s.panels === 1 ? "" : "s"} screened with an experimental classifier. A negative result does not establish authenticity.`
+    : "No confidently identified Western blot panels. General image inventory remains available; the blot classifier was not run on other image types.";
 
   return (
     <section className="report" aria-live="polite">
@@ -118,21 +120,45 @@ function Report({ report }) {
         <p className="sub">{sub}</p>
         {report.credit && <p className="credit" style={{ marginTop: -12, marginBottom: 16 }}>{report.credit}</p>}
         <div className="toolbar">
-          <label className="toggle"><input type="checkbox" checked={showHeat} onChange={(e) => setShowHeat(e.target.checked)} /> Show suspicion heat</label>
-          <span className="sub" style={{ margin: 0 }}>Click a band to see why it was scored.</span>
+          <label className="toggle"><input type="checkbox" checked={showHeat} onChange={(e) => setShowHeat(e.target.checked)} disabled={!s.panels} /> Show blot heat</label>
+          <button className="btn ghost small" type="button" onClick={() => downloadReviewReport(report)}>Download review report (HTML)</button>
         </div>
         {report.figures.map((fig) => (
-          <div className="lightbox" key={fig.id} style={{ marginBottom: 20 }}>
-            <Stage fig={fig} duplicates={report.duplicates} showHeat={showHeat} threshold={thr}
-                   activeBand={active?.key} onBand={(key, p, b) => setActive({ key, p, b })} />
+          <div key={fig.id} style={{ marginBottom: 20 }}>
+            <p className="sub" style={{ marginBottom: 6 }}><strong>{fig.label}</strong> — {fig.width} × {fig.height} px
+              {fig.blot_screen === "experimental" ? " · Experimental blot screen" : " · Blot model not applied"}</p>
+            <div className="lightbox">
+              <Stage fig={fig} duplicates={report.duplicates || []} showHeat={showHeat} threshold={thr || 0.5}
+                     activeBand={active?.key} onBand={(key, p, b) => setActive({ key, p, b })} />
+            </div>
           </div>
         ))}
+        {imageReuse.length > 0 && (
+          <div className="detail" style={{ marginBottom: 18 }}>
+            <h3>Potential whole-image reuse — check the context</h3>
+            {imageReuse.map((m, i) => {
+              const a = report.figures[m.a.figure], b = report.figures[m.b.figure];
+              if (!a || !b) return null;
+              return <div key={i} style={{ marginBottom: 16 }}>
+                <p><strong>{m.method === "exact_pixel_duplicate" ? "Identical image pixels" : "Near-duplicate images"}</strong>:
+                  {" "}{a.label} ↔ {b.label}. A match does not mean misconduct.</p>
+                <div style={{ display: "flex", gap: 14, alignItems: "start" }}>
+                  {[a, b].map((f) => <figure key={f.id} style={{ width: "50%", margin: 0 }}>
+                    <img src={f.image} alt={f.label} style={{ width: "100%", maxHeight: 220, objectFit: "contain" }} />
+                    <figcaption>{f.label}</figcaption>
+                  </figure>)}
+                </div>
+                <p className="sub">{m.note} {m.limitations}</p>
+              </div>;
+            })}
+          </div>
+        )}
         {active && (
           <div className="detail">
             <h3>Band in panel {active.p.id + 1}: <span className="score">{Math.round(active.b.score * 100)}</span> / 100</h3>
             <Meter value={active.b.score} threshold={thr} />
             <p className="sub" style={{ margin: 0 }}>
-              {active.b.score > thr ? "Above the flag line. The pixels here behave differently from the rest of this blot." : "Below the flag line. This band looks consistent with the rest of its blot."}
+              {active.b.score > thr ? "Above the experimental review threshold. Investigate the underlying pixels and controls." : "Below the experimental review threshold. That does not establish an unmodified band."}
             </p>
             {active.p.why?.length > 0 && active.b.score > thr && (
               <ul>{[...new Set(active.p.why.map((w) => WHY[w.feature]).filter(Boolean))].slice(0, 3).map((t) => <li key={t}>{t}</li>)}</ul>
@@ -159,25 +185,30 @@ function Report({ report }) {
       <aside className="rail" aria-label="Checks">
         <div className="check">
           <h3>Band splice detector</h3>
-          <span className={`state ${s.flagged_panels ? "bad" : "ok"}`}>{s.flagged_panels ? `${s.flagged_panels} flagged` : "Clear"}</span>
-          <p>Looks for bands whose noise, compression and edges disagree with the rest of their blot. Covers the edits SynthID misses.</p>
-          <div className="row" style={{ display: "block" }}>
+          <span className={`state ${s.flagged_panels ? "bad" : "info"}`}>{!s.panels ? "Not assessed" : s.flagged_panels ? `${s.flagged_panels} review flags` : "No flags found"}</span>
+          <p>Experimental model for confidently identified Western blots only. It misses many edits and can falsely flag natural bands.</p>
+          {s.panels > 0 && thr != null && <div className="row" style={{ display: "block" }}>
             <Meter value={s.max_splice_score} threshold={thr} />
-            <p style={{ margin: 0 }}>Highest panel score {Math.round(s.max_splice_score * 100)}, flag line {Math.round(thr * 100)}.</p>
-          </div>
+            <p style={{ margin: 0 }}>Highest experimental panel score {Math.round(s.max_splice_score * 100)}; review threshold {Math.round(thr * 100)}.</p>
+          </div>}
         </div>
         <div className="check">
-          <h3>Copied bands</h3>
-          <span className={`state ${s.duplicate_pairs ? "bad" : "ok"}`}>{s.duplicate_pairs ? `${s.duplicate_pairs} pair${s.duplicate_pairs > 1 ? "s" : ""}` : "None"}</span>
-          <p>Compares the noise inside every pair of bands, including flipped copies. Real bands never share noise.</p>
+          <h3>Whole-image reuse</h3>
+          <span className={`state ${imageReuse.length ? "bad" : "info"}`}>{imageReuse.length ? `${imageReuse.length} pair${imageReuse.length === 1 ? "" : "s"}` : "No match identified"}</span>
+          <p>Compares extracted figures using decoded-pixel hashes and verified visual similarity. Currently detects whole-image copies, not pasted patches.</p>
+        </div>
+        <div className="check">
+          <h3>Copied blot bands</h3>
+          <span className={`state ${s.duplicate_pairs ? "bad" : "info"}`}>{!s.panels ? "Not assessed" : s.duplicate_pairs ? `${s.duplicate_pairs} candidate pairs` : "No match identified"}</span>
+          <p>Experimental within-blot noise template matching; unreliable after resizing and compression. Repeated patterns can be legitimate.</p>
           {report.duplicates.slice(0, 3).map((d, i) => (
             <p key={i}>Panel {d.a.panel_id + 1} band {d.a.id + 1} matches panel {d.b.panel_id + 1} band {d.b.id + 1}{d.transform !== "none" ? ` (${d.transform.replace("_", " ")})` : ""}, noise match {Math.round(d.noise_similarity * 100)}%.</p>
           ))}
         </div>
         <div className="check">
           <h3>Content credentials</h3>
-          <span className={`state ${prov.present ? (prov.ai_generated ? "bad" : "info") : "info"}`}>{prov.present ? (prov.ai_generated ? "AI declared" : "Found") : "None"}</span>
-          <p>{prov.summary}</p>
+          <span className="state info">{prov.status === "not_assessed" ? "Not assessed" : prov.present ? (prov.validated ? "Credential read" : "Unverified credential") : "Not found"}</span>
+          <p>{prov.summary} Absence does not imply manipulation or authenticity.</p>
         </div>
         <div className="check">
           <h3>SynthID watermark</h3>
@@ -195,6 +226,7 @@ function Report({ report }) {
 
 function CheckPage({ examples, report, setReport }) {
   const [busy, setBusy] = useState(false);
+  const [blotMode, setBlotMode] = useState("auto");
   const [error, setError] = useState(null);
   const [over, setOver] = useState(false);
   const input = useRef(null);
@@ -203,7 +235,7 @@ function CheckPage({ examples, report, setReport }) {
   const send = useCallback(async (file) => {
     setBusy(true); setError(null);
     try {
-      const fd = new FormData(); fd.append("file", file);
+      const fd = new FormData(); fd.append("file", file); fd.append("blot_mode", blotMode);
       const r = await fetch(`${API}/api/analyze`, { method: "POST", body: fd });
       const j = await r.json();
       if (!r.ok) throw new Error(j.detail || "The analysis failed.");
@@ -212,7 +244,7 @@ function CheckPage({ examples, report, setReport }) {
     } catch (e) {
       setError(`${e.message} Try a PNG, JPEG or PDF under 25 MB.`);
     } finally { setBusy(false); }
-  }, [setReport]);
+  }, [setReport, blotMode]);
 
   const loadExample = async (ex) => {
     setError(null);
@@ -225,14 +257,13 @@ function CheckPage({ examples, report, setReport }) {
     <>
       <section className="hero">
         <div>
-          <h1>One AI band, pasted into a real blot.</h1>
+          <h1>Scientific images deserve a closer look.</h1>
           <p className="lede">
-            Google's SynthID Detector catches whole AI images, even after compression and PDF export.
-            {hero?.synthid === "not detected" ? " It missed this one." : " Single bands are another story."}
-            {" "}Below the Watermark checks blots band by band, where scientific images actually get faked.
+            Upload a scientific figure or paper PDF to inspect available image provenance and potential image reuse.
+            We also provide experimental band-level screening for Western blots, inspired by our studies of where AI watermark checks become inconclusive.
           </p>
           <div className="actions">
-            <button className="btn" type="button" onClick={() => input.current?.click()} disabled={busy}>{busy ? "Checking…" : "Check a blot"}</button>
+            <button className="btn" type="button" onClick={() => input.current?.click()} disabled={busy}>{busy ? "Reviewing…" : "Review a scientific image"}</button>
             {hero && <button className="btn ghost" type="button" onClick={() => loadExample(hero)}>See this example</button>}
           </div>
         </div>
@@ -254,7 +285,16 @@ function CheckPage({ examples, report, setReport }) {
            onDragOver={(e) => { e.preventDefault(); setOver(true); }}
            onDragLeave={() => setOver(false)}
            onDrop={(e) => { e.preventDefault(); setOver(false); const f = e.dataTransfer.files?.[0]; if (f) send(f); }}>
-        <p><strong>Drop a figure or a paper PDF here.</strong> We find the blot panels, score every band, look for copied bands and read any content credentials. Nothing is stored.</p>
+        <p><strong>Drop an image or research paper PDF here.</strong> We inventory embedded raster figures, compare whole images for reuse, check available provenance, and screen blot-like panels experimentally. Results are evidence for human review, not authenticity verdicts. The server does not intentionally retain uploads.</p>
+        <div style={{ margin: "12px 0 16px", display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
+          <label htmlFor="blot-mode"><strong>Western blot screen:</strong></label>
+          <select id="blot-mode" value={blotMode} onChange={(e) => setBlotMode(e.target.value)}
+                  style={{ padding: 9, border: "1px solid #9eafb8", borderRadius: 6, background: "white" }}>
+            <option value="auto">Automatic (conservative)</option>
+            <option value="blot">I confirm this image includes Western blots</option>
+            <option value="off">Skip blot-specific screening</option>
+          </select>
+        </div>
         <div className="examples">
           <input ref={input} className="sr" type="file" accept="image/*,.pdf" onChange={(e) => e.target.files?.[0] && send(e.target.files[0])} />
           <button className="btn" type="button" onClick={() => input.current?.click()} disabled={busy}>{busy ? "Checking…" : "Choose a file"}</button>
@@ -423,7 +463,7 @@ export default function App() {
     fetch(`${API}/api/examples`).then((r) => r.json()).then(setExamples).catch(() => {});
     fetch(`${API}/api/results`).then((r) => r.json()).then(setResults).catch(() => {});
   }, []);
-  const nav = [["check", "Check a blot"], ["gap", "The gap"], ["method", "How it works"]];
+  const nav = [["check", "Review images"], ["gap", "The gap"], ["method", "How it works"]];
   return (
     <>
       <div className="wrap">

@@ -1,4 +1,7 @@
-"""Turn an uploaded image or PDF into the report the web app renders."""
+"""Inspect raster figures / PDFs with general reuse checks and optional blot screening.
+
+This tool generates leads for HUMAN review, not authenticity or misconduct verdicts.
+"""
 from __future__ import annotations
 
 import base64
@@ -10,16 +13,17 @@ import cv2
 import numpy as np
 from PIL import Image
 
-from .detector import Detector
+from .bands import find_bands
 from .duplicates import find_duplicates
+from .generic_duplicates import find_image_reuse
 from .imgio import load_rgb, to_gray
 from .panels import find_panels
 from .provenance import read_c2pa
 
-_DETECTOR: Detector | None = None
+_DETECTOR = None
 
 
-def detector() -> Detector:
+def detector():
     global _DETECTOR
     if _DETECTOR is None:
         from .detector import load_best
@@ -34,7 +38,6 @@ def _data_url(im: Image.Image, fmt: str = "PNG") -> str:
 
 
 def _heat_overlay(heat: np.ndarray, threshold: float) -> Image.Image:
-    """Transparent PNG: only regions above the flag line are tinted (Ponceau pink)."""
     h = cv2.GaussianBlur(np.clip(heat, 0, 1).astype(np.float32), (0, 0), 3.0)
     a = np.clip((h - threshold) / max(1e-3, 1 - threshold), 0, 1) ** 0.7
     rgba = np.zeros((*h.shape, 4), np.uint8)
@@ -43,43 +46,90 @@ def _heat_overlay(heat: np.ndarray, threshold: float) -> Image.Image:
     return Image.fromarray(rgba, "RGBA")
 
 
-def _figures_from_upload(data: bytes, filename: str) -> list[tuple[str, Image.Image]]:
+def _figures_from_upload(data: bytes, filename: str, max_figures: int = 48):
     if filename.lower().endswith(".pdf") or data[:4] == b"%PDF":
         import pymupdf as fitz
         doc = fitz.open(stream=data, filetype="pdf")
         out = []
         for pno, page in enumerate(doc):
             for k, img in enumerate(page.get_images(full=True)):
+                if len(out) >= max_figures:
+                    break
                 pix = fitz.Pixmap(doc, img[0])
-                if pix.width < 150 or pix.height < 80:
+                if pix.width < 150 or pix.height < 80 or pix.width * pix.height > 12000000:
                     continue
                 if pix.n - pix.alpha > 3 or pix.alpha:
                     pix = fitz.Pixmap(fitz.csRGB, pix)
                 im = Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
                 out.append((f"page {pno + 1}, image {k + 1}", im))
+            if len(out) >= max_figures:
+                break
+        doc.close()
         return out
-    return [("uploaded image", load_rgb(data))]
+    im = load_rgb(data)
+    if im.width * im.height > 12000000:
+        raise ValueError("Image exceeds the 12 megapixel analysis limit.")
+    return [("uploaded image", im)]
 
 
-def analyze(data: bytes, filename: str = "upload", max_panels: int = 24) -> dict[str, Any]:
+def _blot_candidates(fig: Image.Image, mode: str = "auto"):
+    """Gate the experimental blot model; manual mode is user-confirmed, NOT validated.
+
+    'auto': conservative blot likeness. 'blot': user explicitly identifies blot,
+    so less restrictive technical criteria apply. 'off': never call blot CNN.
+    """
+    if mode == "off":
+        return []
+    user_selected = mode == "blot"
+    result = []
+    for panel in find_panels(fig, min_score=0.55 if user_selected else 0.75):
+        if panel.blot_score < (0.64 if user_selected else 0.82):
+            continue
+        if panel.w < (60 if user_selected else 90) or panel.h < 20:
+            continue
+        if panel.w / max(1, panel.h) < (1.2 if user_selected else 1.5):
+            continue
+        crop = panel.crop(fig)
+        rgb = np.asarray(crop)
+        saturation = float(cv2.cvtColor(rgb, cv2.COLOR_RGB2HSV)[..., 1].mean()) / 255
+        if saturation > (0.12 if user_selected else 0.07):
+            continue
+        if len(find_bands(to_gray(crop))) < (2 if user_selected else 3):
+            continue
+        result.append((panel, crop))
+    return result
+
+
+def analyze(data: bytes, filename: str = "upload", max_panels: int = 24,
+            blot_mode: str = "auto") -> dict[str, Any]:
+    if blot_mode not in ("auto", "blot", "off"):
+        raise ValueError("blot_mode must be 'auto', 'blot', or 'off'")
     t0 = time.time()
-    det = detector()
+    is_pdf = filename.lower().endswith(".pdf") or data[:4] == b"%PDF"
     mime = "image/png" if filename.lower().endswith(".png") else "image/jpeg"
-    provenance = read_c2pa(data, mime) if not filename.lower().endswith(".pdf") else {
-        "present": False, "summary": "PDF upload: credentials are checked per image only for image uploads."}
+    provenance = ({"present": False, "status": "not_assessed",
+                   "summary": "C2PA signatures for embedded PDF images were not checked."}
+                  if is_pdf else read_c2pa(data, mime))
     figures = _figures_from_upload(data, filename)
+    reuse = find_image_reuse([im for _, im in figures])
     report_figs, all_panels_gray, panel_refs = [], [], []
     n_panels = 0
+    det = None
     for fi, (label, fig) in enumerate(figures):
-        panels = find_panels(fig)
-        fig_entry = {"id": fi, "label": label, "width": fig.width, "height": fig.height,
-                     "image": _data_url(fig if max(fig.size) <= 1600 else fig.resize(
-                         (int(fig.width * 1600 / max(fig.size)), int(fig.height * 1600 / max(fig.size)))), "JPEG"),
-                     "scale": min(1.0, 1600 / max(fig.size)), "panels": []}
-        for p in panels:
+        fig_entry = {
+            "id": fi, "label": label, "width": fig.width, "height": fig.height,
+            "image": _data_url(fig if max(fig.size) <= 1600 else fig.resize(
+                (int(fig.width * 1600 / max(fig.size)), int(fig.height * 1600 / max(fig.size)))), "JPEG"),
+            "scale": min(1.0, 1600 / max(fig.size)), "panels": [],
+            "blot_screen": "not_assessed",
+            "blot_note": "No confidently identified Western blot panels. Other image types are not scored by the Western blot CNN.",
+        }
+        for p, crop in _blot_candidates(fig, blot_mode):
             if n_panels >= max_panels:
+                fig_entry["blot_note"] = "Panel analysis limit reached; remaining panels not assessed."
                 break
-            crop = p.crop(fig)
+            if det is None:
+                det = detector()
             res = det.analyze(crop)
             all_panels_gray.append(to_gray(crop))
             panel_refs.append((fi, p.id))
@@ -87,37 +137,57 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 24) -> dict
                 **p.to_dict(), "global_index": n_panels,
                 "score": round(res.score, 3), "flagged": bool(res.score > det.threshold),
                 "bands": res.bands, "heat": _data_url(_heat_overlay(res.heat, det.threshold)),
-                "crop": _data_url(crop), "why": [{"feature": f, "value": round(v, 2)} for f, v in res.top_features],
+                "crop": _data_url(crop),
+                "why": [{"feature": f, "value": round(v, 2)} for f, v in res.top_features],
             })
+            fig_entry["blot_screen"] = "experimental"
+            fig_entry["blot_note"] = (
+                "User-selected Western blot screening; experimental results must be independently checked."
+                if blot_mode == "blot" else
+                "Experimental Western blot classifier; flags are not proof of manipulation."
+            )
             n_panels += 1
         report_figs.append(fig_entry)
-    dups = find_duplicates(all_panels_gray) if all_panels_gray else []
-    for d in dups:
+
+    band_duplicates = find_duplicates(all_panels_gray) if all_panels_gray else []
+    for d in band_duplicates:
         for side in ("a", "b"):
             fi, pid = panel_refs[d[side]["panel"]]
             d[side]["figure"], d[side]["panel_id"] = fi, pid
     flagged = [p for f in report_figs for p in f["panels"] if p["flagged"]]
-    top = max((p["score"] for f in report_figs for p in f["panels"]), default=0.0)
-    verdict = ("suspicious" if flagged or dups else ("no_blots" if n_panels == 0 else "no_findings"))
+    # Never call absence of findings "authentic" or "clean".
+    verdict = "suspicious" if flagged or band_duplicates or reuse else ("no_blots" if n_panels == 0 else "no_findings")
     return {
-        "filename": filename,
-        "verdict": verdict,
+        "filename": filename, "verdict": verdict, "blot_mode": blot_mode,
         "summary": {
-            "figures": len(report_figs), "panels": n_panels, "flagged_panels": len(flagged),
-            "duplicate_pairs": len(dups), "max_splice_score": round(top, 3),
-            "threshold": round(det.threshold, 3),
+            "figures": len(report_figs), "panels": n_panels,
+            "flagged_panels": len(flagged), "duplicate_pairs": len(band_duplicates),
+            "image_reuse_pairs": len(reuse),
+            "max_splice_score": round(max((p["score"] for f in report_figs for p in f["panels"]), default=0), 3),
+            "threshold": round(det.threshold, 3) if det is not None else None,
             "content_credentials": provenance.get("present", False),
         },
-        "provenance": provenance,
+        "provenance": provenance, "figures": report_figs,
+        "image_reuse": reuse, "duplicates": band_duplicates,
+        "checks": {
+            "whole_image_reuse": "completed" if len(figures) >= 2 else "not_applicable_single_image",
+            "local_region_reuse": "not_implemented",
+            "blot_cnn": "experimental" if n_panels else "not_assessed",
+            "blot_mode": blot_mode,
+            "c2pa": "not_assessed" if is_pdf else "checked_on_uploaded_file",
+        },
         "synthid": {
             "status": "manual",
-            "note": ("SynthID Detector has no public API and its terms forbid automated "
-                     "submissions, so download a panel and check it at synthid.com yourself. In our "
-                     "tests it caught whole AI images every time, while single bands were too "
-                     "small for it to check."),
+            "note": "SynthID testing is manual only. A negative result does not establish human origin. "
+                    "Our small experiment found whole Gemini blots detectable but isolated bands too small to assess.",
             "url": "https://synthid.com",
         },
-        "figures": report_figs,
-        "duplicates": dups,
+        "limitations": [
+            "Identical and near-duplicate whole images may be legitimately reused; read the source captions.",
+            "Whole-image matching does not detect copied patches within different figures.",
+            "The user-confirmed Western blot mode relaxes a heuristic gate; it does not validate modality classification.",
+            "No universal fake-image or AI-origin model is being run.",
+            "No finding is not evidence that an image is authentic.",
+        ],
         "seconds": round(time.time() - t0, 2),
     }
