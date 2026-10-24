@@ -189,7 +189,7 @@ function Report({ report }) {
           <span className={`state ${s.flagged_panels ? "bad" : "info"}`}>{!s.panels ? "Not assessed" : s.flagged_panels ? `${s.flagged_panels} review flags` : "No flags found"}</span>
           <p>Experimental model for confidently identified Western blots only. It misses many edits and can falsely flag natural bands.</p>
           {s.panels > 0 && thr != null && <div className="row" style={{ display: "block" }}>
-            <p style={{ margin: 0 }}>Highest panel anomaly index <strong>{scoreFmt(s.max_splice_score)}</strong>; review threshold <strong>{scoreFmt(thr)}</strong>. These are uncalibrated model indices, not percentages or probabilities.</p>
+            <p style={{ margin: 0 }}>Model {s.model_version || report.cnn_version || "not recorded"}: highest panel anomaly index <strong>{scoreFmt(s.max_splice_score)}</strong>; review threshold <strong>{scoreFmt(thr)}</strong>. These are uncalibrated model indices, not percentages or probabilities.</p>
           </div>}
         </div>
         <div className="check">
@@ -236,6 +236,7 @@ function Report({ report }) {
 function CheckPage({ examples, report, setReport }) {
   const [busy, setBusy] = useState(false);
   const [blotMode, setBlotMode] = useState("auto");
+  const [cnnVersion, setCnnVersion] = useState("v3");
   const [error, setError] = useState(null);
   const [over, setOver] = useState(false);
   const input = useRef(null);
@@ -245,6 +246,7 @@ function CheckPage({ examples, report, setReport }) {
     setBusy(true); setError(null);
     try {
       const fd = new FormData(); fd.append("file", file); fd.append("blot_mode", blotMode);
+      fd.append("cnn_version", cnnVersion);
       const r = await fetch(`${API}/api/analyze`, { method: "POST", body: fd });
       const j = await r.json();
       if (!r.ok) throw new Error(j.detail || "The analysis failed.");
@@ -253,7 +255,7 @@ function CheckPage({ examples, report, setReport }) {
     } catch (e) {
       setError(`${e.message} Try a PNG, JPEG or PDF under 25 MB.`);
     } finally { setBusy(false); }
-  }, [setReport, blotMode]);
+  }, [setReport, blotMode, cnnVersion]);
 
   const loadExample = async (ex) => {
     setError(null);
@@ -302,6 +304,12 @@ function CheckPage({ examples, report, setReport }) {
             <option value="auto">Automatic (conservative)</option>
             <option value="blot">I confirm this image includes Western blots</option>
             <option value="off">Skip blot-specific screening</option>
+          </select>
+          <label htmlFor="cnn-version"><strong>Experimental CNN:</strong></label>
+          <select id="cnn-version" value={cnnVersion} onChange={(e) => setCnnVersion(e.target.value)}
+                  style={{ padding: 9, border: "1px solid #9eafb8", borderRadius: 6, background: "white" }}>
+            <option value="v3">V3 — larger training set (experimental)</option>
+            <option value="v2">V2 — original model</option>
           </select>
         </div>
         <div className="examples">
