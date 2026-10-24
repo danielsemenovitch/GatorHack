@@ -256,14 +256,13 @@ function CheckPage({ examples, report, setReport }) {
     <>
       <section className="hero">
         <div>
-          <h1>One AI band, pasted into a real blot.</h1>
+          <h1>Scientific images deserve a closer look.</h1>
           <p className="lede">
-            Google's SynthID Detector catches whole AI images, even after compression and PDF export.
-            {hero?.synthid === "not detected" ? " It missed this one." : " Single bands are another story."}
-            {" "}Below the Watermark checks blots band by band, where scientific images actually get faked.
+            Upload a scientific figure or paper PDF to inspect available image provenance and potential image reuse.
+            We also provide experimental band-level screening for Western blots, inspired by our studies of where AI watermark checks become inconclusive.
           </p>
           <div className="actions">
-            <button className="btn" type="button" onClick={() => input.current?.click()} disabled={busy}>{busy ? "Checking…" : "Check a blot"}</button>
+            <button className="btn" type="button" onClick={() => input.current?.click()} disabled={busy}>{busy ? "Reviewing…" : "Review a scientific image"}</button>
             {hero && <button className="btn ghost" type="button" onClick={() => loadExample(hero)}>See this example</button>}
           </div>
         </div>
@@ -285,7 +284,7 @@ function CheckPage({ examples, report, setReport }) {
            onDragOver={(e) => { e.preventDefault(); setOver(true); }}
            onDragLeave={() => setOver(false)}
            onDrop={(e) => { e.preventDefault(); setOver(false); const f = e.dataTransfer.files?.[0]; if (f) send(f); }}>
-        <p><strong>Drop a figure or a paper PDF here.</strong> We find the blot panels, score every band, look for copied bands and read any content credentials. Nothing is stored.</p>
+        <p><strong>Drop an image or research paper PDF here.</strong> We inventory embedded raster figures, compare whole images for reuse, check available provenance, and screen blot-like panels experimentally. Results are evidence for human review, not authenticity verdicts. The server does not intentionally retain uploads.</p>
         <div className="examples">
           <input ref={input} className="sr" type="file" accept="image/*,.pdf" onChange={(e) => e.target.files?.[0] && send(e.target.files[0])} />
           <button className="btn" type="button" onClick={() => input.current?.click()} disabled={busy}>{busy ? "Checking…" : "Choose a file"}</button>
@@ -454,7 +453,7 @@ export default function App() {
     fetch(`${API}/api/examples`).then((r) => r.json()).then(setExamples).catch(() => {});
     fetch(`${API}/api/results`).then((r) => r.json()).then(setResults).catch(() => {});
   }, []);
-  const nav = [["check", "Check a blot"], ["gap", "The gap"], ["method", "How it works"]];
+  const nav = [["check", "Review images"], ["gap", "The gap"], ["method", "How it works"]];
   return (
     <>
       <div className="wrap">
