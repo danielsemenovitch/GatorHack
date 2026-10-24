@@ -72,30 +72,38 @@ def _figures_from_upload(data: bytes, filename: str, max_figures: int = 48):
     return [("uploaded image", im)]
 
 
-def _blot_candidates(fig: Image.Image):
-    """Conservative heuristic gate; never apply CNN to arbitrary extracted images.
+def _blot_candidates(fig: Image.Image, mode: str = "auto"):
+    """Gate the experimental blot model; manual mode is user-confirmed, NOT validated.
 
-    It is NOT a validated general modality classifier. Ambiguous candidates
-    are skipped (false negatives are preferable to misleading cross-modality ML).
+    'auto': conservative blot likeness. 'blot': user explicitly identifies blot,
+    so less restrictive technical criteria apply. 'off': never call blot CNN.
     """
+    if mode == "off":
+        return []
+    user_selected = mode == "blot"
     result = []
-    for panel in find_panels(fig, min_score=0.75):
-        if panel.blot_score < 0.82 or panel.w < 90 or panel.h < 24:
+    for panel in find_panels(fig, min_score=0.55 if user_selected else 0.75):
+        if panel.blot_score < (0.64 if user_selected else 0.82):
             continue
-        if panel.w / max(1, panel.h) < 1.5:
+        if panel.w < (60 if user_selected else 90) or panel.h < 20:
+            continue
+        if panel.w / max(1, panel.h) < (1.2 if user_selected else 1.5):
             continue
         crop = panel.crop(fig)
         rgb = np.asarray(crop)
         saturation = float(cv2.cvtColor(rgb, cv2.COLOR_RGB2HSV)[..., 1].mean()) / 255
-        if saturation > 0.07:
+        if saturation > (0.12 if user_selected else 0.07):
             continue
-        if len(find_bands(to_gray(crop))) < 3:
+        if len(find_bands(to_gray(crop))) < (2 if user_selected else 3):
             continue
         result.append((panel, crop))
     return result
 
 
-def analyze(data: bytes, filename: str = "upload", max_panels: int = 24) -> dict[str, Any]:
+def analyze(data: bytes, filename: str = "upload", max_panels: int = 24,
+            blot_mode: str = "auto") -> dict[str, Any]:
+    if blot_mode not in ("auto", "blot", "off"):
+        raise ValueError("blot_mode must be 'auto', 'blot', or 'off'")
     t0 = time.time()
     is_pdf = filename.lower().endswith(".pdf") or data[:4] == b"%PDF"
     mime = "image/png" if filename.lower().endswith(".png") else "image/jpeg"
@@ -116,7 +124,7 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 24) -> dict
             "blot_screen": "not_assessed",
             "blot_note": "No confidently identified Western blot panels. Other image types are not scored by the Western blot CNN.",
         }
-        for p, crop in _blot_candidates(fig):
+        for p, crop in _blot_candidates(fig, blot_mode):
             if n_panels >= max_panels:
                 fig_entry["blot_note"] = "Panel analysis limit reached; remaining panels not assessed."
                 break
@@ -133,7 +141,11 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 24) -> dict
                 "why": [{"feature": f, "value": round(v, 2)} for f, v in res.top_features],
             })
             fig_entry["blot_screen"] = "experimental"
-            fig_entry["blot_note"] = "Experimental Western blot classifier; flags are not proof of manipulation."
+            fig_entry["blot_note"] = (
+                "User-selected Western blot screening; experimental results must be independently checked."
+                if blot_mode == "blot" else
+                "Experimental Western blot classifier; flags are not proof of manipulation."
+            )
             n_panels += 1
         report_figs.append(fig_entry)
 
@@ -146,7 +158,7 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 24) -> dict
     # Never call absence of findings "authentic" or "clean".
     verdict = "suspicious" if flagged or band_duplicates or reuse else ("no_blots" if n_panels == 0 else "no_findings")
     return {
-        "filename": filename, "verdict": verdict,
+        "filename": filename, "verdict": verdict, "blot_mode": blot_mode,
         "summary": {
             "figures": len(report_figs), "panels": n_panels,
             "flagged_panels": len(flagged), "duplicate_pairs": len(band_duplicates),
@@ -161,6 +173,7 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 24) -> dict
             "whole_image_reuse": "completed" if len(figures) >= 2 else "not_applicable_single_image",
             "local_region_reuse": "not_implemented",
             "blot_cnn": "experimental" if n_panels else "not_assessed",
+            "blot_mode": blot_mode,
             "c2pa": "not_assessed" if is_pdf else "checked_on_uploaded_file",
         },
         "synthid": {
@@ -172,6 +185,7 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 24) -> dict
         "limitations": [
             "Identical and near-duplicate whole images may be legitimately reused; read the source captions.",
             "Whole-image matching does not detect copied patches within different figures.",
+            "The user-confirmed Western blot mode relaxes a heuristic gate; it does not validate modality classification.",
             "No universal fake-image or AI-origin model is being run.",
             "No finding is not evidence that an image is authentic.",
         ],
