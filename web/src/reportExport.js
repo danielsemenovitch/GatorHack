@@ -75,6 +75,9 @@ export function reportToHtml(report) {
     esc(report.summary?.flagged_panels) +
     '; unassessed candidates due to limit: ' + esc(report.summary?.skipped_panels || 0) +
     '. These scores are not probabilities of tampering.</p>' +
+    '<p>Screening policy: ' + esc(report.summary?.screening_policy || report.screening_policy || "legacy") +
+    '. ' + esc(report.summary?.policy_note || "") +
+    ' Heat overlays show overlapping 32-pixel model patches, not pixel-accurate manipulation boundaries.</p>' +
     (report.summary?.widespread_flag_figures?.length ?
       '<p>Numerous panels in the same figure were flagged. Shared imaging and publishing artifacts may explain multiple alerts.</p>' : '') +
     '<h2>Figure inventory and blot-specific screening</h2>' + all + '<h2>Limitations</h2><ul>' + limits +
