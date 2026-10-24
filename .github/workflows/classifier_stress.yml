@@ -1,0 +1,37 @@
+name: Classifier stress experiment
+on:
+  push:
+    branches:
+      - experiment/classifier-stress-20261024
+    paths:
+      - 'scripts/stress_classifier.py'
+      - '.github/workflows/classifier_stress.yml'
+  workflow_dispatch:
+jobs:
+  stress:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    permissions:
+      contents: read
+    env:
+      JAX_PLATFORM_NAME: cpu
+      XLA_PYTHON_CLIENT_PREALLOCATE: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install minimal experiment requirements
+        run: python -m pip install numpy pillow opencv-python-headless scipy scikit-learn jax[cpu] optax pymupdf joblib
+      - name: Run paper-disjoint stress evaluation
+        run: python -u -m scripts.stress_classifier 2>&1 | tee stress_log.txt
+      - name: Upload stress results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: classifier-stress-results
+          path: |
+            results/stress_classifier.json
+            stress_log.txt
+          if-no-files-found: warn
