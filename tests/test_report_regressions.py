@@ -46,7 +46,7 @@ def test_retains_score_precision_and_records_skipped_candidates(monkeypatch):
     monkeypatch.setattr(review, "_blot_candidates", fake_candidates(5))
     monkeypatch.setattr(review, "detector", lambda version="v3": MockCNN())
     monkeypatch.setattr(review, "find_duplicates", lambda _, **kwargs: [])
-    result = review.analyze(png(), "synth.png", max_panels=2)
+    result = review.analyze(png(), "synth.png", max_panels=2, cnn_version="v2")
     assert result["summary"]["panels"] == 2
     assert result["summary"]["skipped_panels"] == 3
     assert result["summary"]["threshold"] == 0.996554
@@ -87,3 +87,72 @@ def test_panel_limit_validation():
     import pytest
     with pytest.raises(ValueError, match="max_panels"):
         review.analyze(png(), "synthetic.png", max_panels=0)
+
+
+
+def test_conservative_v3_reduces_flags_not_scores(monkeypatch):
+    class MidrangeDetector:
+        threshold = 0.5
+        space = "logit"
+
+        def analyze(self, im):
+            return SimpleNamespace(score=0.84,
+                                   bands=[{"id": 0, "x": 2, "y": 2, "w": 12, "h": 7, "score": 0.84}],
+                                   heat=np.full((im.height, im.width), 0.84, np.float32),
+                                   top_features=[])
+    monkeypatch.setattr(review, "_blot_candidates", fake_candidates(5))
+    monkeypatch.setattr(review, "detector", lambda version="v3": MidrangeDetector())
+    monkeypatch.setattr(review, "find_duplicates", lambda _, **kwargs: [])
+    strict = review.analyze(png(), "synth.png", cnn_version="v3", screening_policy="conservative")
+    baseline = review.analyze(png(), "synth.png", cnn_version="v3", screening_policy="benchmark")
+    assert strict["summary"]["flagged_panels"] == 0
+    assert baseline["summary"]["flagged_panels"] == 5
+    assert strict["summary"]["threshold"] == 0.9
+    assert baseline["summary"]["threshold"] == 0.5
+    assert strict["summary"]["max_splice_score"] == baseline["summary"]["max_splice_score"]
+    assert strict["checks"]["heat_localization"] == "patch_level_32px_not_pixel_boundaries"
+
+
+def test_horizontal_blot_guard_rejects_microscopy_like_texture():
+    import cv2
+    y, x = np.mgrid[:90, :350]
+    # Horizontal blot-like band stripes produce Y-direction intensity edges.
+    blot = np.full((90, 350), 200, np.uint8)
+    blot[20:29, 20:325] = 40
+    blot[52:61, 20:325] = 60
+    # Dense similarly sized circular cell outlines produce isotropic edges.
+    cells = np.full((90, 350), 142, np.uint8)
+    for xx in range(11, 350, 18):
+        for yy in range(10, 90, 18):
+            cv2.circle(cells, (xx, yy), 7, 200, 2)
+    assert review._horizontal_blot_structure(Image.fromarray(blot), 1.55)
+    assert not review._horizontal_blot_structure(Image.fromarray(cells), 1.55)
+
+
+def test_heat_overlay_has_exact_crop_dimensions(monkeypatch):
+    class HeatDetector:
+        threshold = 0.5
+        space = "logit"
+        def analyze(self, im):
+            heat = np.zeros((im.height, im.width), np.float32)
+            heat[4:12, 10:20] = 0.96
+            return SimpleNamespace(score=0.97, bands=[], heat=heat, top_features=[])
+
+    monkeypatch.setattr(review, "_blot_candidates", fake_candidates(1))
+    monkeypatch.setattr(review, "detector", lambda version="v3": HeatDetector())
+    monkeypatch.setattr(review, "find_duplicates", lambda _, **kwargs: [])
+    result = review.analyze(png(), "synth.png")
+    import base64
+    heat_url = result["figures"][0]["panels"][0]["heat"]
+    image = Image.open(io.BytesIO(base64.b64decode(heat_url.split(",", 1)[1])))
+    panel = result["figures"][0]["panels"][0]
+    assert image.size == (panel["w"], panel["h"])
+    assert image.mode == "RGBA"
+    assert image.getpixel((15, 8))[3] > image.getpixel((1, 1))[3]
+    assert panel["heat_basis"].startswith("overlapping 32px")
+
+
+def test_rejects_invalid_policy():
+    import pytest
+    with pytest.raises(ValueError, match="screening_policy"):
+        review.analyze(png(), "synth.png", screening_policy="unverified")
