@@ -20,15 +20,14 @@ from .imgio import load_rgb, to_gray
 from .panels import find_panels
 from .provenance import read_c2pa
 
-_DETECTOR = None
+_DETECTORS = {}
 
 
-def detector():
-    global _DETECTOR
-    if _DETECTOR is None:
+def detector(version: str = "v3"):
+    if version not in _DETECTORS:
         from .detector import load_best
-        _DETECTOR = load_best()
-    return _DETECTOR
+        _DETECTORS[version] = load_best(version)
+    return _DETECTORS[version]
 
 
 def _data_url(im: Image.Image, fmt: str = "PNG") -> str:
@@ -101,9 +100,11 @@ def _blot_candidates(fig: Image.Image, mode: str = "auto"):
 
 
 def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
-            blot_mode: str = "auto") -> dict[str, Any]:
+            blot_mode: str = "auto", cnn_version: str = "v3") -> dict[str, Any]:
     if blot_mode not in ("auto", "blot", "off"):
         raise ValueError("blot_mode must be 'auto', 'blot', or 'off'")
+    if cnn_version not in ("v2", "v3"):
+        raise ValueError("cnn_version must be v2 or v3")
     if not (1 <= max_panels <= 256):
         raise ValueError("max_panels must be between 1 and 256")
     t0 = time.time()
@@ -135,7 +136,7 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
                 fig_entry["blot_screen"] = "partial" if fig_entry["panels"] else "not_assessed_limit"
                 break
             if det is None:
-                det = detector()
+                det = detector(cnn_version)
             res = det.analyze(crop)
             all_panels_gray.append(to_gray(crop))
             panel_refs.append((fi, p.id))
@@ -190,7 +191,7 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
                   and r["flagged_panels"] >= 3
                   and r["flagged_panels"] / r["analyzed_panels"] >= 0.5]
     return {
-        "filename": filename, "verdict": verdict, "blot_mode": blot_mode,
+        "filename": filename, "verdict": verdict, "blot_mode": blot_mode, "cnn_version": cnn_version,
         "summary": {
             "figures": len(report_figs), "panels": n_panels,
             "skipped_panels": skipped_panels, "max_panels": max_panels,
@@ -202,6 +203,7 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
             "score_kind": ("threshold-centered display index" if getattr(det, "space", None) == "logit"
                            else "uncalibrated CNN patch score") if det is not None else None,
             "score_is_probability": False,
+            "model_version": cnn_version if n_panels else None,
             "content_credentials": provenance.get("present", False),
         },
         "provenance": provenance, "figures": report_figs,
@@ -213,6 +215,7 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
                         else ("not_assessed_limit" if skipped_panels else "not_assessed"),
             "blot_panel_limit": "reached" if skipped_panels else "not_reached",
             "blot_mode": blot_mode,
+            "cnn_version": cnn_version,
             "band_duplicate_policy": "conservative_noise_0.90_shape_0.90",
             "c2pa": "not_assessed" if is_pdf else "checked_on_uploaded_file",
         },
