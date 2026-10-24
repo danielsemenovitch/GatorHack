@@ -262,10 +262,20 @@ function CheckPage({ examples, report, setReport }) {
   }, [setReport, blotMode, cnnVersion, screeningPolicy]);
 
   const loadExample = async (ex) => {
-    setError(null);
-    const r = await fetch(`${API}/api/examples/${ex.report}`);
-    setReport(await r.json());
-    setTimeout(() => document.getElementById("report")?.scrollIntoView({ behavior: "smooth" }), 50);
+    // Reports in /examples/*.report.json are historical snapshots. Recompute
+    // on the source bytes with today's CNN/policy so stale heat, thresholds
+    // or falsely flagged panels cannot masquerade as fresh analysis.
+    setError(null); setBusy(true);
+    try {
+      if (!ex.file) throw new Error("Example source image missing");
+      const r = await fetch(`${API}/api/examples/${encodeURIComponent(ex.file)}`);
+      if (!r.ok) throw new Error("Could not load the example image");
+      const blob = await r.blob();
+      await send(new File([blob], ex.file, { type: blob.type || "image/jpeg" }));
+    } catch (e) {
+      setError(`Could not analyze this example: ${e.message}`);
+      setBusy(false);
+    }
   };
 
   return (
@@ -285,10 +295,10 @@ function CheckPage({ examples, report, setReport }) {
         {hero?.preview && (
           <div className="lightbox">
             <figure>
-              <Stage fig={hero.preview} showHeat threshold={1} />
+              <Stage fig={{ ...hero.preview, panels: [] }} showHeat={false} threshold={1} />
               <figcaption>
                 <span className="verdict-chip">SynthID: <span className={hero.synthid === "not detected" ? "no" : ""}>{hero.synthid === "pending" ? "check pending" : hero.synthid}</span></span>
-                <span className="verdict-chip">Below the Watermark: <span className={hero.preview_verdict === "flagged" ? "no" : ""}>{hero.preview_verdict}</span></span>
+                <span className="verdict-chip">CNN: <span>Run example for current analysis</span></span>
               </figcaption>
               {hero.credit && <p className="credit">{hero.credit}</p>}
             </figure>
