@@ -48,7 +48,9 @@ def test_near_duplicate_after_jpeg_resave():
 
 
 def test_unrelated_images_not_marked_as_reused():
-    assert find_image_reuse([image(12), image(22)]) == []
+    rng = np.random.default_rng(222)
+    other = Image.fromarray(rng.integers(0, 256, (180, 280, 3), dtype=np.uint8), "RGB")
+    assert find_image_reuse([image(12), other]) == []
 
 
 def test_nonblot_upload_skips_cnn(monkeypatch):
