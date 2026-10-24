@@ -43,7 +43,7 @@ def _heat_overlay(heat: np.ndarray, threshold: float) -> Image.Image:
                   max(1e-3, 1 - threshold), 0, 1) ** 0.7
     a = cv2.GaussianBlur(raw, (0, 0), 1.5)
     a = np.clip(a, 0, 1)
-    rgba = np.zeros((*h.shape, 4), np.uint8)
+    rgba = np.zeros((*a.shape, 4), np.uint8)
     rgba[..., 0], rgba[..., 1], rgba[..., 2] = 200, 40, 95
     rgba[..., 3] = (a * 190).astype(np.uint8)
     return Image.fromarray(rgba, "RGBA")
