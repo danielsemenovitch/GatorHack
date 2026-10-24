@@ -81,38 +81,57 @@ class Detector:
 class CnnDetector:
     """Same interface as Detector, backed by the JAX patch CNN."""
 
-    def __init__(self, params, threshold: float, rule: str = "top"):
+    def __init__(self, params, threshold: float, rule: str = "top", space: str = "prob", scale: float = 1.0):
         self.params = params
-        self.threshold = threshold
+        self.space = space
         self.score_method = rule
+        self.scale = max(1e-3, scale)
+        # In logit space every score is shown on a 0..1 display scale where
+        # the flag line sits at exactly 0.5 (raw threshold kept for reference).
+        self.raw_threshold = threshold
+        self.threshold = 0.5 if space == "logit" else threshold
 
     @classmethod
     def load(cls) -> "CnnDetector":
         from . import cnn
         params, meta = cnn.load()
-        return cls(params, float(meta.get("threshold", 0.5)), str(meta.get("rule", "top")))
+        return cls(params, float(meta.get("threshold", 0.5)), str(meta.get("rule", "top")),
+                   str(meta.get("space", "prob")), float(meta.get("scale", 1.0)))
+
+    def _display(self, v):
+        return 1.0 / (1.0 + np.exp(-(np.asarray(v, np.float64) - self.raw_threshold) / self.scale))
 
     def analyze(self, panel: Image.Image) -> PanelResult:
         from . import cnn
         gray = to_gray(panel)
         X, pos, band, _ = cnn.extract(gray)
         h, w = gray.shape
-        probs = cnn.predict(self.params, X) if len(X) else np.zeros(0, np.float32)
         wins = [(x, y, cnn.P, cnn.P) for x, y in pos]
+        if self.space == "logit":
+            z = cnn.predict(self.params, X, logits=True) if len(X) else np.zeros(0, np.float32)
+            r, raw = cnn.relative(z, band, self.score_method)
+            probs = self._display(r).astype(np.float32)
+            heat = heatmap(wins, probs, (max(h, cnn.P), max(w, cnn.P)))[:h, :w]
+            return self._finish(gray, heat, band, wins, probs, pos, float(self._display(raw)))
+        probs = cnn.predict(self.params, X) if len(X) else np.zeros(0, np.float32)
         heat = heatmap(wins, probs, (max(h, cnn.P), max(w, cnn.P)))[:h, :w]
         pb = probs[band] if band.sum() >= 3 else probs
         if self.score_method == "outlier" and len(pb):
             heat = np.clip(heat - float(np.median(pb)), 0, 1)  # same scale as the panel score
+        p = probs[band] if band.sum() >= 3 else probs
+        score = float(np.sort(p)[-min(3, len(p)):].mean()) if len(p) else 0.0
+        if self.score_method == "outlier" and len(p):
+            score = float(np.clip(score - np.median(p), 0, 1))
+        return self._finish(gray, heat, band, wins, probs, pos, score)
+
+    def _finish(self, gray, heat, band, wins, probs, pos, score) -> PanelResult:
+        from . import cnn
         bands = []
         for b in find_bands(gray):
             x0, y0, x1, y1 = b.box()
             pad_y = max(2, b.h // 2)
             region = heat[max(0, y0 - pad_y):y1 + pad_y, x0:x1]
             bands.append({**b.to_dict(), "score": round(float(np.percentile(region, 90)) if region.size else 0.0, 3)})
-        p = probs[band] if band.sum() >= 3 else probs
-        score = float(np.sort(p)[-min(3, len(p)):].mean()) if len(p) else 0.0
-        if self.score_method == "outlier" and len(p):
-            score = float(np.clip(score - np.median(p), 0, 1))
         # Explanations come from the hand built features at the hottest spot.
         dev = []
         try:

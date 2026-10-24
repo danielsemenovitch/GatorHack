@@ -49,9 +49,46 @@ def main():
         lines += [f"| {r['label']} | {pct(r['detect_rate'])} | {pct(r['false_flag_rate'])} |" for r in dup["rows"]]
     table = "\n".join(lines)
     readme = (ROOT / "README.md").read_text()
-    readme = re.sub(r"<!-- RESULTS_TABLE -->.*?(?=\n## )", "<!-- RESULTS_TABLE -->\n\n" + table + "\n", readme, flags=re.S)
+    readme = re.sub(r"<!-- RESULTS_TABLE -->.*?(?=\n## )", lambda m: "<!-- RESULTS_TABLE -->\n\n" + table + "\n", readme, flags=re.S)
+    stats = benchmark_stats()
+    if stats:
+        size = f"{stats['n']:,} western blot images from {stats['papers']} CC BY papers"
+        readme = re.sub(r"<!-- BENCH_SIZE -->.*?<!-- /BENCH_SIZE -->", lambda m: f"<!-- BENCH_SIZE -->{size}<!-- /BENCH_SIZE -->", readme)
+        card = ROOT / "docs" / "DATA_CARD.md"
+        s = card.read_text()
+        s = re.sub(r"<!-- DATA_TABLE -->.*?<!-- /DATA_TABLE -->",
+                   lambda m: "<!-- DATA_TABLE -->\n" + stats["table"] + "\n<!-- /DATA_TABLE -->", s, flags=re.S)
+        card.write_text(s)
     (ROOT / "README.md").write_text(readme)
     print(table)
+
+
+def benchmark_stats():
+    """Data card numbers straight from data/benchmark/index.json."""
+    import numpy as np
+    f = ROOT / "data" / "benchmark" / "index.json"
+    if not f.exists():
+        return None
+    ix = json.loads(f.read_text())
+    n, nf = len(ix), sum(r["label"] for r in ix)
+    papers = {r["pmcid"] for r in ix}
+    by = {s: [r for r in ix if r["split"] == s] for s in ("train", "test")}
+    meta = json.loads((ROOT / "data/real_figures/metadata.json").read_text())
+    years = sorted(int(m["year"]) for m in meta if str(m.get("year", "")).isdigit() and m.get("pmcid") in papers)
+    clean = [r for r in ix if r["label"] == 0]
+    med = int(np.median([r["w"] * r["h"] for r in clean])) if clean else 0
+    rows = [
+        ("Images", f"{n:,} ({n - nf:,} clean, {nf:,} forged)"),
+        ("Source panels", f"{len({r['panel'] for r in ix})} blot panels"),
+        ("Source papers", f"{len(papers)} open access papers (CC BY, published {years[0]} to {years[-1]}), via Europe PMC" if years else f"{len(papers)} papers"),
+        ("Split", f"by paper: {len({r['pmcid'] for r in by['train']})} papers train ({len(by['train']):,} images), "
+                  f"{len({r['pmcid'] for r in by['test']})} papers test ({len(by['test']):,} images)"),
+        ("Median panel size", f"about {med:,} pixels"),
+        ("Forgery types", "copy move, cross splice, AI splice, intensify, erase"),
+        ("Publishing steps", "random chain of contrast, resize, JPEG (q70 to 95) or PDF round trip"),
+    ]
+    table = "| | |\n|---|---|\n" + "\n".join(f"| {a} | {b} |" for a, b in rows)
+    return {"n": n, "papers": len(papers), "table": table}
 
 
 if __name__ == "__main__":

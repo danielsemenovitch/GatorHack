@@ -46,7 +46,7 @@ def featurize(row, seed=0, bg_keep=0.08, max_band=40):
 
 def sample(rows, data, rng=None):
     Xs = [data[r["id"]][0] for r in rows]; ys = [data[r["id"]][1] for r in rows]
-    return np.concatenate(Xs).astype(np.float32), np.concatenate(ys)
+    return np.concatenate(Xs), np.concatenate(ys)  # float16; converted per batch
 
 
 def train(X, y, epochs=7, seed=0, lr=2e-3, batch=256):
@@ -73,7 +73,7 @@ def train(X, y, epochs=7, seed=0, lr=2e-3, batch=256):
         perm = rng.permutation(len(X)); tot = 0
         for i in range(0, len(X) - batch + 1, batch):
             b = perm[i:i + batch]
-            xb = X[b]
+            xb = X[b].astype(np.float32)
             flip = rng.random(len(b)) < 0.5
             xb[flip] = xb[flip][:, :, ::-1]
             vflip = rng.random(len(b)) < 0.3
@@ -84,33 +84,36 @@ def train(X, y, epochs=7, seed=0, lr=2e-3, batch=256):
     return jax.tree_util.tree_map(np.asarray, params)
 
 
-RULE = "top"
-
-
-def panel_score(probs, band, k=3):
-    p = probs[band] if band.sum() >= 3 else probs
-    if len(p) == 0:
-        return 0.0
-    top = float(np.sort(p)[-min(k, len(p)):].mean())
-    if RULE == "outlier":
-        return float(np.clip(top - np.median(p), 0, 1))
-    return top
-
-
-_PATCH_CACHE: dict = {}
-
-
-def scores(params, rows, data=None):
-    """Score whole panels, extracting all their patches on the fly."""
+def logits_of(params, rows):
+    """Patch logits for whole panels (all grid patches, extracted on the fly)."""
     out = {}
     for r in rows:
-        X, _, band, _ = load_row(r)
-        pr = cnn.predict(params, X)
-        out[r["id"]] = panel_score(pr, band)
+        X, _, band, frac = load_row(r)
+        out[r["id"]] = (cnn.predict(params, X, logits=True), band, frac)
     return out
 
 
+def scores(params, rows, rule, cache=None):
+    cache = cache if cache is not None else logits_of(params, rows)
+    return {i: cnn.relative(z, band, rule)[1] for i, (z, band, _) in cache.items()}
+
+
+def hit_rate(cache, rows, rule):
+    """Forged panels: how often the single most suspicious patch overlaps the edit."""
+    hits = []
+    for r in rows:
+        if r["label"] != 1:
+            continue
+        z, band, frac = cache[r["id"]]
+        if len(z) == 0:
+            continue
+        rv, _ = cnn.relative(z, band, rule)
+        hits.append(frac[int(np.argmax(np.where(band, rv, -np.inf) if band.any() else rv))] > 0)
+    return round(float(np.mean(hits)), 3) if hits else None
+
+
 def main():
+    import os
     t0 = time.time()
     index = json.loads((BENCH / "index.json").read_text())
     all_train = [r for r in index if r["split"] == "train"]
@@ -120,24 +123,31 @@ def main():
     calib_papers = {p for p in {r["pmcid"] for r in all_train} if zlib.crc32(p.encode()) % 5 == 0}
     train_rows = [r for r in all_train if r["pmcid"] not in calib_papers]
     calib_rows = [r for r in all_train if r["pmcid"] in calib_papers]
+    if os.environ.get("SMOKE"):  # quick end to end check on a tiny subset; writes to results/smoke
+        k = int(os.environ["SMOKE"])
+        train_rows, calib_rows, test_rows = train_rows[::max(1, len(train_rows) // k)], calib_rows[::max(1, len(calib_rows) // k)], test_rows[::max(1, len(test_rows) // k)]
     res = Parallel(n_jobs=2)(delayed(featurize)(r) for r in train_rows)
     data = {i: (X, y) for i, X, y, _ in res}
     print(f"patches ready in {time.time() - t0:.0f}s", flush=True)
     Xtr, ytr = sample(train_rows, data)
     print(f"training on {len(Xtr)} patches ({int(ytr.sum())} forged)", flush=True)
-    params = train(Xtr, ytr)
+    import os
+    params = train(Xtr, ytr, epochs=int(os.environ.get("EPOCHS", 7)))
 
-    global RULE
+    cal_cache = logits_of(params, calib_rows)
     cal = {}
-    for rule in ("top", "outlier"):
-        RULE = rule
-        cs = scores(params, calib_rows)
+    for rule in cnn.RULES:
+        cs = scores(params, calib_rows, rule, cal_cache)
         cal[rule] = (roc_auc_score([r["label"] for r in calib_rows], [cs[r["id"]] for r in calib_rows]), cs)
     RULE = max(cal, key=lambda k: cal[k][0])
     print("calibration AUROC by rule:", {k: round(v[0], 3) for k, v in cal.items()}, "->", RULE, flush=True)
     cs = cal[RULE][1]
-    thr = float(np.quantile([cs[r["id"]] for r in calib_rows if r["label"] == 0], 0.95))
-    te_s = scores(params, test_rows)
+    clean_cal = np.array([cs[r["id"]] for r in calib_rows if r["label"] == 0])
+    thr = float(np.quantile(clean_cal, 0.95))
+    q25, q75 = np.quantile(clean_cal, [0.25, 0.75])
+    scale = float(max(0.05, (q75 - q25) / 1.349))
+    te_cache = logits_of(params, test_rows)
+    te_s = scores(params, test_rows, RULE, te_cache)
     y = np.array([r["label"] for r in test_rows]); s = np.array([te_s[r["id"]] for r in test_rows])
     by_m = defaultdict(list)
     for r, v in zip(test_rows, s):
@@ -151,7 +161,6 @@ def main():
         if 0 < sum(yy) < len(yy):
             size_auc[name] = {"n": len(rr), "auroc": round(float(roc_auc_score(yy, [v for _, v in rr])), 3)}
 
-    import os
     if os.environ.get("SKIP_HELDOUT"):
         prev = json.loads((ROOT / "results" / "cnn_metrics_v1.json").read_text())
         held = {"ai_splice": {**prev["held_out_method"]["ai_splice"], "note": "from the first model version"}}
@@ -160,11 +169,11 @@ def main():
     # Held out method: retrain without AI splices, test AI splice vs clean.
     tr_h = [r for r in train_rows if r["method"] != "ai_splice"] if held is None else []
     if held is None:
-        p_h = train(*sample(tr_h, data), epochs=6)
-        sh = scores(p_h, [r for r in calib_rows if r["label"] == 0])
+        p_h = train(*sample(tr_h, data), epochs=max(4, int(os.environ.get("EPOCHS", 7)) - 1))
+        sh = scores(p_h, [r for r in calib_rows if r["label"] == 0], RULE)
         thr_h = float(np.quantile(list(sh.values()), 0.95))
         te_h = [r for r in test_rows if r["method"] in ("ai_splice", "clean")]
-        sth = scores(p_h, te_h)
+        sth = scores(p_h, te_h, RULE)
         yh = np.array([r["label"] for r in te_h]); vh = np.array([sth[r["id"]] for r in te_h])
         held = {"ai_splice": {"auroc": round(float(roc_auc_score(yh, vh)), 3),
                               "detect_rate": round(float(np.mean(vh[yh == 1] > thr_h)), 3),
@@ -176,10 +185,14 @@ def main():
          "false_flag_rate_clean": round(float(np.mean(s[y == 0] > thr)), 3),
          "detect_rate_by_method": {k: round(float(np.mean(v)), 3) for k, v in by_m.items()},
          "auroc_by_panel_size": size_auc,
+         "top_patch_on_edit": hit_rate(te_cache, test_rows, RULE),
+         "calibration_auroc_by_rule": {k: round(v[0], 3) for k, v in cal.items()},
          "held_out_method": held, "score_rule": RULE, "n_calib_papers": len(calib_papers),
          "seconds": round(time.time() - t0)}
+    if os.environ.get("SMOKE"):
+        print(json.dumps(m, indent=1)); return
     (ROOT / "results" / "cnn_metrics.json").write_text(json.dumps(m, indent=1))
-    cnn.save(params, threshold=thr, rule=RULE)
+    cnn.save(params, threshold=thr, rule=RULE, space="logit", scale=scale)
     print(json.dumps(m, indent=1))
 
 

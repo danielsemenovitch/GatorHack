@@ -103,19 +103,49 @@ def apply(params, x):
 _PREDICT = None
 
 
-def predict(params, X: np.ndarray, batch: int = 1024) -> np.ndarray:
+def predict(params, X: np.ndarray, batch: int = 1024, logits: bool = False) -> np.ndarray:
+    """Patch probabilities (or raw logits, which do not saturate near 1)."""
     import jax
     global _PREDICT
     if _PREDICT is None:
-        _PREDICT = jax.jit(lambda p, x: jax.nn.sigmoid(apply(p, x)))
+        _PREDICT = jax.jit(apply)
     out = []
     for i in range(0, len(X), batch):
-        xb = X[i:i + batch]
+        xb = np.asarray(X[i:i + batch], np.float32)
         n = len(xb)
         if n < batch:  # pad to a fixed shape so jit compiles once
             xb = np.concatenate([xb, np.zeros((batch - n, *xb.shape[1:]), xb.dtype)])
         out.append(np.asarray(_PREDICT(params, xb))[:n])
-    return np.concatenate(out) if out else np.zeros(0, np.float32)
+    z = np.concatenate(out) if out else np.zeros(0, np.float32)
+    return z if logits else 1.0 / (1.0 + np.exp(-z))
+
+
+RULES = ("top", "outlier", "z")
+
+
+def relative(logits: np.ndarray, band: np.ndarray, rule: str, k: int = 3):
+    """Per patch values on the rule's scale, and the panel score.
+
+    top:     raw logit (how forged a patch looks in absolute terms)
+    outlier: logit minus the median band patch of the SAME panel
+    z:       outlier divided by the panel's spread, so a busy blot is not
+             flagged just for being busy
+    The panel score is the mean of the top k band patches on that scale.
+    """
+    use = band if band.sum() >= 3 else np.ones(len(logits), bool)
+    p = logits[use]
+    if len(p) == 0:
+        return logits, 0.0
+    med = float(np.median(p))
+    spread = float(np.median(np.abs(p - med))) * 1.4826 + 0.25
+    if rule == "outlier":
+        r = logits - med
+    elif rule == "z":
+        r = (logits - med) / spread
+    else:
+        r = logits
+    pr = r[use]
+    return r, float(np.sort(pr)[-min(k, len(pr)):].mean())
 
 
 def save(params, path: Path = WEIGHTS, **meta):

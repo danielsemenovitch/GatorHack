@@ -1,6 +1,14 @@
 # HANDOFF: Below the Watermark (Gator Hack V, UF AI Days 2026)
 
-This file is the complete state of the project as of **Saturday Oct 24, 2026, about 2:15pm ET**, written so a teammate or another AI assistant can continue without any other context. Read it top to bottom once before touching anything.
+This file is the complete state of the project as of **Saturday Oct 24, 2026, about 2:40pm ET** (it is updated after every work step; the "Live status" section right below says what is running right now), written so a teammate or another AI assistant can continue without any other context. Read it top to bottom once before touching anything.
+
+---
+
+## LIVE STATUS (read first)
+
+<!-- LIVE -->
+- 2:40pm: bundle 2 collected in Daniel's Chrome (440 figures, 241 new papers, 71 MB) and waiting in the Europe PMC tab for Daniel's OK to download. Robustness eval for CNN v2 done (section 6). Code for CNN v3 (logit space scoring, display scale with flag line at 0.5, three score rules, localization metric) is written and smoke tested, not trained yet.
+<!-- /LIVE -->
 
 ---
 
@@ -75,10 +83,10 @@ scripts/
   build_benchmark.py       bundle(s) -> data/real_figures -> data/real_panels (+ keep.json filter) -> data/benchmark
   train_detector.py        gradient boosting baseline -> results/detector_metrics.json, models/splice_hgb.joblib
   train_cnn.py             CNN -> results/cnn_metrics.json, models/splice_cnn.npz (SKIP_HELDOUT=1 to reuse the v1 held out number)
-  eval_robustness.py       one publishing step at a time on AI splices -> results/robustness.json  (NOT RUN YET)
+  eval_robustness.py       one publishing step at a time on AI splices -> results/robustness.json
   eval_duplicates.py       copied band detector on exact copies -> results/duplicates_metrics.json
   make_examples.py         precomputes demo reports into examples/*.report.json and examples/examples.json
-  results_table.py         writes the README results table from results/*.json
+  results_table.py         writes the README results table, the README benchmark size and the DATA_CARD table from results/*.json and data/benchmark/index.json (never edit those numbers by hand)
 laptop/
   gemini_blot_library.py   generates more AI blots via the Gemini API (needs GEMINI_API_KEY; model name configurable)
   claim_link.py            given a PDF and a figure number, lists the sentences that rely on it (Gemini API)
@@ -127,7 +135,7 @@ Upload each at synthid.com by hand and record the exact verdict wording ("detect
 - **Bundle 1** (in repo, unpacked): 120 figures, 79 papers, years mostly 2023. After panel extraction: 360 panels, **241 kept** (from 55 papers) by `filter_panels()` (blot score >= 0.72, grey, at least 2 bands, not text heavy, not tiny or huge).
 - **Bundle 2: NOT saved.** It was collected in Chrome (315 figures, 205 papers) but Chrome blocked the automatic download; rerun `scripts/collect_europepmc.js` on a fresh site (put the PMCIDs from metadata.json into SKIP) and click Chrome's "allow downloads" prompt if it appears. Once you have it: 315 more figures from 205 more papers (2016 to 2022). **Not yet used.** If the file exists, run `python -m scripts.build_benchmark --bundle path/to/btw_real_blots_bundle2.json --n-clean 6 --n-forged 3`. That merges metadata, re-extracts and filters all panels, and rebuilds the benchmark. Then retrain (section 6). More papers should help most with the false flag problem, since the clean false flag rate rises on unseen papers. If it didn't save, rerun the script in a browser.
 - **Current benchmark** (built from bundle 1, `--n-clean 6 --n-forged 3`): 4,725 images (3,279 forged, 1,446 clean); train 2,654 / test 2,071; split by paper with an md5 hash (about 30% test). Each forgery has a mask in `data/benchmark/masks`. Median panel is only about 7,200 px, and bands are often about 13x6 px. **That's the core difficulty.**
-- `docs/DATA_CARD.md` has numbers from the 3,161 image version; update them to the final build.
+- `docs/DATA_CARD.md` numbers are now written automatically by `python -m scripts.results_table` from `data/benchmark/index.json`.
 
 ---
 
@@ -148,7 +156,10 @@ All numbers are on held out test papers (never seen in training). The flag line 
    - held out method number in the file is copied from v1 (marked with a note); rerun without SKIP_HELDOUT for a v2 value
    - **Recommendation:** keep v2 because its false flag rate is honest. Quote v1 as an alternative operating point only if clearly labeled. To restore v1: `cp models/splice_cnn_v1.npz models/splice_cnn.npz` and `cp results/cnn_metrics_v1.json results/cnn_metrics.json` (v1 used P=24; the model is fully convolutional, so it runs at P=32 too).
    - **How to say it in the pitch:** "At a 3% false flag rate on papers it never saw, it catches about 1 in 5 pasted AI bands, a case SynthID cannot check at all. It's a first baseline, and the benchmark is open so others can beat it."
-4. **Copied band detector** (`eval_duplicates.py`): finds 31 of 35 exact copies when nothing is resized, but at a calibrated threshold on web resolution panels it catches only about 11% (5% false flags) with no publishing step, and about 2% after JPEG, PDF or resize. **Present it as a supporting check with this limitation, not a feature that works.** A widened self exclusion zone (ignores a band's own mirrored halves) was added after this measurement; rerun to update.
+   - **Robustness of v2** (`results/robustness.json`, 103 held out test panels, one Gemini lane pasted into each, then ONE publishing step): caught 38% with no step, 38% re-saved, 39% JPEG 85, 36% JPEG 60, 38% contrast, 39% PDF round trip, but only **2% after resizing to 50%**; clean panels flagged 2% to 6%. Honest reading: on whole lane AI splices it gives a real signal that survives compression and PDF export, which SynthID cannot do on a single band, but downscaling destroys it.
+   - **Demo caveat (v2):** on the hero composite (`examples/alk2_ai_band.jpg`) v2 does NOT flag the panel: the pasted bands score high (ranks 2 to 4 of the panel's bands) but a real, very dark BMP4 band scores highest, and the untouched original gets flagged for that same band. So v2 has a "very dark band" bias. That's why v3 tries panel relative rules (below). Never fake the hero.
+5. **CNN v3 (code ready, training pending on the bigger benchmark):** scores in logit space (v2's probabilities saturated at 0.997, which made thresholds meaningless), picks one of three panel rules on calibration papers (`top`, `outlier` = minus the panel median, `z` = divided by the panel spread), saves `space="logit"` and a `scale` in the model file so the app shows every score on a 0 to 1 display scale with the flag line at exactly 0.5, stores patches as float16 to fit 5x more data in RAM, and reports `top_patch_on_edit` (how often the most suspicious patch in a forged panel lies on the edit). `btw/detector.py` loads both v2 (prob space) and v3 (logit space) models. Test a code change quickly with `SMOKE=60 EPOCHS=1 python -m scripts.train_cnn` (prints, writes nothing).
+6. **Copied band detector** (`eval_duplicates.py`): finds 31 of 35 exact copies when nothing is resized, but at a calibrated threshold on web resolution panels it catches only about 11% (5% false flags) with no publishing step, and about 2% after JPEG, PDF or resize. **Present it as a supporting check with this limitation, not a feature that works.** A widened self exclusion zone (ignores a band's own mirrored halves) was added after this measurement; rerun to update.
 
 **Ideas that may improve the detector (if time):** use bundle 2 (more papers); more epochs with early stopping on calibration AUROC; ensemble CNN + GBM scores; band level classification (crop each detected band plus a ring, compare to the other bands of the same panel); higher resolution figures (publishers' full size images are not easily reachable).
 
@@ -182,7 +193,7 @@ Making more SynthID composites from CC BY figures: see the code pattern in secti
 
 1. **Daniel:** upload round 4 to SynthID (section 4) and record the verdicts. This is the headline finding; without it the pitch must say "single bands are too small to check," which is weaker but true.
 2. Check the CNN v2 results; keep whichever of v1 and v2 is better (by test AUROC and AI splice detection at the flag line).
-3. Run `python -m scripts.eval_robustness` (already uses `load_best()`, so it picks the CNN when its AUROC is higher). This gives the "our detector vs SynthID" table across publishing steps.
+3. DONE for v2: `python -m scripts.eval_robustness`. Rerun it after any new model.
 4. Rerun `train_detector.py` on the final benchmark so the baseline comparison is fair (same data).
 5. Optional: add bundle 2 and retrain (more papers, should reduce false flags).
 6. `python -m scripts.make_examples` then `python -m scripts.results_table`. Update `docs/DATA_CARD.md` numbers, `docs/devpost.md`, `docs/video_script.md` placeholders, and the "Results" in README.

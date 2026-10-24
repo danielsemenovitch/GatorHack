@@ -1,0 +1,7 @@
+{'transform': 'none', 'label': 'None (straight after the edit)', 'detect_rate': 0.379, 'false_flag_rate': 0.039}
+{'transform': 'resave', 'label': 'Re-saved', 'detect_rate': 0.379, 'false_flag_rate': 0.039}
+{'transform': 'resize_50', 'label': 'Resized to 50%', 'detect_rate': 0.019, 'false_flag_rate': 0.0}
+{'transform': 'jpeg_q85', 'label': 'JPEG quality 85', 'detect_rate': 0.388, 'false_flag_rate': 0.039}
+{'transform': 'jpeg_q60', 'label': 'JPEG quality 60', 'detect_rate': 0.359, 'false_flag_rate': 0.019}
+{'transform': 'contrast', 'label': 'Contrast adjusted', 'detect_rate': 0.379, 'false_flag_rate': 0.058}
+{'transform': 'pdf_roundtrip', 'label': 'PDF round trip', 'detect_rate': 0.388, 'false_flag_rate': 0.029}

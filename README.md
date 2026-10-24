@@ -18,7 +18,7 @@ The watermark is robust when the AI image is present as a whole panel. Scientifi
 
 ## What we built
 
-1. **An open benchmark.** 3,161 western blot images from 55 CC BY papers, clean or forged five ways (copy move, cross splice, AI splice, intensify, erase), each pushed through realistic publishing steps, each with a pixel mask. Split by paper. See [docs/DATA_CARD.md](docs/DATA_CARD.md).
+1. **An open benchmark.** <!-- BENCH_SIZE -->4,725 western blot images from 55 CC BY papers<!-- /BENCH_SIZE -->, clean or forged five ways (copy move, cross splice, AI splice, intensify, erase), each pushed through realistic publishing steps, each with a pixel mask. Split by paper. See [docs/DATA_CARD.md](docs/DATA_CARD.md).
 2. **A band splice detector**, trained and tested on that benchmark: a small CNN and a gradient boosted baseline on hand built forensic features, both judging each band against the rest of its own blot.
 3. **A web app** that takes a figure or a paper PDF, finds the blot panels and bands, scores every band, looks for copied bands, reads C2PA credentials, and hands you the panel to check in SynthID.
 
@@ -41,6 +41,18 @@ Numbers are from `results/*.json`, on 20 held out test papers the models never s
 | erase caught | 2% |
 | AI splice caught with NO AI splices in training | 38% at 8% false flags (AUROC 0.717) |
 | Baseline: gradient boosting on hand built features, AUROC | 0.543 |
+
+**One publishing step after pasting an AI band** (same steps as the SynthID test)
+
+| Step | Pasted AI bands caught | Clean panels flagged |
+|---|---|---|
+| None (straight after the edit) | 38% | 4% |
+| Re-saved | 38% | 4% |
+| Resized to 50% | 2% | 0% |
+| JPEG quality 85 | 39% | 4% |
+| JPEG quality 60 | 36% | 2% |
+| Contrast adjusted | 38% | 6% |
+| PDF round trip | 39% | 3% |
 
 **Copied band detector** (exact pixel copies within a test panel)
 
