@@ -119,6 +119,7 @@ function Report({ report }) {
       <div>
         <h2>{title}</h2>
         <p className="sub">{sub} These are review candidates, not independent findings of manipulation.</p>
+        {s.policy_note && <p className="sub"><strong>Screening policy:</strong> {s.policy_note}</p>}
         {!!s.skipped_panels && <p role="status"><strong>Incomplete screening:</strong> {s.skipped_panels} candidate blot panels were skipped after the {s.max_panels}-panel processing limit. This does not mean those panels are clean.</p>}
         {(s.widespread_flag_figures || []).length > 0 && <p role="status"><strong>Concentrated alerts:</strong> Many panels in {s.widespread_flag_figures.map(f => f.label).join(", ")} were flagged. Shared background, scanner or publishing artifacts may be responsible; inspect the entire figure before drawing conclusions.</p>}
         {report.credit && <p className="credit" style={{ marginTop: -12, marginBottom: 16 }}>{report.credit}</p>}
@@ -126,6 +127,7 @@ function Report({ report }) {
           <label className="toggle"><input type="checkbox" checked={showHeat} onChange={(e) => setShowHeat(e.target.checked)} disabled={!s.panels} /> Show blot heat</label>
           <button className="btn ghost small" type="button" onClick={() => downloadReviewReport(report)}>Download review report (HTML)</button>
         </div>
+        <p className="sub">Heat overlays visualize overlapping 32-pixel CNN patches. They are not pixel-accurate locations or boundaries of altered bands.</p>
         {report.figures.map((fig) => (
           <div key={fig.id} style={{ marginBottom: 20 }}>
             <p className="sub" style={{ marginBottom: 6 }}><strong>{fig.label}</strong> — {fig.width} × {fig.height} px
@@ -187,7 +189,7 @@ function Report({ report }) {
         <div className="check">
           <h3>Band splice detector</h3>
           <span className={`state ${s.flagged_panels ? "bad" : "info"}`}>{!s.panels ? "Not assessed" : s.flagged_panels ? `${s.flagged_panels} review flags` : "No flags found"}</span>
-          <p>Experimental model for confidently identified Western blots only. It misses many edits and can falsely flag natural bands.</p>
+          <p>Experimental model for blot-like panels only. Stricter settings reduce review alerts but can miss more real edits. The displayed alert threshold is not an accuracy guarantee.</p>
           {s.panels > 0 && thr != null && <div className="row" style={{ display: "block" }}>
             <p style={{ margin: 0 }}>Model {s.model_version || report.cnn_version || "not recorded"}: highest panel anomaly index <strong>{scoreFmt(s.max_splice_score)}</strong>; review threshold <strong>{scoreFmt(thr)}</strong>. These are uncalibrated model indices, not percentages or probabilities.</p>
           </div>}
@@ -237,6 +239,7 @@ function CheckPage({ examples, report, setReport }) {
   const [busy, setBusy] = useState(false);
   const [blotMode, setBlotMode] = useState("auto");
   const [cnnVersion, setCnnVersion] = useState("v3");
+  const [screeningPolicy, setScreeningPolicy] = useState("conservative");
   const [error, setError] = useState(null);
   const [over, setOver] = useState(false);
   const input = useRef(null);
@@ -247,6 +250,7 @@ function CheckPage({ examples, report, setReport }) {
     try {
       const fd = new FormData(); fd.append("file", file); fd.append("blot_mode", blotMode);
       fd.append("cnn_version", cnnVersion);
+      fd.append("screening_policy", screeningPolicy);
       const r = await fetch(`${API}/api/analyze`, { method: "POST", body: fd });
       const j = await r.json();
       if (!r.ok) throw new Error(j.detail || "The analysis failed.");
@@ -255,7 +259,7 @@ function CheckPage({ examples, report, setReport }) {
     } catch (e) {
       setError(`${e.message} Try a PNG, JPEG or PDF under 25 MB.`);
     } finally { setBusy(false); }
-  }, [setReport, blotMode, cnnVersion]);
+  }, [setReport, blotMode, cnnVersion, screeningPolicy]);
 
   const loadExample = async (ex) => {
     setError(null);
@@ -309,8 +313,16 @@ function CheckPage({ examples, report, setReport }) {
           <select id="cnn-version" value={cnnVersion} onChange={(e) => setCnnVersion(e.target.value)}
                   style={{ padding: 9, border: "1px solid #9eafb8", borderRadius: 6, background: "white" }}>
             <option value="v3">V3 — larger training set (experimental)</option>
-            <option value="v2">V2 — original model</option>
+            <option value="v2">V2 — legacy research scores (more sensitive)</option>
           </select>
+          <label htmlFor="screening-policy"><strong>Alert sensitivity:</strong></label>
+          <select id="screening-policy" value={screeningPolicy} onChange={(e) => setScreeningPolicy(e.target.value)}
+                  style={{ padding: 9, border: "1px solid #9eafb8", borderRadius: 6, background: "white" }}>
+            <option value="conservative">Conservative (fewer alerts, default)</option>
+            <option value="benchmark">Research benchmark threshold (more alerts)</option>
+          </select>
+          {cnnVersion === "v2" && screeningPolicy === "conservative" &&
+            <span style={{ fontSize: 13 }}>V2 scores saturate near 1.0; it retains its legacy review threshold. Use V3 for conservative screening.</span>}
         </div>
         <div className="examples">
           <input ref={input} className="sr" type="file" accept="image/*,.pdf" onChange={(e) => e.target.files?.[0] && send(e.target.files[0])} />

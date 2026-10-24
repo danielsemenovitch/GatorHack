@@ -37,9 +37,13 @@ def _data_url(im: Image.Image, fmt: str = "PNG") -> str:
 
 
 def _heat_overlay(heat: np.ndarray, threshold: float) -> Image.Image:
-    h = cv2.GaussianBlur(np.clip(heat, 0, 1).astype(np.float32), (0, 0), 3.0)
-    a = np.clip((h - threshold) / max(1e-3, 1 - threshold), 0, 1) ** 0.7
-    rgba = np.zeros((*h.shape, 4), np.uint8)
+    # Apply review cutoff BEFORE softening the overlay. Previously, a small
+    # hot patch blurred below threshold and disappeared altogether.
+    raw = np.clip((np.clip(heat, 0, 1).astype(np.float32) - threshold) /
+                  max(1e-3, 1 - threshold), 0, 1) ** 0.7
+    a = cv2.GaussianBlur(raw, (0, 0), 1.5)
+    a = np.clip(a, 0, 1)
+    rgba = np.zeros((*a.shape, 4), np.uint8)
     rgba[..., 0], rgba[..., 1], rgba[..., 2] = 200, 40, 95
     rgba[..., 3] = (a * 190).astype(np.uint8)
     return Image.fromarray(rgba, "RGBA")
@@ -71,6 +75,24 @@ def _figures_from_upload(data: bytes, filename: str, max_figures: int = 48):
     return [("uploaded image", im)]
 
 
+def _horizontal_blot_structure(crop: Image.Image, min_ratio: float = 1.55) -> bool:
+    """Reject isotropic cellular textures that happen to resemble dark bands.
+
+    Western blot lanes have predominantly horizontal, elongated edges.
+    Compare vertical-vs-horizontal gradients AFTER blurring so cell boundaries
+    do not gain an advantage from high-frequency microscopy detail.
+    This is a routing guard, not a validated modality classifier.
+    """
+    gray = to_gray(crop).astype(np.uint8)
+    if min(gray.shape) < 16:
+        return False
+    blurred = cv2.GaussianBlur(gray, (3, 3), 0)
+    gx = cv2.Sobel(blurred, cv2.CV_32F, 1, 0, ksize=3)
+    gy = cv2.Sobel(blurred, cv2.CV_32F, 0, 1, ksize=3)
+    horizontal_edge_ratio = float(np.mean(np.abs(gy))) / (float(np.mean(np.abs(gx))) + 1e-3)
+    return horizontal_edge_ratio >= min_ratio
+
+
 def _blot_candidates(fig: Image.Image, mode: str = "auto"):
     """Gate the experimental blot model; manual mode is user-confirmed, NOT validated.
 
@@ -95,16 +117,21 @@ def _blot_candidates(fig: Image.Image, mode: str = "auto"):
             continue
         if len(find_bands(to_gray(crop))) < (2 if user_selected else 3):
             continue
+        if not _horizontal_blot_structure(crop, min_ratio=1.20 if user_selected else 1.55):
+            continue
         result.append((panel, crop))
     return result
 
 
 def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
-            blot_mode: str = "auto", cnn_version: str = "v3") -> dict[str, Any]:
+            blot_mode: str = "auto", cnn_version: str = "v3",
+            screening_policy: str = "conservative") -> dict[str, Any]:
     if blot_mode not in ("auto", "blot", "off"):
         raise ValueError("blot_mode must be 'auto', 'blot', or 'off'")
     if cnn_version not in ("v2", "v3"):
         raise ValueError("cnn_version must be v2 or v3")
+    if screening_policy not in ("conservative", "benchmark"):
+        raise ValueError("screening_policy must be conservative or benchmark")
     if not (1 <= max_panels <= 256):
         raise ValueError("max_panels must be between 1 and 256")
     t0 = time.time()
@@ -119,6 +146,7 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
     n_panels = 0
     skipped_panels = 0
     det = None
+    effective_threshold = None
     for fi, (label, fig) in enumerate(figures):
         fig_entry = {
             "id": fi, "label": label, "width": fig.width, "height": fig.height,
@@ -137,13 +165,23 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
                 break
             if det is None:
                 det = detector(cnn_version)
+                # Research threshold is calibrated for synthetic, mostly
+                # unmodified panels. The stricter 0.90 REVIEW cutoff for v3
+                # prioritizes avoiding false alarms on entire published papers.
+                # NOT calibrated or validated as a probability of misconduct.
+                # V2 saturates near 1 and has no defensible strict cutoff;
+                # retain its original research threshold and label it clearly.
+                effective_threshold = (0.90 if (cnn_version == "v3" and
+                                       screening_policy == "conservative")
+                                       else float(det.threshold))
             res = det.analyze(crop)
             all_panels_gray.append(to_gray(crop))
             panel_refs.append((fi, p.id))
             fig_entry["panels"].append({
                 **p.to_dict(), "global_index": n_panels,
-                "score": round(float(res.score), 6), "flagged": bool(res.score > det.threshold),
-                "bands": res.bands, "heat": _data_url(_heat_overlay(res.heat, det.threshold)),
+                "score": round(float(res.score), 6), "flagged": bool(res.score > effective_threshold),
+                "bands": res.bands, "heat": _data_url(_heat_overlay(res.heat, effective_threshold)),
+                "heat_basis": "overlapping 32px CNN patch anomaly estimates, not segmentation or edit boundaries",
                 "crop": _data_url(crop),
                 "why": [{"feature": f, "value": round(v, 2)} for f, v in res.top_features],
             })
@@ -192,6 +230,7 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
                   and r["flagged_panels"] / r["analyzed_panels"] >= 0.5]
     return {
         "filename": filename, "verdict": verdict, "blot_mode": blot_mode, "cnn_version": cnn_version,
+        "screening_policy": screening_policy,
         "summary": {
             "figures": len(report_figs), "panels": n_panels,
             "skipped_panels": skipped_panels, "max_panels": max_panels,
@@ -199,7 +238,14 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
             "flagged_panels": len(flagged), "duplicate_pairs": len(band_duplicates),
             "image_reuse_pairs": len(reuse),
             "max_splice_score": round(max((p["score"] for f in report_figs for p in f["panels"]), default=0), 6),
-            "threshold": round(float(det.threshold), 6) if det is not None else None,
+            "threshold": round(float(effective_threshold), 6) if det is not None else None,
+            "benchmark_threshold": round(float(det.threshold), 6) if det is not None else None,
+            "screening_policy": screening_policy,
+            "policy_note": ("Conservative v3 review cutoff 0.90 is a user-facing precision-first setting; sensitivity has not yet been independently recalibrated."
+                            if cnn_version == "v3" and screening_policy == "conservative" else
+                            "V2 output saturates at 1.0; stricter cutoffs are not defensibly calibrated, so v2 retains its legacy benchmark threshold."
+                            if cnn_version == "v2" and screening_policy == "conservative" else
+                            "Research operating point calibrated on synthetic holdout, not on whole real papers."),
             "score_kind": ("threshold-centered display index" if getattr(det, "space", None) == "logit"
                            else "uncalibrated CNN patch score") if det is not None else None,
             "score_is_probability": False,
@@ -216,6 +262,8 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
             "blot_panel_limit": "reached" if skipped_panels else "not_reached",
             "blot_mode": blot_mode,
             "cnn_version": cnn_version,
+            "screening_policy": screening_policy,
+            "heat_localization": "patch_level_32px_not_pixel_boundaries",
             "band_duplicate_policy": "conservative_noise_0.90_shape_0.90",
             "c2pa": "not_assessed" if is_pdf else "checked_on_uploaded_file",
         },
@@ -231,6 +279,8 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
             "The user-confirmed Western blot mode relaxes a heuristic gate; it does not validate modality classification.",
             "No universal fake-image or AI-origin model is being run.",
             "The CNN score is an uncalibrated anomaly index, not a percentage probability of manipulation.",
+            "Conservative screening uses a stricter unvalidated operating point and will miss more genuine edits.",
+            "Blot heat shows overlapping 32-pixel model patches, not localized proof or pixel-accurate boundaries.",
             "Multiple flags in one figure may share a benign imaging or processing cause.",
             "A copied-band candidate's matched location is not necessarily a separately detected band.",
             "No finding is not evidence that an image is authentic.",

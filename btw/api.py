@@ -27,12 +27,12 @@ def health():
 
 
 @app.post("/api/analyze")
-async def analyze_upload(file: UploadFile = File(...), blot_mode: str = Form('auto'), cnn_version: str = Form('v3')):
+async def analyze_upload(file: UploadFile = File(...), blot_mode: str = Form('auto'), cnn_version: str = Form('v3'), screening_policy: str = Form('conservative')):
     data = await file.read()
     if len(data) > MAX_BYTES:
         raise HTTPException(413, "File too large (25 MB max).")
     try:
-        return JSONResponse(analyze(data, file.filename or "upload", blot_mode=blot_mode, cnn_version=cnn_version))
+        return JSONResponse(analyze(data, file.filename or "upload", blot_mode=blot_mode, cnn_version=cnn_version, screening_policy=screening_policy))
     except Exception as e:  # surface a readable error to the UI
         raise HTTPException(422, f"Could not analyze this file: {e}")
 
