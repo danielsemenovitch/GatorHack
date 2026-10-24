@@ -69,7 +69,8 @@ export function reportToHtml(report) {
     '<h2>Potential whole-image reuse</h2>' + (pairs || '<p>No whole-image reuse was identified among the extracted figures.</p>') +
     '<h2>Experimental copied-band candidates</h2>' +
       (duplicatedBands || '<p>No copied-band candidate met the detector threshold, or the method was not run.</p>') +
-    '<h2>Western blot screen summary</h2><p>Panel threshold: ' + esc(fmt(report.summary?.threshold)) +
+    '<h2>Western blot screen summary</h2><p>Model: ' + esc(report.summary?.model_version || report.cnn_version || 'unknown') +
+    ' (experimental); panel review threshold: ' + esc(fmt(report.summary?.threshold)) +
     '; scored panels: ' + esc(report.summary?.panels) + '; flagged panels: ' +
     esc(report.summary?.flagged_panels) +
     '; unassessed candidates due to limit: ' + esc(report.summary?.skipped_panels || 0) +
