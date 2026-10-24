@@ -32,15 +32,44 @@ DATA = ROOT / "data"
 
 
 def unpack(bundle: Path):
+    """Add a Europe PMC bundle to data/real_figures (merging with what is there)."""
     out = DATA / "real_figures"
     out.mkdir(parents=True, exist_ok=True)
+    mf = out / "metadata.json"
+    meta = {m["file"]: m for m in json.loads(mf.read_text())} if mf.exists() else {}
     items = json.loads(bundle.read_text())
-    meta = []
     for it in items:
         (out / it["file"]).write_bytes(base64.b64decode(it.pop("b64")))
-        meta.append(it)
-    (out / "metadata.json").write_text(json.dumps(meta, indent=1))
-    print(f"unpacked {len(meta)} figures")
+        meta[it["file"]] = it
+    mf.write_text(json.dumps(list(meta.values()), indent=1))
+    print(f"unpacked {len(items)} figures ({len(meta)} total)")
+
+
+def filter_panels():
+    """Keep panels that look like blots: grey, banded, not text heavy, not tiny."""
+    import cv2
+    from btw.bands import find_bands
+    from btw.imgio import to_gray
+    pdir = DATA / "real_panels"
+    rows = json.loads((pdir / "panels.json").read_text())
+
+    def textiness(g):
+        dark = (g < 90).astype(np.uint8)
+        n, _, st, _ = cv2.connectedComponentsWithStats(dark, 8)
+        small = sum(1 for i in range(1, n) if 4 <= st[i, 4] <= 250 and st[i, 2] <= 25 and st[i, 3] <= 25)
+        return small / (g.size / 10000), float((g > 235).mean())
+
+    keep = []
+    for x in rows:
+        im = Image.open(pdir / x["panel"]).convert("RGB")
+        g = to_gray(im)
+        sat = cv2.cvtColor(np.asarray(im), cv2.COLOR_RGB2HSV)[..., 1].mean() / 255
+        t, white = textiness(g)
+        if (x["blot_score"] >= 0.72 and sat < 0.10 and len(find_bands(g)) >= 2 and x["w"] >= 60
+                and x["h"] >= 20 and not (white > 0.45 and t > 6) and x["w"] * x["h"] < 400000 and t < 25):
+            keep.append(x["panel"])
+    (pdir / "keep.json").write_text(json.dumps(keep))
+    print(f"kept {len(keep)} of {len(rows)} panels from {len({x['pmcid'] for x in rows if x['panel'] in set(keep)})} papers")
 
 
 def extract_panels(min_score: float = 0.35):
@@ -114,13 +143,14 @@ def build(n_clean: int = 2, n_forged_per_method: int = 2, seed: int = 0):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("--bundle", type=Path)
+    ap.add_argument("--bundle", type=Path, nargs="*")
     ap.add_argument("--skip-panels", action="store_true")
     ap.add_argument("--n-clean", type=int, default=2)
     ap.add_argument("--n-forged", type=int, default=2)
     a = ap.parse_args()
-    if a.bundle:
-        unpack(a.bundle)
+    for b in a.bundle or []:
+        unpack(b)
     if not a.skip_panels:
         extract_panels()
+        filter_panels()
     build(a.n_clean, a.n_forged)

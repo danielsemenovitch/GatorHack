@@ -27,7 +27,8 @@ LABELS = {"none": "None (straight after the edit)", "resave": "Re-saved", "resiz
 
 
 def main():
-    det = Detector.load()
+    from btw.detector import load_best
+    det = load_best()
     rng = random.Random(11)
     ix = json.loads((ROOT / "data/benchmark/index.json").read_text())
     panels = sorted({r["panel"] for r in ix if r["split"] == "test"})

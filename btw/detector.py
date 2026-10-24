@@ -81,16 +81,16 @@ class Detector:
 class CnnDetector:
     """Same interface as Detector, backed by the JAX patch CNN."""
 
-    def __init__(self, params, threshold: float):
+    def __init__(self, params, threshold: float, rule: str = "top"):
         self.params = params
         self.threshold = threshold
-        self.score_method = "top"
+        self.score_method = rule
 
     @classmethod
     def load(cls) -> "CnnDetector":
         from . import cnn
         params, meta = cnn.load()
-        return cls(params, float(meta.get("threshold", 0.5)))
+        return cls(params, float(meta.get("threshold", 0.5)), str(meta.get("rule", "top")))
 
     def analyze(self, panel: Image.Image) -> PanelResult:
         from . import cnn
@@ -100,6 +100,9 @@ class CnnDetector:
         probs = cnn.predict(self.params, X) if len(X) else np.zeros(0, np.float32)
         wins = [(x, y, cnn.P, cnn.P) for x, y in pos]
         heat = heatmap(wins, probs, (max(h, cnn.P), max(w, cnn.P)))[:h, :w]
+        pb = probs[band] if band.sum() >= 3 else probs
+        if self.score_method == "outlier" and len(pb):
+            heat = np.clip(heat - float(np.median(pb)), 0, 1)  # same scale as the panel score
         bands = []
         for b in find_bands(gray):
             x0, y0, x1, y1 = b.box()
@@ -108,6 +111,8 @@ class CnnDetector:
             bands.append({**b.to_dict(), "score": round(float(np.percentile(region, 90)) if region.size else 0.0, 3)})
         p = probs[band] if band.sum() >= 3 else probs
         score = float(np.sort(p)[-min(3, len(p)):].mean()) if len(p) else 0.0
+        if self.score_method == "outlier" and len(p):
+            score = float(np.clip(score - np.median(p), 0, 1))
         # Explanations come from the hand built features at the hottest spot.
         dev = []
         try:

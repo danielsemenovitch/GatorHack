@@ -49,7 +49,7 @@ def sample(rows, data, rng=None):
     return np.concatenate(Xs).astype(np.float32), np.concatenate(ys)
 
 
-def train(X, y, epochs=8, seed=0, lr=2e-3, batch=256):
+def train(X, y, epochs=7, seed=0, lr=2e-3, batch=256):
     import jax
     import jax.numpy as jnp
     import optax
@@ -76,16 +76,25 @@ def train(X, y, epochs=8, seed=0, lr=2e-3, batch=256):
             xb = X[b]
             flip = rng.random(len(b)) < 0.5
             xb[flip] = xb[flip][:, :, ::-1]
+            vflip = rng.random(len(b)) < 0.3
+            xb[vflip] = xb[vflip][:, ::-1]
+            xb[:, :, :, 0] *= rng.uniform(0.8, 1.25, (len(b), 1, 1)).astype(np.float32)
             params, state, l = step(params, state, xb, y[b]); tot += float(l)
         print(f"  epoch {ep + 1}/{epochs} loss {tot / max(1, len(X) // batch):.4f}", flush=True)
     return jax.tree_util.tree_map(np.asarray, params)
+
+
+RULE = "top"
 
 
 def panel_score(probs, band, k=3):
     p = probs[band] if band.sum() >= 3 else probs
     if len(p) == 0:
         return 0.0
-    return float(np.sort(p)[-min(k, len(p)):].mean())
+    top = float(np.sort(p)[-min(k, len(p)):].mean())
+    if RULE == "outlier":
+        return float(np.clip(top - np.median(p), 0, 1))
+    return top
 
 
 _PATCH_CACHE: dict = {}
@@ -104,8 +113,13 @@ def scores(params, rows, data=None):
 def main():
     t0 = time.time()
     index = json.loads((BENCH / "index.json").read_text())
-    train_rows = [r for r in index if r["split"] == "train"]
+    all_train = [r for r in index if r["split"] == "train"]
     test_rows = [r for r in index if r["split"] == "test"]
+    # Hold out 20% of TRAINING papers for calibration (threshold + score rule),
+    # so the false flag rate reflects papers the model was not fit on.
+    calib_papers = {p for p in {r["pmcid"] for r in all_train} if zlib.crc32(p.encode()) % 5 == 0}
+    train_rows = [r for r in all_train if r["pmcid"] not in calib_papers]
+    calib_rows = [r for r in all_train if r["pmcid"] in calib_papers]
     res = Parallel(n_jobs=2)(delayed(featurize)(r) for r in train_rows)
     data = {i: (X, y) for i, X, y, _ in res}
     print(f"patches ready in {time.time() - t0:.0f}s", flush=True)
@@ -113,10 +127,16 @@ def main():
     print(f"training on {len(Xtr)} patches ({int(ytr.sum())} forged)", flush=True)
     params = train(Xtr, ytr)
 
-    # Threshold from a sample of clean TRAINING panels (scoring every train image is slow on CPU).
-    clean_tr = [r for r in train_rows if r["label"] == 0]
-    tr_s = scores(params, clean_tr)
-    thr = float(np.quantile(list(tr_s.values()), 0.95))
+    global RULE
+    cal = {}
+    for rule in ("top", "outlier"):
+        RULE = rule
+        cs = scores(params, calib_rows)
+        cal[rule] = (roc_auc_score([r["label"] for r in calib_rows], [cs[r["id"]] for r in calib_rows]), cs)
+    RULE = max(cal, key=lambda k: cal[k][0])
+    print("calibration AUROC by rule:", {k: round(v[0], 3) for k, v in cal.items()}, "->", RULE, flush=True)
+    cs = cal[RULE][1]
+    thr = float(np.quantile([cs[r["id"]] for r in calib_rows if r["label"] == 0], 0.95))
     te_s = scores(params, test_rows)
     y = np.array([r["label"] for r in test_rows]); s = np.array([te_s[r["id"]] for r in test_rows])
     by_m = defaultdict(list)
@@ -131,14 +151,24 @@ def main():
         if 0 < sum(yy) < len(yy):
             size_auc[name] = {"n": len(rr), "auroc": round(float(roc_auc_score(yy, [v for _, v in rr])), 3)}
 
+    import os
+    if os.environ.get("SKIP_HELDOUT"):
+        prev = json.loads((ROOT / "results" / "cnn_metrics_v1.json").read_text())
+        held = {"ai_splice": {**prev["held_out_method"]["ai_splice"], "note": "from the first model version"}}
+    else:
+        held = None
     # Held out method: retrain without AI splices, test AI splice vs clean.
-    tr_h = [r for r in train_rows if r["method"] != "ai_splice"]
-    p_h = train(*sample(tr_h, data), epochs=6)
-    sh = scores(p_h, [r for r in tr_h if r["label"] == 0])
-    thr_h = float(np.quantile(list(sh.values()), 0.95))
-    te_h = [r for r in test_rows if r["method"] in ("ai_splice", "clean")]
-    sth = scores(p_h, te_h)
-    yh = np.array([r["label"] for r in te_h]); vh = np.array([sth[r["id"]] for r in te_h])
+    tr_h = [r for r in train_rows if r["method"] != "ai_splice"] if held is None else []
+    if held is None:
+        p_h = train(*sample(tr_h, data), epochs=6)
+        sh = scores(p_h, [r for r in calib_rows if r["label"] == 0])
+        thr_h = float(np.quantile(list(sh.values()), 0.95))
+        te_h = [r for r in test_rows if r["method"] in ("ai_splice", "clean")]
+        sth = scores(p_h, te_h)
+        yh = np.array([r["label"] for r in te_h]); vh = np.array([sth[r["id"]] for r in te_h])
+        held = {"ai_splice": {"auroc": round(float(roc_auc_score(yh, vh)), 3),
+                              "detect_rate": round(float(np.mean(vh[yh == 1] > thr_h)), 3),
+                              "false_flag_rate": round(float(np.mean(vh[yh == 0] > thr_h)), 3)}}
 
     m = {"model": "cnn", "n_train_images": len(train_rows), "n_test_images": len(test_rows),
          "n_train_papers": len({r["pmcid"] for r in train_rows}), "n_test_papers": len({r["pmcid"] for r in test_rows}),
@@ -146,12 +176,10 @@ def main():
          "false_flag_rate_clean": round(float(np.mean(s[y == 0] > thr)), 3),
          "detect_rate_by_method": {k: round(float(np.mean(v)), 3) for k, v in by_m.items()},
          "auroc_by_panel_size": size_auc,
-         "held_out_method": {"ai_splice": {"auroc": round(float(roc_auc_score(yh, vh)), 3),
-                                           "detect_rate": round(float(np.mean(vh[yh == 1] > thr_h)), 3),
-                                           "false_flag_rate": round(float(np.mean(vh[yh == 0] > thr_h)), 3)}},
+         "held_out_method": held, "score_rule": RULE, "n_calib_papers": len(calib_papers),
          "seconds": round(time.time() - t0)}
     (ROOT / "results" / "cnn_metrics.json").write_text(json.dumps(m, indent=1))
-    cnn.save(params, threshold=thr)
+    cnn.save(params, threshold=thr, rule=RULE)
     print(json.dumps(m, indent=1))
 
 

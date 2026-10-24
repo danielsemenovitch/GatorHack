@@ -15,7 +15,7 @@ import numpy as np
 from .bands import darkness_map
 from .imgio import normalize_polarity
 
-P = 24          # patch size
+P = 32          # patch size
 STRIDE = 8
 WEIGHTS = Path(__file__).resolve().parents[1] / "models" / "splice_cnn.npz"
 

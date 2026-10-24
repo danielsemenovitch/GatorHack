@@ -52,4 +52,4 @@ python, opencv, scikit-learn, jax, pymupdf, c2pa, fastapi, react, vite, gemini, 
 
 ## "Fresh off the frontier": why this is recent
 
-SynthID Detector opened to the public on October 7, 2026, and Gemini's image editing (Nano Banana Pro, November 2025) is within the 12 month window. Both are central: one is the threat, the other is the defense we measured.
+SynthID Detector opened to the public on October 7, 2026, two weeks before the hackathon. Gemini's current image generation and editing (the Gemini 3 family, including Nano Banana Pro, released November 2025) is also within the 12 month window; the free Gemini app doesn't say which image model served each request, so we describe it as "Gemini's image tools." Both are central: one is the threat, the other is the defense we measured.

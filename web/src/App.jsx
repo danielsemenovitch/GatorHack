@@ -279,8 +279,12 @@ function cellClass(v) {
 
 function GapPage({ results }) {
   const sid = results?.synthid_manual;
-  const det = results?.detector_metrics;
+  const det = results?.cnn_metrics || results?.detector_metrics;
+  const base = results?.cnn_metrics ? results?.detector_metrics : null;
   const rob = results?.robustness;
+  const pasted = sid?.rows.filter((r) => /pasted/.test(r.scenario)) || [];
+  const pastedMissed = pasted.filter((r) => r.synthid === "not detected").length;
+  const pastedDone = pasted.filter((r) => r.synthid !== "pending").length;
   const groups = [
     ["Whole AI image", (r) => !/Single|pasted|untouched/.test(r.scenario)],
     ["AI band on its own", (r) => /Single/.test(r.scenario)],
@@ -292,7 +296,11 @@ function GapPage({ results }) {
       <h1>Where the watermark stops working</h1>
       <div className="prose">
         <p>We made western blots with Gemini's image tools and checked them with SynthID Detector, which Google opened to the public on October 7, 2026. Every upload was done by hand, one fixed scenario at a time.</p>
-        <p><strong>Whole AI images were caught every time,</strong> through re-saving, resizing, heavy JPEG, cropping, contrast changes and a PDF round trip. The visible content credential did not survive a single re-save. <strong>Single bands were too small to check, and an AI band pasted into a real blot came back as not detected.</strong></p>
+        <p><strong>Whole AI images were caught every time,</strong> through re-saving, resizing, heavy JPEG, cropping, contrast changes and a PDF round trip. The visible content credential did not survive a single re-save. <strong>Single AI bands were too small for it to check.</strong>{" "}
+          {pastedDone > 0
+            ? <>An AI band pasted into a published blot came back as not detected in <strong>{pastedMissed} of {pastedDone}</strong> tests.</>
+            : <>We are re-running the pasted band test on openly licensed figures; those rows show as pending until then.</>}
+        </p>
       </div>
       {sid && (
         <div className="scroll">
@@ -320,13 +328,14 @@ function GapPage({ results }) {
       <h2>Our detector on the same problem</h2>
       {det ? (
         <>
-          <div className="prose"><p>Trained and tested on the Below the Watermark benchmark: real blot panels from CC BY papers, forged five ways and pushed through a random publishing chain. Test papers never appear in training.</p></div>
+          <div className="prose"><p>A small convolutional network trained and tested on the Below the Watermark benchmark: real blot panels from CC BY papers, forged five ways and pushed through a random publishing chain. Test papers never appear in training, and the flag line is set on separate calibration papers. This is a first baseline on a hard problem, not a finished detector.</p></div>
           <div className="stats">
             <div className="stat"><b>{det.image_auroc}</b><span>AUROC, forged vs clean panels</span></div>
             <div className="stat"><b>{Math.round(det.detect_rate_by_method?.ai_splice * 100)}%</b><span>of pasted AI bands caught</span></div>
             <div className="stat"><b>{Math.round(det.false_flag_rate_clean * 100)}%</b><span>of clean panels wrongly flagged</span></div>
             <div className="stat"><b>{det.n_test_papers}</b><span>held out papers in the test set</span></div>
           </div>
+          {base && <p className="sub" style={{ marginTop: 10 }}>For comparison, a gradient boosted model on hand built forensic features reached an AUROC of {base.image_auroc} on the same task.</p>}
           <div className="scroll">
             <table className="matrix">
               <thead><tr><th>Forgery</th><th>Caught at the flag line</th></tr></thead>
@@ -335,7 +344,7 @@ function GapPage({ results }) {
                   <tr key={k}><td>{k.replace("_", " ")}</td><td className="cell">{Math.round(v * 100)}%</td></tr>
                 ))}
                 {det.held_out_method?.ai_splice && (
-                  <tr><td>AI splice, with no AI splices in training</td><td className="cell">{Math.round(det.held_out_method.ai_splice.detect_rate * 100)}%</td></tr>
+                  <tr><td>AI splice, with no AI splices in training ({Math.round(det.held_out_method.ai_splice.false_flag_rate * 100)}% false flags)</td><td className="cell">{Math.round(det.held_out_method.ai_splice.detect_rate * 100)}%</td></tr>
                 )}
               </tbody>
             </table>
@@ -343,7 +352,7 @@ function GapPage({ results }) {
           {rob && (
             <div className="scroll">
               <table className="matrix">
-                <thead><tr><th>Publishing step after the edit</th><th>Pasted AI bands caught</th><th>Clean panels flagged</th></tr></thead>
+                <thead><tr><th>One publishing step after the edit</th><th>Pasted AI bands caught</th><th>Clean panels flagged</th></tr></thead>
                 <tbody>{rob.rows.map((r) => (
                   <tr key={r.transform}><td>{r.label}</td><td className="cell">{Math.round(r.detect_rate * 100)}%</td><td className="cell">{Math.round(r.false_flag_rate * 100)}%</td></tr>
                 ))}</tbody>
@@ -368,19 +377,19 @@ function MethodPage() {
         </div>
         <div className="layer">
           <h3>Band splice detector</h3>
-          <p>Every panel is cut into small overlapping windows. For each window we measure noise, compression traces and edge sharpness relative to the rest of the same blot, and a gradient boosted model scores how out of place it looks.</p>
+          <p>Every panel is cut into small overlapping windows. A small neural network looks at each window's pixels and noise, normalized against the rest of the same blot, and scores how out of place it looks. Real bands from clean blots are used as hard negatives so it cannot simply flag anything that looks like a band.</p>
           <p className="catches">Catches pasted bands, AI or not, and bands darkened or erased in place.</p>
         </div>
         <div className="layer">
           <h3>Copied bands</h3>
           <p>Two real bands can share a shape but never share noise. We compare the noise left after removing each band's shape, including flipped and rotated copies.</p>
-          <p className="catches">Catches the classic copy and paste fraud, about 1 in 25 western blot papers in a 2016 screen of 20,621 papers.</p>
+          <p className="catches">Targets the classic copy and paste fraud, found in 3.8% of 20,621 papers screened in 2016. Works on unresized images; resizing erases most of the evidence.</p>
         </div>
       </div>
       <h2>Limits we know about</h2>
       <div className="prose">
         <p>The detector was trained on forgeries we generated. A careful forger using tools we did not simulate can still get past it, and heavy compression erases the traces it relies on. A flag means look closer, never proof of misconduct.</p>
-        <p>The SynthID results are a hand run case study of a few dozen uploads, not a benchmark. We reported the gap to Google.</p>
+        <p>The SynthID results are a hand run case study of a few dozen uploads, not a benchmark. We are reporting what we saw to Google.</p>
       </div>
       <h2>The benchmark</h2>
       <div className="prose">

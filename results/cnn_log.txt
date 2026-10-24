@@ -1,9 +1,10 @@
-patches ready in 6s
-training on 73550 patches (7381 forged)
-  epoch 1/8 loss 1.0714
-  epoch 2/8 loss 0.8915
-  epoch 3/8 loss 0.7819
-  epoch 4/8 loss 0.6856
-  epoch 5/8 loss 0.5970
-  epoch 6/8 loss 0.5240
-  epoch 7/8 loss 0.4608
+patches ready in 8s
+training on 72058 patches (5291 forged)
+  epoch 1/7 loss 1.0407
+  epoch 2/7 loss 0.8454
+  epoch 3/7 loss 0.7091
+  epoch 4/7 loss 0.6174
+  epoch 5/7 loss 0.5248
+  epoch 6/7 loss 0.4655
+  epoch 7/7 loss 0.4391
+calibration AUROC by rule: {'top': 0.677, 'outlier': 0.551} -> top
