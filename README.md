@@ -22,6 +22,33 @@ The watermark is robust when the AI image is present as a whole panel. Scientifi
 2. **A band splice detector**, trained and tested on that benchmark: a small CNN and a gradient boosted baseline on hand built forensic features, both judging each band against the rest of its own blot.
 3. **A scientific image review app** accepting figure images or paper PDFs. It inventories raster figures, checks for exact and near whole-image reuse within the file, shows possible matches side by side, and exports an HTML evidence report. For confidently identified blots only, it also offers the experimental band CNN and copied-band checks; standalone images can have their C2PA credential read.
 
+## Conservative screening and heat-map update (October 24, 2026)
+
+**Default review mode now favors fewer alerts:** CNN v3 uses a conservative
+review index threshold of **0.90**, rather than its synthetic-benchmark
+operating threshold of **0.50**. Both settings are selectable in the upload
+form; API clients may pass `screening_policy=conservative|benchmark`.
+For the same uploaded Oncotarget PDF, this changes the count from
+**18/37** to **2/37** candidates based on the original v3 score list
+(before the added microscopy route filter). **This does not establish a
+reliable false-positive rate** and will miss more true edits. The original
+v2 CNN uses legacy scoring because its outputs saturate near 1.0.
+
+Automatic blot routing now checks for horizontally oriented blot textures
+and excludes a confirmed grayscale-microscopy crop from the user's test
+article. Heat maps now display **the patches eligible for panel scoring**,
+with thresholding before smoothing, and annotate their limitations.
+Even after the fix, heat represents overlapping **32-pixel patch scores**,
+not exact pasted-band boundaries or certified image manipulation.
+
+The whole-Gemini example image is NOT automatically accepted as a blot by
+the current router. A forced **geometry-only debug** on that image showed
+patch heat around molecular-weight markings; do not use it as proof of
+localized AI alteration. See
+[Actions run 40139731885](https://github.com/danielsemenovitch/GatorHack/actions/runs/40139731885)
+for the rendered side-by-side heat audit, and see `HANDOFF.md` for
+the full details and V4 research plan.
+
 ## CNN v3 and reliable-reporting update (October 24, 2026)
 
 The default **experimental** Western blot CNN is now **v3**, trained with figures
