@@ -92,9 +92,14 @@ class CnnDetector:
         self.threshold = 0.5 if space == "logit" else threshold
 
     @classmethod
-    def load(cls) -> "CnnDetector":
+    def load(cls, version: str = "v2") -> "CnnDetector":
         from . import cnn
-        params, meta = cnn.load()
+        if version not in ("v2", "v3"):
+            raise ValueError("Unsupported CNN version")
+        path = cnn.WEIGHTS if version == "v2" else cnn.WEIGHTS.with_name("splice_cnn_v3.npz")
+        if not path.is_file():
+            raise FileNotFoundError(f"Requested CNN checkpoint unavailable: {version}")
+        params, meta = cnn.load(path)
         return cls(params, float(meta.get("threshold", 0.5)), str(meta.get("rule", "top")),
                    str(meta.get("space", "prob")), float(meta.get("scale", 1.0)))
 
@@ -145,13 +150,13 @@ class CnnDetector:
         return PanelResult(score, heat, bands, wins, probs, dev)
 
 
-def load_best():
-    """Load whichever detector measured better on the held out test papers."""
-    import json
-    root = Path(__file__).resolve().parents[1]
-    def auc(name):
-        f = root / "results" / name
-        return json.loads(f.read_text()).get("image_auroc", 0) if f.exists() else 0
-    if (root / "models" / "splice_cnn.npz").exists() and auc("cnn_metrics.json") >= auc("detector_metrics.json"):
-        return CnnDetector.load()
-    return Detector.load()
+def load_best(version: str = "v2"):
+    """Use an explicitly requested, versioned CNN checkpoint.
+
+    v3 showed better AUROC and recall on the expanded synthetic benchmark,
+    but it is still experimental and its scores are not guilt probabilities.
+    The legacy v2 checkpoint remains available for direct comparison.
+    """
+    if version not in ("v2", "v3"):
+        raise ValueError("CNN version must be v2 or v3")
+    return CnnDetector.load(version)
