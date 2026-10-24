@@ -226,6 +226,7 @@ function Report({ report }) {
 
 function CheckPage({ examples, report, setReport }) {
   const [busy, setBusy] = useState(false);
+  const [blotMode, setBlotMode] = useState("auto");
   const [error, setError] = useState(null);
   const [over, setOver] = useState(false);
   const input = useRef(null);
@@ -234,7 +235,7 @@ function CheckPage({ examples, report, setReport }) {
   const send = useCallback(async (file) => {
     setBusy(true); setError(null);
     try {
-      const fd = new FormData(); fd.append("file", file);
+      const fd = new FormData(); fd.append("file", file); fd.append("blot_mode", blotMode);
       const r = await fetch(`${API}/api/analyze`, { method: "POST", body: fd });
       const j = await r.json();
       if (!r.ok) throw new Error(j.detail || "The analysis failed.");
@@ -243,7 +244,7 @@ function CheckPage({ examples, report, setReport }) {
     } catch (e) {
       setError(`${e.message} Try a PNG, JPEG or PDF under 25 MB.`);
     } finally { setBusy(false); }
-  }, [setReport]);
+  }, [setReport, blotMode]);
 
   const loadExample = async (ex) => {
     setError(null);
@@ -285,6 +286,15 @@ function CheckPage({ examples, report, setReport }) {
            onDragLeave={() => setOver(false)}
            onDrop={(e) => { e.preventDefault(); setOver(false); const f = e.dataTransfer.files?.[0]; if (f) send(f); }}>
         <p><strong>Drop an image or research paper PDF here.</strong> We inventory embedded raster figures, compare whole images for reuse, check available provenance, and screen blot-like panels experimentally. Results are evidence for human review, not authenticity verdicts. The server does not intentionally retain uploads.</p>
+        <div style={{ margin: "12px 0 16px", display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
+          <label htmlFor="blot-mode"><strong>Western blot screen:</strong></label>
+          <select id="blot-mode" value={blotMode} onChange={(e) => setBlotMode(e.target.value)}
+                  style={{ padding: 9, border: "1px solid #9eafb8", borderRadius: 6, background: "white" }}>
+            <option value="auto">Automatic (conservative)</option>
+            <option value="blot">I confirm this image includes Western blots</option>
+            <option value="off">Skip blot-specific screening</option>
+          </select>
+        </div>
         <div className="examples">
           <input ref={input} className="sr" type="file" accept="image/*,.pdf" onChange={(e) => e.target.files?.[0] && send(e.target.files[0])} />
           <button className="btn" type="button" onClick={() => input.current?.click()} disabled={busy}>{busy ? "Checking…" : "Choose a file"}</button>
