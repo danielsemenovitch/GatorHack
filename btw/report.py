@@ -37,8 +37,12 @@ def _data_url(im: Image.Image, fmt: str = "PNG") -> str:
 
 
 def _heat_overlay(heat: np.ndarray, threshold: float) -> Image.Image:
-    h = cv2.GaussianBlur(np.clip(heat, 0, 1).astype(np.float32), (0, 0), 3.0)
-    a = np.clip((h - threshold) / max(1e-3, 1 - threshold), 0, 1) ** 0.7
+    # Apply review cutoff BEFORE softening the overlay. Previously, a small
+    # hot patch blurred below threshold and disappeared altogether.
+    raw = np.clip((np.clip(heat, 0, 1).astype(np.float32) - threshold) /
+                  max(1e-3, 1 - threshold), 0, 1) ** 0.7
+    a = cv2.GaussianBlur(raw, (0, 0), 1.5)
+    a = np.clip(a, 0, 1)
     rgba = np.zeros((*h.shape, 4), np.uint8)
     rgba[..., 0], rgba[..., 1], rgba[..., 2] = 200, 40, 95
     rgba[..., 3] = (a * 190).astype(np.uint8)
