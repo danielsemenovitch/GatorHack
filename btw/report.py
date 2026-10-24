@@ -155,7 +155,12 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
             n_panels += 1
         report_figs.append(fig_entry)
 
-    band_duplicates = find_duplicates(all_panels_gray) if all_panels_gray else []
+    # Higher-precision *review candidate* operating point. The original
+    # library's 0.5 noise threshold produced many benign matches on genuine
+    # published blot strips. This intentionally sacrifices recall to avoid
+    # overwhelming reviewers with weak matches.
+    band_duplicates = (find_duplicates(all_panels_gray, threshold=0.90, shape_floor=0.90)
+                       if all_panels_gray else [])
     for d in band_duplicates:
         # d.b.id == -1 is a matched image location, NOT a detected band.
         for side in ("a", "b"):
@@ -208,6 +213,7 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
                         else ("not_assessed_limit" if skipped_panels else "not_assessed"),
             "blot_panel_limit": "reached" if skipped_panels else "not_reached",
             "blot_mode": blot_mode,
+            "band_duplicate_policy": "conservative_noise_0.90_shape_0.90",
             "c2pa": "not_assessed" if is_pdf else "checked_on_uploaded_file",
         },
         "synthid": {
