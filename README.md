@@ -28,6 +28,29 @@ Numbers are from `results/*.json`, on 20 held out test papers the models never s
 
 <!-- RESULTS_TABLE -->
 
+**Band splice detector (CNN), 20 test papers, 2071 test images**
+
+| | |
+|---|---|
+| AUROC, forged vs clean panels | 0.643 |
+| Clean panels flagged | 3% |
+| copy move caught | 16% |
+| cross splice caught | 19% |
+| ai splice caught | 22% |
+| intensify caught | 38% |
+| erase caught | 2% |
+| AI splice caught with NO AI splices in training | 38% at 8% false flags (AUROC 0.717) |
+| Baseline: gradient boosting on hand built features, AUROC | 0.543 |
+
+**Copied band detector** (exact pixel copies within a test panel)
+
+| Step | Copies caught | Clean panels flagged |
+|---|---|---|
+| No publishing step | 11% | 5% |
+| JPEG quality 85 | 2% | 2% |
+| PDF round trip | 2% | 1% |
+| Resized to 50% | 2% | 2% |
+
 ## Run it
 
 ```bash

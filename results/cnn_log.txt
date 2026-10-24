@@ -8,3 +8,46 @@ training on 72058 patches (5291 forged)
   epoch 6/7 loss 0.4655
   epoch 7/7 loss 0.4391
 calibration AUROC by rule: {'top': 0.677, 'outlier': 0.551} -> top
+{
+ "model": "cnn",
+ "n_train_images": 2035,
+ "n_test_images": 2071,
+ "n_train_papers": 29,
+ "n_test_papers": 20,
+ "threshold": 0.9966,
+ "image_auroc": 0.643,
+ "false_flag_rate_clean": 0.027,
+ "detect_rate_by_method": {
+  "clean": 0.027,
+  "copy_move": 0.156,
+  "cross_splice": 0.192,
+  "ai_splice": 0.221,
+  "intensify": 0.375,
+  "erase": 0.023
+ },
+ "auroc_by_panel_size": {
+  "small (<10k px)": {
+   "n": 1435,
+   "auroc": 0.645
+  },
+  "medium": {
+   "n": 559,
+   "auroc": 0.7
+  },
+  "large (>=40k px)": {
+   "n": 77,
+   "auroc": 0.521
+  }
+ },
+ "held_out_method": {
+  "ai_splice": {
+   "auroc": 0.717,
+   "detect_rate": 0.379,
+   "false_flag_rate": 0.075,
+   "note": "from the first model version"
+  }
+ },
+ "score_rule": "top",
+ "n_calib_papers": 6,
+ "seconds": 1095
+}
