@@ -90,3 +90,26 @@ def test_low_information_not_overclaimed_as_near_duplicate():
     base = Image.new("RGB", (300, 150), "white")
     modified = Image.new("RGB", (300, 150), (245, 245, 245))
     assert find_image_reuse([base, modified]) == []
+
+
+def test_blot_mode_off_and_invalid(monkeypatch):
+    def forbidden():
+        raise AssertionError("Blot model should not be called")
+    monkeypatch.setattr(report, "detector", forbidden)
+    sample = encode(image())
+    off = report.analyze(sample, "image.png", blot_mode="off")
+    assert off["blot_mode"] == "off"
+    assert off["summary"]["panels"] == 0
+    assert off["checks"]["blot_cnn"] == "not_assessed"
+
+    import pytest
+    with pytest.raises(ValueError, match="blot_mode"):
+        report.analyze(sample, "image.png", blot_mode="invalid")
+
+
+def test_user_selected_mode_does_not_force_cnn_on_unrelated_photograph(monkeypatch):
+    def forbidden():
+        raise AssertionError("Blot model should not be called for this photograph")
+    monkeypatch.setattr(report, "detector", forbidden)
+    got = report.analyze(encode(image()), "microscopy.png", blot_mode="blot")
+    assert got["summary"]["panels"] == 0
