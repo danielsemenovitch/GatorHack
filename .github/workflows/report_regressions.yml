@@ -39,7 +39,9 @@ jobs:
           gh run download 40130694228 --repo danielsemenovitch/GatorHack -n cnn-v3-expanded-results -D /tmp/v3-artifact
           test -s /tmp/v3-artifact/models/splice_cnn.npz
       - name: Evaluate v2 and v3 on the same unlabeled article
-        run: python -u -m scripts.compare_real_article_cnn | tee real_paper_compare_log.txt
+        run: |
+          set -o pipefail
+          python -u -m scripts.compare_real_article_cnn | tee real_paper_compare_log.txt
       - name: Save real-world model comparison
         if: always()
         uses: actions/upload-artifact@v4
