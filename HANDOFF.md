@@ -37,7 +37,7 @@ This file is the complete state of the project as of **Saturday Oct 24, 2026, ab
 
 ## 1. The project in one paragraph
 
-In the past year, Gemini's image tools made it trivial to fabricate a western blot, or to edit one (we asked Gemini to make a drug's effect disappear from a blot, and it did, with no refusal). On **Oct 7, 2026**, Google opened **SynthID Detector** (synthid.com) to the public as the safety net. We tested it by hand on scientific images. Whole AI images were caught every time, even after JPEG, resizing, cropping and PDF export. Single AI bands were "not enough details." An AI band pasted into a real blot came back "not detected" (that original test used a teammate's private blot, which must not be used, so it is being **re-run on CC BY figures**; see section 4). We then built (1) an **open benchmark** of band level blot forgeries with pixel masks, (2) a **band splice detector** trained on it, and (3) a **web app** that checks a figure or PDF band by band, looks for copied bands, reads C2PA content credentials, and hands the user panel crops to check in SynthID by hand.
+In the past year, Gemini's image tools made it trivial to fabricate a western blot, or to edit one (an early test asked Gemini to make a drug's effect disappear from a blot, and it did, with no refusal; that test used the private AKT blot, so it must be re-done on a CC BY figure or our own AI blot before it is shown or claimed). On **Oct 7, 2026**, Google opened **SynthID Detector** (synthid.com) to the public as the safety net. We tested it by hand on scientific images. Whole AI images were caught every time, even after JPEG, resizing, cropping and PDF export. Single AI bands were "not enough details." An AI band pasted into a real blot came back "not detected" (that original test used a teammate's private blot, which must not be used, so it is being **re-run on CC BY figures**; see section 4). We then built (1) an **open benchmark** of band level blot forgeries with pixel masks, (2) a **band splice detector** trained on it, and (3) a **web app** that checks a figure or PDF band by band, looks for copied bands, reads C2PA content credentials, and hands the user panel crops to check in SynthID by hand.
 
 **Pitch line:** "AI watermarks catch whole fake images. Science gets faked one band at a time."
 
@@ -99,7 +99,7 @@ data/
 models/                    splice_cnn.npz (current), splice_cnn_v1.npz (round 1), splice_hgb.joblib (baseline)
 results/                   every reported number (json) + logs
 examples/                  demo inputs: alk2_ai_band.jpg (CC BY figure with an AI band WE added), alk2_original.jpg, gemini_whole_blot.jpeg
-docs/                      METHODS.md (explainer for the pitch), DATA_CARD.md, devpost.md (draft), video_script.md, disclosure_email.md
+docs/                      METHODS.md (explainer for the pitch), DATA_CARD.md, devpost.md (draft), video_script.md, disclosure_email.md, pitch_outline.md (slide by slide content, speaker notes, likely judge questions)
 ```
 
 ---

@@ -4,9 +4,9 @@ Record the screen at 1080p. One narrator. Numbers in [brackets] come from `resul
 
 ## 0:00 to 0:25 — The hook
 
-**Screen:** Gemini chat, typing "make the drug treated lanes look like the controls," and the edited blot appearing.
+**Screen:** Gemini chat generating a western blot from a one line prompt (one of OUR AI blots), then, if it has been re-recorded on an allowed image, Gemini editing the CC BY ALK2 figure so the FK506 lanes look like the BMP4 lane. **Never** use the old AKT blot recording (see HANDOFF section 2).
 
-**Say:** "Western blots are the evidence behind a huge share of biomedical papers. This year, Gemini made faking one take twenty seconds. I asked it to make a drug's effect disappear, and it did."
+**Say:** "Western blots are the evidence behind a huge share of biomedical papers. This year, Gemini made faking one take twenty seconds." Only add "I asked it to make a drug's effect disappear, and it did" if that edit has been re-done on the CC BY figure or our own AI blot, because the original test used private data that cannot be shown or claimed.
 
 ## 0:25 to 1:05 — The safety net, and where it stops
 
