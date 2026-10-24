@@ -22,6 +22,47 @@ The watermark is robust when the AI image is present as a whole panel. Scientifi
 2. **A band splice detector**, trained and tested on that benchmark: a small CNN and a gradient boosted baseline on hand built forensic features, both judging each band against the rest of its own blot.
 3. **A scientific image review app** accepting figure images or paper PDFs. It inventories raster figures, checks for exact and near whole-image reuse within the file, shows possible matches side by side, and exports an HTML evidence report. For confidently identified blots only, it also offers the experimental band CNN and copied-band checks; standalone images can have their C2PA credential read.
 
+## CNN v3 and reliable-reporting update (October 24, 2026)
+
+The default **experimental** Western blot CNN is now **v3**, trained with figures
+reconstructed from 241 additional CC-BY-labeled article IDs. Users can switch
+back to the original **v2** in the upload form. The original checkpoint
+(`models/splice_cnn.npz`) remains unchanged; the new checkpoint is at
+`models/splice_cnn_v3.npz`. Both models are experimental; neither proves
+manipulation or research misconduct.
+
+**Matched expanded held-out benchmark** (2,761 images, 72 held-out papers,
+same evaluation data for both models):
+
+| Metric | V2 (recalibrated) | V3 |
+|---|---:|---:|
+| AUROC | 0.652 | 0.703 |
+| AI-band splice detection | 26.4% | 35.4% |
+| Clean image false flags | 3.65% | 4.10% |
+
+V3 still detected only **5.1%** of AI splices after resizing to 50%.
+Its clean false-positive rate reached **12.7%** after contrast adjustment.
+The additional source figures were reconstructed from Europe PMC and were
+not checked to be byte-for-byte identical with the uploaded dataset.
+See `results/cnn_v3_metrics.json`, `results/cnn_expanded_comparison.json`,
+`results/cnn_v2_expanded_test.json`, `results/cnn_v3_robustness.json`.
+
+**Review reliability fixes:** precise anomaly indices (no misleading "100/100"
+certainty), experimental model version shown in reports, evidence crops on
+both sides of a copied-band candidate, no fictitious "band 0" label, 64
+candidate blot panels per PDF by default with explicit skipped counts, and
+warnings when many flags come from a single figure.
+
+The app uses a more conservative noise/shape threshold for copied-band
+candidates. On an in-sample 204-pair synthetic check it flagged **1.96%**
+of untouched controls but detected only **6.86%** of created copies. Treat
+this feature as **low recall** and never infer no duplication from a negative
+finding. `results/duplicates_conservative_sanity.json` holds the new check.
+
+An unlabeled CC BY journal article was also re-analyzed from public
+original **figure JPEGs**; results are not directly comparable with its
+journal PDF rendering, and findings do not imply any author misconduct.
+
 ## Scientific image integrity review (new MVP)
 
 The app now supports **general whole-image reuse screening** when a paper PDF
