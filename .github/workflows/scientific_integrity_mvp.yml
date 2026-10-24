@@ -29,11 +29,12 @@ jobs:
           from PIL import Image
           from btw.report import _blot_candidates
           paths = json.loads(Path("data/real_panels/keep.json").read_text())
-          found = 0
+          auto = manual = 0
           for path in paths:
-              if _blot_candidates(Image.open(Path("data/real_panels") / path).convert("RGB")):
-                  found += 1
-          print(f"BLOT ROUTE COVERAGE: {found}/{len(paths)} original kept blot panels")
+              im = Image.open(Path("data/real_panels") / path).convert("RGB")
+              auto += bool(_blot_candidates(im, "auto"))
+              manual += bool(_blot_candidates(im, "blot"))
+          print(f"BLOT ROUTE COVERAGE: auto={auto}/{len(paths)}, user-confirmed={manual}/{len(paths)} kept panels")
           PY
       - uses: actions/setup-node@v4
         with:
