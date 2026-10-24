@@ -156,3 +156,27 @@ def test_rejects_invalid_policy():
     import pytest
     with pytest.raises(ValueError, match="screening_policy"):
         review.analyze(png(), "synth.png", screening_policy="unverified")
+
+
+
+def test_cnn_heat_ignores_unscored_non_band_patches(monkeypatch):
+    """Non-band hot logit cannot paint a heat patch it didn't contribute to score."""
+    from btw import cnn
+    from btw.detector import CnnDetector
+    patches = np.zeros((4, cnn.P, cnn.P, 2), np.float32)
+    pos = [(0, 0), (32, 0), (64, 0), (96, 0)]
+    eligible = np.asarray([True, True, True, False])
+    monkeypatch.setattr(cnn, "extract",
+                        lambda gray: (patches, pos, eligible, np.zeros(4, np.float32)))
+    monkeypatch.setattr(cnn, "predict",
+                        lambda params, X, logits=True: np.asarray([3, 3, 3, 40], np.float32))
+    monkeypatch.setattr(cnn, "relative",
+                        lambda logits, band, rule: (logits, 3.0))
+    monkeypatch.setattr(CnnDetector, "_finish",
+                        lambda self, gray, heat, band, wins, probs, positions, score:
+                        SimpleNamespace(score=score, heat=heat))
+    model = CnnDetector({}, threshold=2, rule="top", space="logit", scale=1)
+    outcome = model.analyze(Image.new("RGB", (128, 32), "white"))
+    assert outcome.heat.shape == (32, 128)
+    assert outcome.heat[16, 16] > 0.5
+    assert outcome.heat[16, 112] == 0.0  # very high non-band score excluded
