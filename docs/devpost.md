@@ -10,8 +10,8 @@ I work in a wet lab, and western blots are the evidence behind a huge share of b
 
 ## What it does
 
-- **The finding.** We tested SynthID Detector by hand on AI made blots. Whole AI images were caught every time, even after JPEG, resizing, cropping and PDF export. The visible content credential died on the first re-save. Single AI bands were "not enough details," and bands pasted into real published blots are the open gap.
-- **The benchmark.** 3,161 labeled blot images from 55 open access (CC BY) papers, forged five ways (including AI splices from Gemini), each run through realistic publishing steps, each with a pixel mask showing exactly what was changed.
+- **The finding.** We tested SynthID Detector by hand on AI made blots. Whole AI images were caught every time, even after JPEG, resizing, cropping and PDF export. The visible content credential died on the first re-save. Single AI bands were "not enough details." [Pasted band result from results/synthid_manual.json rows S1 to S4, stated exactly.]
+- **The benchmark.** [N, from the README] labeled blot images from [P] open access (CC BY) papers, forged five ways (including AI splices from Gemini), each run through realistic publishing steps, each with a pixel mask showing exactly what was changed.
 - **The tool.** Upload a figure or a paper PDF. It finds every blot panel and band, scores each band against the rest of its own blot, looks for copied bands, reads C2PA credentials, and hands you the panel to check in SynthID.
 
 ## How we built it
@@ -27,7 +27,7 @@ I work in a wet lab, and western blots are the evidence behind a huge share of b
 
 - **Resolution.** Europe PMC and PubMed Central serve figures about 750 pixels wide, so a band can be 13 × 6 pixels. Our first detector learned "this is a band" instead of "this band was edited." We fixed that with hard negatives and by comparing every band with its neighbors, and we report the honest numbers.
 - **Terms of service.** SynthID Detector forbids automated or adversarial use, so every test was a fixed scenario uploaded by hand, and our adversarial training targets our own detector, not Google's.
-- **Data rights.** We rebuilt our SynthID composite tests on CC BY figures so nothing private is used.
+- **Data rights.** Every real figure is openly licensed (CC BY) and attributed, every edit is ours, and no unpublished lab data is used anywhere.
 
 ## Accomplishments
 
