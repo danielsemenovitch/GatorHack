@@ -158,10 +158,10 @@ Text excerpt:
 {text}
 """
 
-# Stable model first; preview models are often rate limited (429) or overloaded
-# (503) on the free tier. GEMINI_TEXT_MODEL in .env overrides the order.
-MODELS = [m for m in dict.fromkeys([os.environ.get("GEMINI_TEXT_MODEL"), "gemini-3-flash-preview",
-                                    "gemini-flash-latest", "gemini-2.5-flash"]) if m]
+# Aliases that track the current stable models (2.5 models are retired). Measured on Oct 25:
+# flash-latest 11 s, flash-lite-latest 1.5 s per plan. GEMINI_TEXT_MODEL in .env overrides.
+MODELS = [m for m in dict.fromkeys([os.environ.get("GEMINI_TEXT_MODEL"), "gemini-flash-latest",
+                                    "gemini-flash-lite-latest", "gemini-3-flash-preview"]) if m]
 LAST_MODEL: str | None = None
 
 
