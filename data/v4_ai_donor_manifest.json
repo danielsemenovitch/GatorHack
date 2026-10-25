@@ -11,19 +11,22 @@
       "path": "data/ai_sources/openai_donor_g1_train.jpg",
       "role": "train",
       "origin_generation": "8a7b082a-dbe8-486c-a9db-047e857f4788",
-      "source_family": "OpenAI"
+      "source_family": "OpenAI",
+      "sha256": "a83bd36456f1c55ca858fbe27f46c36823ba2c67716590bee63d5597128ab90e"
     },
     {
       "path": "data/ai_sources/openai_donor_g2_train.jpg",
       "role": "train",
       "origin_generation": "27dd47a0-7018-491e-9689-3172ec1ecc48",
-      "source_family": "OpenAI"
+      "source_family": "OpenAI",
+      "sha256": "36781c9a3e090c9da403e5c0c87d958020f342077de3375c3a4851387bca5feb"
     },
     {
       "path": "data/ai_sources_holdout/openai_donor_g3_holdout.jpg",
       "role": "test_only",
       "origin_generation": "86aba4ba-43b3-4a4a-8406-260f94098849",
-      "source_family": "OpenAI"
+      "source_family": "OpenAI",
+      "sha256": "74ac93be03cdf35119896b60832d2300cd3711c1b18cc2f816aed315890979e3"
     }
   ],
   "existing_gemini": "Retain both pre-existing Gemini donor files in data/ai_sources",
@@ -33,5 +36,6 @@
     "The holdout is same OpenAI generator family as g1/g2, so this is leave-one-source-out, not generator-family-held-out",
     "All pasted bands are team-created synthetic edits, never evidence against published authors"
   ],
-  "truthfulness": "Not Gemini-generated; never attribute AI donor family incorrectly."
+  "truthfulness": "Not Gemini-generated; never attribute AI donor family incorrectly.",
+  "validation": "Exact JPEG bytes and origin generations verified from the tool-generated source images; cropped presentation labels removed. Holdout was independently generated and never resides in the ai_sources training directory."
 }
