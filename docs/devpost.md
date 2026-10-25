@@ -1,10 +1,10 @@
 # Devpost submission (final text, ready to paste)
 
-Every number below comes from `results/*.json` in the repo. If a number changes, change it here too.
+Results below are from the named recorded benchmark and manual-test files. The artificial experiments do not measure real-world misconduct.
 
 **Title:** Below the Watermark
 
-**Tagline:** AI watermarks catch whole fake images. We showed they miss a single pasted band, and built a review tool for the figures they can't vouch for.
+**Tagline:** Find scientific images reused within research papers and across published sources—with evidence for human reviewers.
 
 ---
 
@@ -26,9 +26,9 @@ I work in a wet lab, and Western blots are the evidence behind a huge share of b
 1. lists every embedded figure by page, and names anything it could not analyze;
 2. reads content credentials, and says plainly when one declares an image AI generated;
 3. finds the same image region used twice in a paper (intrapaper duplication), even cropped, resized, re saved or mirrored;
-4. checks every figure against a library of published figures, and on request sends an agent to look for the figure in other papers (interpaper duplication): Gemini reads the title, abstract and captions and plans Europe PMC searches for the same authors and the same topic, the agent pulls the figures of the open access papers it finds and checks each one, and every search it ran is listed in the report;
+4. checks every figure against a library of published figures, and on request sends an agent to look for the figure in other papers (interpaper duplication): Gemini reads the title, abstract and captions and plans Europe PMC searches for the same authors and the same topic, the agent pulls the figures of the open access papers it finds and checks each one, and every query and paper checked is listed in the interface, and in the downloadable report when the search ran before export;
 5. screens Western blots band by band with a small neural network we trained, and looks for copied bands;
-6. writes a self contained HTML review report with the flagged regions drawn on the figures.
+6. exports a self-contained HTML evidence report with region matches, source citations, skipped checks and any completed agent search log.
 
 Flags are leads for a human reviewer, never verdicts.
 
@@ -39,7 +39,7 @@ Flags are leads for a human reviewer, never verdicts.
 - **Data:** CC BY figures from Europe PMC; panels cut out automatically; forgeries generated in Python with OpenCV, scikit image and PyMuPDF, using bands from blots we made with Gemini.
 - **Model:** a small CNN written in JAX and trained on CPU. It looks at 32 pixel windows of a blot, normalized against the rest of the same blot, and scores how out of place each one is. Trained on 151 papers and tested on 72 papers it never saw.
 - **Duplication:** SIFT keypoints on image content only (text on white is masked out, since labels like "beta actin" use the same fonts in every paper), one to one matching, a RANSAC similarity transform, and then a pixel check on the aligned regions, so a cropped, resized or mirrored copy still lines up but a chart drawn from the same template does not. The same matcher runs within a paper, against a library of 112 published figures from 62 papers, and on figures the agent downloads.
-- **Agent:** Gemini plans the searches from the manuscript text (or reads the labels off a single figure); the Europe PMC REST API finds open access papers; their figures come from the Europe PMC file service.
+- **Agent:** Gemini plans the searches only if an API key is configured, with keyword planning otherwise. Europe PMC supplies open-access papers and figures. The agent's CI tests use fixtures; actual online availability must be checked separately.
 - **App:** FastAPI backend, React frontend designed like a film lightbox, `c2pa-python` for credentials, perceptual hashing plus structural similarity for whole image reuse.
 - **Gemini** made our AI blots; **SynthID Detector** was used by hand only.
 
@@ -49,9 +49,9 @@ Flags are leads for a human reviewer, never verdicts.
 - End to end, as the app actually runs: we pasted one Gemini band into each of 22 held out published figures. The app flagged the edited panel in 7, flagged no untouched panel in any edited figure, and flagged 1 of the 22 unedited originals.
 - An optional Strict setting, set on calibration papers to flag at most 1% of unedited panels: on 20 held out papers it caught 24% of pasted AI bands while flagging 2.5% of unedited panels (Standard on the same papers: 33% and 5.5%). On the 22 whole figures, Strict flagged 4 edited panels and none of the unedited originals.
 - After a 50% resize it catches about 5%. Resizing erases most of what it relies on.
-- Duplication matcher: we lifted a blot panel or micrograph block from one published figure into a figure from another paper (resized 70 to 130%, some re saved as JPEG, cropped or mirrored). It found 110 of 118 (93%); every resized copy and 30 of 31 mirrored ones. On 7,140 pairs of untouched published figures it raised no false match, including 54 pairs from the same paper. A single small strip on its own is harder (60 of 120).
+- **Duplication matcher:** On 118 controlled cross-paper copied-block examples (blot and microscopy regions occupying approximately **25–55% of the original figure**, with cropping, mirroring, resizing or JPEG changes), it found **110/118 (93.2%)**. On smaller individual copied panels, often narrow blot strips, it found **60/120 (50%)**. There were **0/7,140** matches among untouched figure pairs in the evaluated reference collection. These numbers do not establish overall real-paper performance or the web agent's search recall.
 
-That is a first baseline on a hard problem, at a scale where the watermark can't help at all. The benchmark is open so others can beat it.
+These are controlled tests of duplicated pixels, not direct measurements of misconduct. Separately, our openly documented blot-edit benchmark allows others to improve on the experimental CNN.
 
 ## Challenges we ran into
 
@@ -65,8 +65,8 @@ That is a first baseline on a hard problem, at a scale where the watermark can't
 - A measured, reproducible gap in an AI safety tool that went public two weeks before the hackathon.
 - An open benchmark with pixel level ground truth for AI era blot edits.
 - A duplication agent that looks for a figure in other published papers, not just inside the one you uploaded.
-- A working tool that goes from a paper PDF to a review report in about 20 seconds, with every limit written into the report.
-- An independent audit of our own app that found and fixed a crash, a resolution bug behind most false flags, and several overclaims, backed by 29 automated tests.
+- A functioning paper-PDF-to-evidence-report workflow with within-paper and published-library comparisons, plus optional online searching. Processing time varies with the input, library cache and network.
+- An independent audit that uncovered a PDF parsing bug, a resolution mismatch and misleading reports, followed by regression testing for the new HTML evidence export.
 
 ## What we learned
 
