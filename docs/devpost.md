@@ -1,6 +1,6 @@
 # Devpost submission (final text, ready to paste)
 
-Every number below comes from a file in `results/` or a recorded run. Places marked **[V5]** change if the V5 model is promoted; leave them as written if it is not.
+This submission uses the deployed **V3** blot CNN. Every number below comes from a file in `results/` or a recorded run; all reported CNN results are measurements of V3.
 
 **Title:** Below the Watermark
 
@@ -26,7 +26,7 @@ Watermarks protect whole AI images. Science gets manipulated one figure, one pan
 **The tool.** Upload a figure or a whole paper PDF. Below the Watermark:
 
 1. **Finds images reused inside the paper.** Every pair of figures is compared region by region, so a blot reused under another label is found even when it was cropped, resized, re-saved or mirrored.
-2. **Finds figures lifted from other papers.** Every figure is checked against a library of published figures, and a **search agent** goes further on request: Gemini reads the manuscript's title, abstract and captions and plans Europe PMC searches for the same authors and the same topic, the agent downloads the figures of the open-access papers it finds, and the same matcher checks each one. Every query and paper it checked is listed.
+2. **Finds figures lifted from other papers.** Every figure is checked against a library of published figures, and an **online search agent starts automatically with each upload**. When Gemini is configured, it reads the manuscript's title, abstract and captions and plans Europe PMC searches for the same authors and the same topic; keyword rules take over if Gemini is unavailable. The agent downloads the figures of the open-access papers it finds, and the same matcher checks each one. Every query and paper it checked is listed.
 3. **Reads content credentials** and says plainly when one declares an image AI generated; hands off to SynthID Detector for the manual check.
 4. **Screens Western blots band by band** with a small neural network we trained (a proof of concept, see below).
 5. **Writes a self-contained HTML evidence report**: matched regions side by side with source citations and links, flagged panels, and everything it checked or skipped.
@@ -37,7 +37,7 @@ Flags are leads for a human reviewer, never verdicts: reuse can be legitimate.
 
 - **Duplication matcher:** SIFT keypoints on image content only (text on white is masked out, since labels like "beta-actin" use the same fonts in every paper), one-to-one matching, a RANSAC similarity transform, and a pixel check on the aligned regions, so a cropped, resized or mirrored copy still lines up but a chart drawn from the same template does not. The same matcher runs within a paper, against a library of 112 published CC BY figures from 62 papers, and on every figure the agent downloads.
 - **Search agent:** Gemini (`gemini-flash-latest`) plans the Europe PMC queries from the manuscript text, or reads the protein labels off a single figure; keyword rules take over if Gemini is unavailable. The Europe PMC REST API supplies open-access papers and their figures.
-- **Blot CNN:** a small JAX network that scores 32-pixel windows of a blot against the rest of the same blot, trained on our own benchmark: real blot panels from CC BY papers, edited five ways (copy-move, cross-splice, AI splice, intensify, erase) with bands from blots we made with Gemini, pushed through realistic publishing steps, each with a pixel mask.
+- **Blot CNN (V3, deployed proof of concept):** a small JAX network that scores 32-pixel windows of a blot against the rest of the same blot, trained on our own benchmark: real blot panels from CC BY papers, edited five ways (copy-move, cross-splice, AI splice, intensify, erase) with bands from blots we made with Gemini, pushed through realistic publishing steps, each with a pixel mask.
 - **App:** FastAPI backend, React frontend designed like a film lightbox, `c2pa-python` for credentials, PyMuPDF for PDFs.
 - **Gemini** made our AI blots and plans the agent's searches; **SynthID Detector** was used by hand only.
 
@@ -48,7 +48,7 @@ Flags are leads for a human reviewer, never verdicts: reuse can be legitimate.
 - **0 false matches** across 7,140 pairs of untouched published figures.
 - **Live agent run:** on our demo manuscript, Gemini planned the searches and the agent found the 2023 source of a lifted figure after checking **4 papers** (keyword planning needed 16 papers and 55 figures).
 
-**Blot CNN (proof of concept) [V5]:** on 72 held-out papers it caught 35% of pasted AI bands while flagging 4% of clean panels (AUROC 0.703). End to end on 22 published figures with one pasted Gemini band, it flagged the edited panel in 7 and 1 of 22 unedited originals. After a 50% resize it catches about 5%. A useful baseline, not a finished detector: the bottleneck is training data and compute.
+**Blot CNN — V3 (deployed proof of concept):** on **72 held-out papers**, V3 caught about **35% of our simulated pasted AI-band edits** while flagging about **4% of unedited panels** (AUROC **0.703**). End to end on 22 published figures with one pasted Gemini band, it flagged the edited panel in **7 of 22** and flagged **1 of 22 unedited originals**. After a 50% resize, detection drops to about 5%. It misses most edits at the main operating threshold, so a flag is a lead for review and never proof of manipulation. This is a working baseline; larger datasets and more compute are the next steps.
 
 These are controlled tests of duplicated or edited pixels, not measurements of real-world misconduct.
 
