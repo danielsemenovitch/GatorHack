@@ -123,7 +123,7 @@ function Report({ report }) {
     "Figure inventory and available checks";
   const skippedImages = report.skipped_images || [];
   const skippedCounts = skippedImages.reduce((acc, x) => ({ ...acc, [x.reason]: (acc[x.reason] || 0) + 1 }), {});
-  const SKIP_WORDS = { too_small: "too small to analyze", too_large: "over the 12 megapixel limit", figure_limit: "beyond the 48 figure limit", unreadable: "could not be decoded" };
+  const SKIP_WORDS = { too_small: "too small to analyze", too_large: "over the 12 megapixel limit", figure_limit: "beyond the 48 figure limit", pixel_budget: "beyond the 150 megapixel total per upload", unreadable: "could not be decoded" };
   const sub = imageReuse.length
     ? `${imageReuse.length} potential whole-image reuse pair${imageReuse.length === 1 ? "" : "s"} found. Image reuse can be legitimate; compare captions and methods.`
     : s.panels ? `${s.panels} Western blot panel${s.panels === 1 ? "" : "s"} screened with an experimental classifier. A negative result does not establish authenticity.`
@@ -276,7 +276,7 @@ function CheckPage({ examples, report, setReport, results }) {
   const [busy, setBusy] = useState(false);
   const [blotMode, setBlotMode] = useState("auto");
   const [cnnVersion, setCnnVersion] = useState("v3");
-  const [screeningPolicy, setScreeningPolicy] = useState("conservative");
+  const [screeningPolicy, setScreeningPolicy] = useState("benchmark");
   const [error, setError] = useState(null);
   const [over, setOver] = useState(false);
   const input = useRef(null);
@@ -371,16 +371,16 @@ function CheckPage({ examples, report, setReport, results }) {
           <span className="field">
             <label htmlFor="screening-policy">Alert sensitivity</label>
             <select id="screening-policy" value={screeningPolicy} onChange={(e) => setScreeningPolicy(e.target.value)}>
-              <option value="conservative">Conservative (fewer alerts, default)</option>
-              <option value="benchmark">Research benchmark threshold (more alerts)</option>
+              <option value="benchmark">Research threshold (default)</option>
+              <option value="conservative">Strict (very few alerts, misses most edits)</option>
             </select>
           </span>
           {op && cnnVersion === "v3" && <span className="sub" style={{ fontSize: 13, margin: 0, flexBasis: "100%" }}>
-            Measured on held-out papers with simulated edits: conservative caught {Math.round(100 * op["ai_splice_caught@0.9"])}% of pasted AI bands
-            ({Math.round(100 * op["clean_flagged@0.9"])}% of clean panels flagged); the research threshold caught {Math.round(100 * op["ai_splice_caught@0.5"])}%
-            ({Math.round(100 * op["clean_flagged@0.5"])}% of clean panels flagged).</span>}
+            Measured on held-out papers with simulated edits: the research threshold caught {Math.round(100 * op["ai_splice_caught@0.5"])}% of pasted AI bands
+            ({Math.round(100 * op["clean_flagged@0.5"])}% of clean panels flagged); strict caught {Math.round(100 * op["ai_splice_caught@0.9"])}%
+            ({Math.round(100 * op["clean_flagged@0.9"])}% of clean panels flagged).</span>}
           {cnnVersion === "v2" && screeningPolicy === "conservative" &&
-            <span className="sub" style={{ fontSize: 13, margin: 0 }}>V2 scores saturate near 1.0; it keeps its legacy threshold. Use V3 for conservative screening.</span>}
+            <span className="sub" style={{ fontSize: 13, margin: 0 }}>V2 scores saturate near 1.0; it keeps its legacy threshold. Use V3 for the strict setting.</span>}
         </div>
         <div className="examples">
           <input ref={input} className="sr" type="file" accept="image/*,.pdf" onChange={(e) => e.target.files?.[0] && send(e.target.files[0])} />
@@ -466,7 +466,7 @@ function GapPage({ results }) {
       <h2>Our detector on the same problem</h2>
       {det ? (
         <>
-          <div className="prose"><p>{isV3 ? "CNN v3, the app's default model: a" : "A"} small convolutional network trained and tested on the Below the Watermark benchmark: real blot panels from CC BY papers, forged five ways and pushed through a random publishing chain. Test papers never appear in training, and this flag line (the research benchmark threshold) is set on separate calibration papers. The app's default conservative setting uses a stricter line, so it flags fewer panels and catches fewer edits than shown here. All edits are simulated; this is a first baseline on a hard problem, not a validated detector.</p></div>
+          <div className="prose"><p>{isV3 ? "CNN v3, the app's default model: a" : "A"} small convolutional network trained and tested on the Below the Watermark benchmark: real blot panels from CC BY papers, forged five ways and pushed through a random publishing chain. Test papers never appear in training, and this flag line (the research benchmark threshold) is set on separate calibration papers. The app uses this research line by default; its optional strict setting flags far fewer panels and catches far fewer edits. All edits are simulated; this is a first baseline on a hard problem, not a validated detector.</p></div>
           <div className="stats">
             <div className="stat"><b>{det.image_auroc}</b><span>AUROC, forged vs clean panels</span></div>
             <div className="stat"><b>{Math.round(det.detect_rate_by_method?.ai_splice * 100)}%</b><span>of pasted AI bands caught</span></div>
@@ -475,7 +475,7 @@ function GapPage({ results }) {
           </div>
           {results?.audit_resolution?.benchmark?.native && (() => {
             const op = results.audit_resolution.benchmark.native, n = results.audit_resolution.benchmark.n;
-            return <p className="sub" style={{ marginTop: 10 }}><strong>The app's default conservative line (0.90) is much stricter:</strong> on {results.audit_resolution.benchmark.n_test_papers} of these held-out papers ({n.clean} clean and {n.ai_splice} AI splice images) it caught {Math.round(100 * op["ai_splice_caught@0.9"])}% of pasted AI bands and flagged {Math.round(100 * op["clean_flagged@0.9"])}% of clean panels, versus {Math.round(100 * op["ai_splice_caught@0.5"])}% and {Math.round(100 * op["clean_flagged@0.5"])}% at the research line.</p>;
+            return <p className="sub" style={{ marginTop: 10 }}><strong>The optional strict line (0.90) is much stricter:</strong> on {results.audit_resolution.benchmark.n_test_papers} of these held-out papers ({n.clean} clean and {n.ai_splice} AI splice images) it caught {Math.round(100 * op["ai_splice_caught@0.9"])}% of pasted AI bands and flagged {Math.round(100 * op["clean_flagged@0.9"])}% of clean panels, versus {Math.round(100 * op["ai_splice_caught@0.5"])}% and {Math.round(100 * op["clean_flagged@0.5"])}% at the research line.</p>;
           })()}
           {legacy && <p className="sub" style={{ marginTop: 10 }}>Legacy CNN v2 on its own (smaller) test set: AUROC {legacy.image_auroc}, {pctR(legacy.detect_rate_by_method?.ai_splice)} of pasted AI bands caught, {pctR(legacy.false_flag_rate_clean)} of clean panels flagged.</p>}
           {base && <p className="sub" style={{ marginTop: 6 }}>A gradient boosted model on hand built forensic features reached an AUROC of {base.image_auroc} on the earlier, smaller benchmark.</p>}

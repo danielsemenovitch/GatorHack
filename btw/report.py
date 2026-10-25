@@ -51,6 +51,7 @@ def _heat_overlay(heat: np.ndarray, threshold: float) -> Image.Image:
 
 
 MAX_PIXELS = 12_000_000
+MAX_TOTAL_PIXELS = 150_000_000  # per request, so one PDF cannot exhaust server memory
 
 # CNN v3 was trained on Europe PMC web figures: median width 751 px
 # (10th to 90th percentile 682 to 791 px). Publisher PDFs often embed the same
@@ -105,6 +106,7 @@ def _figures_from_upload(data: bytes, filename: str, max_figures: int = 48):
         decoration = {x for x, pls in by_xref.items()
                       if len({pl[4] for pl in pls}) >= 3 and len({pl[5] for pl in pls}) == 1 and pls[0][5] is not None}
         out, decoded, first = [], {}, {}
+        budget = MAX_TOTAL_PIXELS
         for label, xref, w, h, pno, rect in placements:
             if xref in decoration and xref in first:
                 repeats.setdefault(first[xref], []).append(label)
@@ -119,7 +121,11 @@ def _figures_from_upload(data: bytes, filename: str, max_figures: int = 48):
             if len(out) >= max_figures:
                 skipped.append({"label": label, "reason": "figure_limit", "width": w, "height": h})
                 continue
+            if xref not in decoded and w * h > budget:
+                skipped.append({"label": label, "reason": "pixel_budget", "width": w, "height": h})
+                continue
             if xref not in decoded:
+                budget -= w * h
                 try:
                     decoded[xref] = (_pixmap_rgb(fitz.Pixmap(doc, xref)), "")
                 except Exception as e:  # one odd image must not sink the whole PDF
@@ -182,6 +188,24 @@ def _horizontal_blot_structure(crop: Image.Image, min_ratio: float = 1.55) -> bo
     return horizontal_edge_ratio >= min_ratio
 
 
+def _text_heavy(crop: Image.Image, scale: float = 1.0) -> bool:
+    """Reject framed tables and annotation boxes (many small dark glyphs).
+
+    Same glyph count used by scripts/build_benchmark.filter_panels to keep the
+    training panels (text heavy panels were excluded there), measured at the
+    training scale so high resolution figures are judged like web figures.
+    """
+    if scale < 1.0:
+        crop = crop.resize((max(1, round(crop.width * scale)), max(1, round(crop.height * scale))), Image.LANCZOS)
+    g = to_gray(crop)
+    dark = (g < 90).astype(np.uint8)
+    n, _, st, _ = cv2.connectedComponentsWithStats(dark, 8)
+    glyphs = sum(1 for i in range(1, n) if 4 <= st[i, 4] <= 250 and st[i, 2] <= 25 and st[i, 3] <= 25)
+    density = glyphs / max(1.0, g.size / 10000)
+    white = float((g > 235).mean())
+    return density >= 25 or (white > 0.45 and density > 6)
+
+
 def _blot_candidates(fig: Image.Image, mode: str = "auto"):
     """Gate the experimental blot model; manual mode is user-confirmed, NOT validated.
 
@@ -208,13 +232,15 @@ def _blot_candidates(fig: Image.Image, mode: str = "auto"):
             continue
         if not _horizontal_blot_structure(crop, min_ratio=1.20 if user_selected else 1.55):
             continue
+        if _text_heavy(crop, _analysis_scale(fig)):
+            continue
         result.append((panel, crop))
     return result
 
 
 def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
             blot_mode: str = "auto", cnn_version: str = "v3",
-            screening_policy: str = "conservative") -> dict[str, Any]:
+            screening_policy: str = "benchmark") -> dict[str, Any]:
     if blot_mode not in ("auto", "blot", "off"):
         raise ValueError("blot_mode must be 'auto', 'blot', or 'off'")
     if cnn_version not in ("v2", "v3"):
@@ -341,11 +367,11 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
             "threshold": round(float(effective_threshold), 6) if det is not None else None,
             "benchmark_threshold": round(float(det.threshold), 6) if det is not None else None,
             "screening_policy": screening_policy,
-            "policy_note": ("Conservative v3 review cutoff 0.90 is a user-facing precision-first setting; sensitivity has not yet been independently recalibrated."
+            "policy_note": ("Strict v3 line 0.90 (optional): on held-out papers it caught about 3% of simulated AI splices, so most real edits would not be flagged. Use it only to see the very strongest alerts."
                             if cnn_version == "v3" and screening_policy == "conservative" else
                             "V2 output saturates at 1.0; stricter cutoffs are not defensibly calibrated, so v2 retains its legacy benchmark threshold."
                             if cnn_version == "v2" and screening_policy == "conservative" else
-                            "Research operating point calibrated on synthetic holdout, not on whole real papers."),
+                            "Research threshold (default): set so 5% of clean panels from separate calibration papers are flagged. Measured on simulated edits, not validated on whole real papers."),
             "score_kind": ("threshold-centered display index" if getattr(det, "space", None) == "logit"
                            else "uncalibrated CNN patch score") if det is not None else None,
             "score_is_probability": False,

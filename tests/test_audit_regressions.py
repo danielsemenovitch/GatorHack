@@ -166,3 +166,48 @@ def test_api_errors_are_readable_and_do_not_leak_internals():
     junk = client.post("/api/analyze", files={"file": ("x.png", b"hello world", "image/png")})
     assert junk.status_code == 422
     assert "BytesIO" not in junk.json()["detail"] and "readable PNG, JPEG or PDF" in junk.json()["detail"]
+
+
+def test_research_threshold_is_the_default(monkeypatch):
+    """Team decision Oct 24: the strict 0.90 line caught ~3% of held-out AI splices."""
+    import inspect
+    from btw.api import analyze_upload
+    assert inspect.signature(report.analyze).parameters["screening_policy"].default == "benchmark"
+    assert inspect.signature(analyze_upload).parameters["screening_policy"].default.default == "benchmark"
+
+
+def test_cors_is_not_open_to_every_origin():
+    from fastapi.testclient import TestClient
+    from btw.api import app
+    client = TestClient(app)
+    evil = client.options("/api/analyze", headers={"Origin": "https://evil.example", "Access-Control-Request-Method": "POST"})
+    dev = client.options("/api/analyze", headers={"Origin": "http://localhost:5173", "Access-Control-Request-Method": "POST"})
+    assert evil.headers.get("access-control-allow-origin") is None
+    assert dev.headers.get("access-control-allow-origin") == "http://localhost:5173"
+
+
+def test_total_pixel_budget_limits_one_request(monkeypatch):
+    _forbid_cnn(monkeypatch)
+    monkeypatch.setattr(report, "MAX_TOTAL_PIXELS", 100_000)
+    doc = pymupdf.open()
+    for seed in range(3):
+        doc.new_page().insert_image(pymupdf.Rect(20, 20, 420, 220), stream=_png(_textured(10 + seed)))
+    result = report.analyze(doc.tobytes(), "many.pdf", blot_mode="off")
+    assert result["summary"]["figures"] == 1  # 400x200 = 80k pixels fits once
+    assert [x["reason"] for x in result["skipped_images"]] == ["pixel_budget", "pixel_budget"]
+
+
+def test_framed_strip_bands_are_not_separate_panels():
+    """Oncotarget p62 case: a framed strip on white membrane used to yield one 'panel' per band."""
+    from btw.panels import find_panels
+    fig = np.full((260, 700), 255, np.uint8)
+    fig[40:46, 50:650] = 0; fig[154:160, 50:650] = 0; fig[40:160, 50:56] = 0; fig[40:160, 644:650] = 0  # 6 px frame
+    for i in range(4):
+        fig[80:120, 90 + i * 140:200 + i * 140] = 40  # four thick bands on white membrane
+    rng = np.random.default_rng(0)
+    im = Image.fromarray(np.clip(fig + rng.normal(0, 2, fig.shape), 0, 255).astype(np.uint8)).convert("RGB")
+    panels = find_panels(im, min_score=0.0)
+    assert len(panels) == 1
+    p = panels[0]
+    assert p.w >= 560 and p.h >= 100  # the whole strip
+    assert p.x >= 56 and p.y >= 46 and p.x + p.w <= 644 and p.y + p.h <= 154  # frame trimmed

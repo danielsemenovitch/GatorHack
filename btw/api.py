@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 from pathlib import Path
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
@@ -20,7 +21,12 @@ MAX_BYTES = 25 * 1024 * 1024
 log = logging.getLogger("btw.api")
 
 app = FastAPI(title="Below the Watermark")
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+# The built frontend is served from this same origin, so browsers need no CORS
+# for normal use. Only the Vite dev server (and origins listed in
+# BTW_CORS_ORIGINS, comma separated) may call the API from another origin.
+_ORIGINS = [o.strip() for o in os.environ.get(
+    "BTW_CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",") if o.strip()]
+app.add_middleware(CORSMiddleware, allow_origins=_ORIGINS, allow_methods=["GET", "POST"], allow_headers=["*"])
 
 
 @app.get("/api/health")
@@ -29,7 +35,7 @@ def health():
 
 
 @app.post("/api/analyze")
-def analyze_upload(file: UploadFile = File(...), blot_mode: str = Form('auto'), cnn_version: str = Form('v3'), screening_policy: str = Form('conservative')):
+def analyze_upload(file: UploadFile = File(...), blot_mode: str = Form('auto'), cnn_version: str = Form('v3'), screening_policy: str = Form('benchmark')):
     # A plain `def` endpoint runs in FastAPI's worker threadpool, so a long
     # CPU-bound analysis no longer blocks /api/health or other requests.
     data = file.file.read(MAX_BYTES + 1)  # never read more than the limit

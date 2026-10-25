@@ -42,7 +42,7 @@ def main():
                                 f"{cnn['n_test_images']:,} test images, research threshold set on separate calibration papers**")
         if audit and v3:
             op = audit["benchmark"]["native"]
-            lines.append(f"| At the app's default conservative line (0.90), on {audit['benchmark']['n_test_papers']} of the test papers | "
+            lines.append(f"| At the optional strict line (0.90), on {audit['benchmark']['n_test_papers']} of the test papers | "
                          f"{pct(op['ai_splice_caught@0.9'])} of AI splices caught, {pct(op['clean_flagged@0.9'])} of clean panels flagged |")
         if v3 and v2:
             lines.append(f"| Legacy CNN v2 on its own smaller test set ({v2['n_test_papers']} papers) | AUROC {v2['image_auroc']}, "
