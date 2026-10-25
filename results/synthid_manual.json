@@ -89,37 +89,38 @@
   {
    "id": "S1",
    "scenario": "AI band pasted into a published CC BY blot (ALK2 figure, JPEG)",
-   "synthid": "pending",
+   "synthid": "not detected",
    "c2pa": "stripped"
   },
   {
    "id": "S2",
    "scenario": "AI band pasted into a published CC BY blot (PMC10674287, JPEG)",
-   "synthid": "pending",
+   "synthid": "not detected",
    "c2pa": "stripped"
   },
   {
    "id": "S3",
    "scenario": "AI band pasted into a published CC BY blot (PMC10033651, JPEG)",
-   "synthid": "pending",
+   "synthid": "not detected",
    "c2pa": "stripped"
   },
   {
    "id": "S4",
    "scenario": "AI band pasted into a published CC BY blot (PMC10243194, JPEG)",
-   "synthid": "pending",
+   "synthid": "not detected",
    "c2pa": "stripped"
   },
   {
    "id": "S0",
    "scenario": "Published CC BY blot, untouched (negative control)",
-   "synthid": "pending",
+   "synthid": "not detected",
    "c2pa": "none"
   }
  ],
  "notes": [
   "J and N (larger single lane strips) were uploaded but their exact verdict wording was not recorded; both were not detected.",
   "Small sample: a case study, not a benchmark.",
-  "Pasted band composites use openly licensed figures; we made every edit ourselves for this test. The published figures are unaltered and their authors are not implicated."
+  "Pasted band composites use openly licensed figures; we made every edit ourselves for this test. The published figures are unaltered and their authors are not implicated.",
+  "Round 4 (S0 to S4) uploaded by hand by Daniel on Oct 24 2026; every one returned \"SynthID was not detected\". S0 is the untouched published figure (negative control), so its result is the expected one."
  ]
 }

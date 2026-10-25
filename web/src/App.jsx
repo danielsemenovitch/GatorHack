@@ -42,7 +42,7 @@ const pct = (v, total) => `${(100 * v) / total}%`;
 const scoreFmt = (v) => Number.isFinite(Number(v)) ? Number(v).toFixed(4) : "n/a";
 
 /* The figure on the lightbox: panels, heat, band boxes, duplicate links. */
-function Stage({ fig, duplicates = [], showHeat = true, activeBand, onBand, threshold, knownEdit }) {
+function Stage({ fig, duplicates = [], showHeat = true, activeBand, onBand, threshold, knownEdit, knownEditLabel = "known edit" }) {
   const W = fig.width, H = fig.height;
   const links = duplicates.filter((d) => d.a.figure === fig.id && d.b.figure === fig.id);
   const panelById = Object.fromEntries(fig.panels.map((p) => [p.id, p]));
@@ -76,7 +76,7 @@ function Stage({ fig, duplicates = [], showHeat = true, activeBand, onBand, thre
         <div className="known-edit" title={knownEdit.note}
              style={{ left: `${100 * knownEdit.x / knownEdit.image_width}%`, top: `${100 * knownEdit.y / knownEdit.image_height}%`,
                       width: `${100 * knownEdit.w / knownEdit.image_width}%`, height: `${100 * knownEdit.h / knownEdit.image_height}%` }}>
-          <span>known edit</span>
+          <span>{knownEditLabel}</span>
         </div>
       )}
       {links.length > 0 && (
@@ -133,40 +133,39 @@ function Report({ report }) {
     <section className="report" aria-live="polite">
       <div>
         <h2>{title}</h2>
-        <p className="sub">{sub} These are review candidates, not independent findings of manipulation.</p>
-        {s.policy_note && s.panels > 0 && <p className="sub"><strong>Screening policy:</strong> {s.policy_note}</p>}
-        {!!s.skipped_panels && <p role="status"><strong>Incomplete screening:</strong> {s.skipped_panels} candidate blot panels were skipped after the {s.max_panels}-panel processing limit. This does not mean those panels are clean.</p>}
-        {(s.widespread_flag_figures || []).length > 0 && <p role="status"><strong>Concentrated alerts:</strong> Many panels in {s.widespread_flag_figures.map(f => f.label).join(", ")} were flagged. Shared background, scanner or publishing artifacts may be responsible; inspect the entire figure before drawing conclusions.</p>}
-        {report.credit && <p className="credit" style={{ marginBottom: 16 }}>{report.credit}</p>}
-        {aiDeclared && <p role="status"><strong>Provenance:</strong> {prov.summary} This is a declaration attached to the file, not a pixel analysis; any re-save removes it.</p>}
-        {report.known_edit && (() => {
-          // Does any flagged panel actually contain the region we edited?
-          const k = report.known_edit, f0 = report.figures[0];
-          const sx = f0 ? f0.width / k.image_width : 1, sy = f0 ? f0.height / k.image_height : 1;
-          const ex0 = k.x * sx, ey0 = k.y * sy, ex1 = (k.x + k.w) * sx, ey1 = (k.y + k.h) * sy;
-          const hits = (f0?.panels || []).filter((p) => p.flagged && p.x < ex1 && p.x + p.w > ex0 && p.y < ey1 && p.y + p.h > ey0);
-          const others = (f0?.panels || []).filter((p) => p.flagged).length - hits.length;
-          const msg = hits.length ? "the model flagged the panel that contains the edit" :
-            "the model did not flag the panel that contains the edit";
-          return <p role="status"><strong>Demo ground truth:</strong> the dashed outline marks the region we edited. At this setting {msg}{others > 0 ? `, and flagged ${others} untouched panel${others === 1 ? "" : "s"} (false positive${others === 1 ? "" : "s"})` : ""}.</p>;
+        <p className="sub">{sub}</p>
+        {(() => {
+          // Notes that change how to read this report, most important first.
+          const notes = [];
+          if (report.known_edit) {
+            const k = report.known_edit, f0 = report.figures[0];
+            const sx = f0 ? f0.width / k.image_width : 1, sy = f0 ? f0.height / k.image_height : 1;
+            const ex0 = k.x * sx, ey0 = k.y * sy, ex1 = (k.x + k.w) * sx, ey1 = (k.y + k.h) * sy;
+            const hits = (f0?.panels || []).filter((p) => p.flagged && p.x < ex1 && p.x + p.w > ex0 && p.y < ey1 && p.y + p.h > ey0);
+            const others = (f0?.panels || []).filter((p) => p.flagged).length - hits.length;
+            notes.push(["Known edit", <>The dashed box marks the band we pasted in for this demo. The model {hits.length ? "flagged the panel that contains it" : "did not flag the panel that contains it"}{others > 0 ? `, and flagged ${others} untouched panel${others === 1 ? "" : "s"} (a false positive)` : ""}.</>, hits.length ? "good" : "bad"]);
+          }
+          if (aiDeclared) notes.push(["Provenance", <>{prov.summary} This is a declaration attached to the file, not a pixel analysis, and any re-save removes it.</>, "bad"]);
+          if (skippedImages.length) notes.push(["Not analyzed", <>{Object.entries(skippedCounts).map(([k, n]) => `${n} image${n === 1 ? "" : "s"} ${SKIP_WORDS[k] || k}`).join("; ")}. Those images were not checked at all.</>, "bad"]);
+          if (s.skipped_panels) notes.push(["Incomplete screening", <>{s.skipped_panels} candidate blot panels were skipped after the {s.max_panels} panel limit. That does not mean they are clean.</>, "bad"]);
+          if ((s.widespread_flag_figures || []).length) notes.push(["Many flags in one figure", <>{s.widespread_flag_figures.map((f) => f.label).join(", ")}: shared background, scanner or publishing artifacts can explain several alerts at once.</>, "info"]);
+          if (s.resized_for_analysis) notes.push(["Resolution", <>{s.resized_for_analysis} figure{s.resized_for_analysis === 1 ? " is" : "s are"} sharper than the web figures (about {s.analysis_width} px wide) the blot model learned from, so blot panels were scored on copies resized to that scale.</>, "info"]);
+          return notes.length > 0 && <ul className="notes">{notes.map(([k, v, tone]) => <li key={k} className={tone}><strong>{k}.</strong> {v}</li>)}</ul>;
         })()}
-        {skippedImages.length > 0 && <p role="status"><strong>Not analyzed:</strong> {Object.entries(skippedCounts).map(([k, n]) => `${n} image${n === 1 ? "" : "s"} ${SKIP_WORDS[k] || k}`).join("; ")}. Those images were not checked at all.</p>}
-        {!!s.resized_for_analysis && <p className="sub">{s.resized_for_analysis} figure{s.resized_for_analysis === 1 ? " is" : "s are"} larger than the blot model's training resolution (figures about {s.analysis_width} px wide), so {s.resized_for_analysis === 1 ? "its" : "their"} blot panels were scored on copies resized to that scale. Without this, scores on high resolution figures run high on unedited blots. Edits made at full resolution may be harder to detect after resizing.</p>}
         <div className="toolbar">
-          <label className="toggle"><input type="checkbox" checked={showHeat} onChange={(e) => setShowHeat(e.target.checked)} disabled={!s.panels} /> Show blot heat</label>
+          <label className="toggle"><input type="checkbox" checked={showHeat} onChange={(e) => setShowHeat(e.target.checked)} disabled={!s.flagged_panels} /> Show heat on flagged panels</label>
           <button className="btn ghost small" type="button" onClick={() => downloadReviewReport(report)}>Download review report (HTML)</button>
         </div>
-        <p className="sub">Heat is drawn only on panels above the review threshold. It visualizes overlapping 32-pixel CNN patches, not pixel-accurate locations or boundaries of altered bands.</p>
         {report.figures.map((fig) => (
           <div key={fig.id} style={{ marginBottom: 20 }}>
-            <p className="sub" style={{ marginBottom: 6 }}><strong>{fig.label}</strong> — {fig.native_width || fig.width} × {fig.native_height || fig.height} px
-              {fig.analysis_scale && fig.analysis_scale < 1 && fig.panels.length ? ` (blot panels scored at ${Math.round(fig.analysis_scale * 100)}% size, the model's training resolution)` : ""}
-              {fig.repeated_placements?.length ? ` · also drawn at ${fig.repeated_placements.length} more place${fig.repeated_placements.length === 1 ? "" : "s"} (same embedded object, e.g. a logo)` : ""}
-              {fig.blot_screen === "experimental" ? " · Experimental blot screen" : fig.blot_screen === "partial" ? " · Partially screened" : fig.blot_screen === "not_assessed_limit" ? " · Not assessed (limit reached)" : " · Blot model not applied"}</p>
+            <p className="figlabel"><strong>{fig.label}</strong> <span>{fig.native_width || fig.width} × {fig.native_height || fig.height} px</span>
+              <span className={`tag ${fig.panels.some((p) => p.flagged) ? "bad" : ""}`}>{fig.blot_screen === "experimental" ? `${fig.panels.length} blot panel${fig.panels.length === 1 ? "" : "s"} screened${fig.panels.some((p) => p.flagged) ? `, ${fig.panels.filter((p) => p.flagged).length} flagged` : ""}` : fig.blot_screen === "partial" ? "Partly screened" : fig.blot_screen === "not_assessed_limit" ? "Not screened (limit reached)" : "No blot panels found"}</span>
+              {fig.repeated_placements?.length ? <span className="tag">also drawn {fig.repeated_placements.length} more time{fig.repeated_placements.length === 1 ? "" : "s"}</span> : null}</p>
             <div className="lightbox">
               <Stage fig={fig} duplicates={report.duplicates || []} showHeat={showHeat} threshold={thr || 0.5}
                      knownEdit={fig.id === 0 ? report.known_edit : null}
                      activeBand={active?.key} onBand={(key, p, b) => setActive({ key, p, b })} />
+              {fig.id === 0 && report.credit && <p className="credit">{report.credit}</p>}
             </div>
           </div>
         ))}
@@ -223,12 +222,10 @@ function Report({ report }) {
         <div className="check">
           <h3>Band splice detector</h3>
           <span className={`state ${s.flagged_panels ? "bad" : "info"}`}>{!s.panels ? "Not assessed" : s.flagged_panels ? `${s.flagged_panels} review flag${s.flagged_panels === 1 ? "" : "s"}` : "No flags found"}</span>
-          <p>Experimental model for blot-like panels only. Stricter settings reduce review alerts but can miss more real edits. The displayed alert threshold is not an accuracy guarantee.</p>
+          <p>Experimental model, run only on panels that look like Western blots. {s.policy_note}</p>
           {s.panels > 0 && s.screening_policy === "benchmark" && s.model_version === "v3" &&
             <p><strong>Expect some chance flags:</strong> this threshold flags about 1 in 20 unedited panels, so with {s.panels} panel{s.panels === 1 ? "" : "s"} screened about {(s.panels * 0.05).toFixed(1)} flag{s.panels * 0.05 === 1 ? "" : "s"} would be expected even if nothing was edited.</p>}
-          {s.panels > 0 && thr != null && <div className="row" style={{ display: "block" }}>
-            <p style={{ margin: 0 }}>Model {s.model_version || report.cnn_version || "not recorded"}: highest panel anomaly index <strong>{scoreFmt(s.max_splice_score)}</strong>; review threshold <strong>{scoreFmt(thr)}</strong>. These are uncalibrated model indices, not percentages or probabilities.</p>
-          </div>}
+          {s.panels > 0 && thr != null && <p>Model {s.model_version || report.cnn_version || "not recorded"}: highest panel index <strong>{scoreFmt(s.max_splice_score)}</strong>, flag line <strong>{scoreFmt(thr)}</strong>. Indices are not probabilities. Heat shows overlapping 32 pixel patches, not the exact edge of an edit.</p>}
         </div>
         <div className="check">
           <h3>Whole-image reuse</h3>
@@ -325,23 +322,24 @@ function CheckPage({ examples, report, setReport, results }) {
     <>
       <section className="hero">
         <div>
-          <h1>Scientific images deserve a closer look.</h1>
+          <h1>AI watermarks miss a single pasted band.</h1>
           <p className="lede">
-            Upload a scientific figure or paper PDF to inspect available image provenance and potential image reuse.
-            We also provide experimental band-level screening for Western blots, inspired by our studies of where AI watermark checks become inconclusive.
+            We pasted bands made with Gemini into four published Western blots. Google's SynthID Detector found none of them.
+            Below the Watermark reviews the figures a watermark can't vouch for.
           </p>
           <div className="actions">
-            <button className="btn" type="button" onClick={() => input.current?.click()} disabled={busy}>{busy ? "Reviewing…" : "Review a scientific image"}</button>
-            {hero && <button className="btn ghost" type="button" onClick={() => loadExample(hero)}>See this example</button>}
+            <button className="btn" type="button" onClick={() => input.current?.click()} disabled={busy}>{busy ? "Reviewing…" : "Review a figure or PDF"}</button>
+            {hero && <button className="btn ghost" type="button" onClick={() => loadExample(hero)}>Run our checks on this blot</button>}
           </div>
         </div>
         {hero?.preview && (
           <div className="lightbox">
             <figure>
-              <Stage fig={{ ...hero.preview, panels: [] }} showHeat={false} threshold={1} />
+              <Stage fig={{ ...hero.preview, panels: [] }} showHeat={false} threshold={1}
+                     knownEdit={hero.known_edit} knownEditLabel="AI band we added" />
               <figcaption>
-                <span className="verdict-chip">SynthID: <span className={hero.synthid === "not detected" ? "no" : ""}>{hero.synthid === "pending" ? "check pending" : hero.synthid}</span></span>
-                <span className="verdict-chip">CNN: <span>Run example for current analysis</span></span>
+                <span className="verdict-chip">SynthID Detector: <span className={hero.synthid === "not detected" ? "no" : ""}>{hero.synthid === "pending" ? "check pending" : hero.synthid}</span></span>
+                <span className="verdict-chip">Content credential: <span>none</span></span>
               </figcaption>
               {hero.credit && <p className="credit">{hero.credit}</p>}
             </figure>
@@ -353,7 +351,7 @@ function CheckPage({ examples, report, setReport, results }) {
            onDragOver={(e) => { e.preventDefault(); setOver(true); }}
            onDragLeave={() => setOver(false)}
            onDrop={(e) => { e.preventDefault(); setOver(false); const f = e.dataTransfer.files?.[0]; if (f) send(f); }}>
-        <p><strong>Drop an image or research paper PDF here.</strong> We inventory embedded raster figures, compare whole images for reuse, check available provenance, and screen blot-like panels experimentally. Results are evidence for human review, not authenticity verdicts. The server does not intentionally retain uploads.</p>
+        <p><strong>Drop a figure or a paper PDF here.</strong> We list every embedded figure, look for images used twice, read content credentials and screen Western blots band by band. Results are leads for a human reviewer, not verdicts. Uploads are analyzed in memory and not stored.</p>
         <div className="controls">
           <span className="field">
             <label htmlFor="blot-mode">Western blot screen</label>
@@ -406,6 +404,20 @@ function cellClass(v) {
   return "unsure";
 }
 
+/* Small schematic of what was uploaded: a whole blot, one band, or one band inside a real blot. */
+function ScaleGlyph({ kind }) {
+  const band = (x, y, w, h, fill) => <rect key={`${x}-${y}`} x={x} y={y} width={w} height={h} rx={h / 2} fill={fill} />;
+  const ink = "#1F2B33", pink = "#C8285F";
+  return (
+    <svg className="glyph" viewBox="0 0 96 56" aria-hidden="true">
+      {kind !== "band" && <rect x="1" y="1" width="94" height="54" rx="3" fill="#fff" stroke={ink} strokeWidth="1.5" />}
+      {kind === "whole" && [10, 31, 52, 73].flatMap((x) => [band(x, 14, 14, 6, pink), band(x, 34, 14, 5, pink)])}
+      {kind === "band" && band(30, 22, 36, 12, pink)}
+      {kind === "pasted" && [10, 31, 52, 73].flatMap((x) => [band(x, 14, 14, 6, x === 52 ? pink : ink), band(x, 34, 14, 5, ink)])}
+    </svg>
+  );
+}
+
 // Which hand run SynthID row used the same publishing step (whole AI blot).
 const ROB_TO_SYNTHID = { none: "A", resave: "B", resize_50: "C", jpeg_q60: "D", contrast: "F", pdf_roundtrip: "H" };
 
@@ -422,9 +434,6 @@ function GapPage({ results }) {
   const robNoResize = rob ? rob.rows.filter((r) => !/resize/.test(r.transform) && r.transform !== "none") : [];
   const robResize = rob ? rob.rows.find((r) => r.transform === "resize_50") : null;
   const pctR = (v) => `${Math.round(v * 100)}%`;
-  const pasted = sid?.rows.filter((r) => /pasted/.test(r.scenario)) || [];
-  const pastedMissed = pasted.filter((r) => r.synthid === "not detected").length;
-  const pastedDone = pasted.filter((r) => r.synthid !== "pending").length;
   const groups = [
     ["Whole AI image", (r) => !/Single|pasted|untouched/.test(r.scenario)],
     ["AI band on its own", (r) => /Single/.test(r.scenario)],
@@ -435,13 +444,27 @@ function GapPage({ results }) {
     <section className="page">
       <h1>Where the watermark stops working</h1>
       <div className="prose">
-        <p>We made western blots with Gemini's image tools and checked them with SynthID Detector, which Google opened to the public on October 7, 2026. Every upload was done by hand, one fixed scenario at a time.</p>
-        <p><strong>Whole AI images were caught every time,</strong> through re-saving, resizing, heavy JPEG, cropping, contrast changes and a PDF round trip. The visible content credential did not survive a single re-save. <strong>Single AI bands were too small for it to check.</strong>{" "}
-          {pastedDone > 0
-            ? <>An AI band pasted into a published blot came back as not detected in <strong>{pastedMissed} of {pastedDone}</strong> tests.</>
-            : <>We are re-running the pasted band test on openly licensed figures; those rows show as pending until then.</>}
-        </p>
+        <p>We made Western blots with Gemini's image tools and checked them with SynthID Detector, which Google opened to the public on October 7, 2026. Every upload was done by hand, one fixed scenario at a time. The content credential that Gemini attaches was stripped by the first re-save every time, so the watermark is the only signal left.</p>
       </div>
+      {sid && (() => {
+        const rowsOf = (fn) => sid.rows.filter(fn).filter((r) => r.synthid !== "pending");
+        const whole = rowsOf(groups[0][1]), single = rowsOf(groups[1][1]), pastedDoneRows = rowsOf(groups[2][1]);
+        const steps = [
+          ["whole", "A whole AI blot", whole.filter((r) => r.synthid === "detected").length, whole.length, "detected", "after re-saving, resizing, JPEG, cropping, contrast and PDF export", "caught"],
+          ["band", "One AI band on its own", single.filter((r) => r.synthid === "not enough details").length, single.length, "not enough details", "too small for the detector to judge", "unsure"],
+          ["pasted", "One AI band in a published blot", pastedDoneRows.filter((r) => r.synthid === "not detected").length, pastedDoneRows.length, "not detected", "each band was cut from a watermarked Gemini image", "missed"],
+        ];
+        return <ol className="ladder" aria-label="SynthID Detector results by size of the AI region">
+          {steps.filter((st) => st[3] > 0).map(([kind, label, n, total, verdict, note, tone]) => (
+            <li key={kind}>
+              <ScaleGlyph kind={kind} />
+              <span className="what">{label}</span>
+              <span className={`verdict ${tone}`}>{verdict}</span>
+              <span className="count">{n} of {total} uploads, {note}</span>
+            </li>
+          ))}
+        </ol>;
+      })()}
       {sid && (
         <div className="scroll">
           <table className="matrix">
@@ -454,7 +477,7 @@ function GapPage({ results }) {
                     <tr key={r.id}>
                       <td>{r.scenario}</td>
                       <td className={`cell ${r.id === "S0" && r.synthid === "not detected" ? "caught" : cellClass(r.synthid)}`}>{r.synthid}</td>
-                      <td className={`cell ${r.c2pa === "present" ? "caught" : r.c2pa === "stripped" ? "missed" : "unsure"}`}>{r.c2pa}</td>
+                      <td className={`cell ${r.c2pa === "present" ? "caught" : "unsure"}`}>{r.c2pa}</td>
                     </tr>
                   ))}
                 </React.Fragment>
@@ -526,36 +549,49 @@ function GapPage({ results }) {
   );
 }
 
+const PIPELINE = [
+  ["List the figures",
+   "A PDF is opened and every embedded image is pulled out with its page number. Logos repeated on every page are listed once. Images too small, too large or unreadable are named in the report, never dropped silently.",
+   "Every raster figure in the file.", "Vector graphics and text are not analyzed."],
+  ["Read content credentials",
+   "Gemini signs its downloads with a C2PA credential that says the image was made by AI. We read it and check its integrity. SynthID has no public API, so for that check we hand you the image.",
+   "AI images straight from the generator.", "Any re-save strips the credential; in PDFs it is not checked."],
+  ["Find reused images",
+   "Every pair of figures is compared by an exact hash of the decoded pixels and by a perceptual hash confirmed with structural similarity, so a re-saved or resized copy still matches.",
+   "The same image used twice in one paper.", "Copied patches inside different images, and anything in other papers."],
+  ["Screen Western blots",
+   "Panels that look like blots (grey, framed, rows of bands) go to a small neural network. It scores 32 pixel windows against the rest of the same blot, at the resolution it was trained on, and a noise matcher looks for copied bands.",
+   "On held-out figures, 7 of 22 pasted AI bands, with about 1 in 20 unedited panels flagged.", "Most edits after resizing, most erased bands, any image type other than blots."],
+  ["Write the review report",
+   "Everything found, everything skipped and every limit goes into one HTML file you can save, print or send, with the flagged regions drawn on the figures.",
+   "A record a reviewer can check.", "It never says a figure is authentic, and a flag is never proof of misconduct."],
+];
+
 function MethodPage() {
   return (
     <section className="page">
-      <h1>Three checks, each covering what the others miss</h1>
-      <div className="layers">
-        <div className="layer">
-          <h3>Content credentials and SynthID</h3>
-          <p>Gemini signs its downloads with a C2PA credential and hides a SynthID watermark in the pixels. We read the credential automatically. SynthID has no public API, so we hand you the panel to check.</p>
-          <p className="catches">Catches whole AI images. The credential dies on any re-save; the watermark survives publishing.</p>
-        </div>
-        <div className="layer">
-          <h3>Band splice detector</h3>
-          <p>Every panel is cut into small overlapping windows. A small neural network looks at each window's pixels and noise, normalized against the rest of the same blot, and scores how out of place it looks. Real bands from clean blots are used as hard negatives so it cannot simply flag anything that looks like a band.</p>
-          <p className="catches">Aimed at pasted, darkened or erased bands. On held out papers it catches a minority of our simulated edits (see The gap), misses most erased bands, and is weakest after resizing.</p>
-        </div>
-        <div className="layer">
-          <h3>Copied bands</h3>
-          <p>Two real bands can share a shape but should not share fine noise. We compare the noise left after removing each band's shape, including flipped and rotated copies.</p>
-          <p className="catches">Targets copy and paste duplication, the kind of problem Bik and colleagues found in 3.8% of 20,621 papers in 2016 (all image types). At the app's strict setting it finds only a small fraction of our simulated copies, and resizing erases most of the evidence.</p>
-        </div>
-      </div>
+      <h1>What happens to a file you upload</h1>
+      <ol className="pipeline">
+        {PIPELINE.map(([title, body, finds, misses]) => (
+          <li key={title}>
+            <h3>{title}</h3>
+            <p>{body}</p>
+            <dl>
+              <div><dt>Finds</dt><dd>{finds}</dd></div>
+              <div><dt>Misses</dt><dd>{misses}</dd></div>
+            </dl>
+          </li>
+        ))}
+      </ol>
       <h2>Limits we know about</h2>
       <div className="prose">
-        <p>The detector was trained on forgeries we generated. A careful forger using tools we did not simulate can still get past it, and heavy compression erases the traces it relies on. A flag means look closer, never proof of misconduct.</p>
+        <p>The blot model was trained on forgeries we generated, using bands from two AI blots. A careful forger using other tools can get past it, and resizing erases most of what it relies on. A flag means look closer, never proof of misconduct.</p>
+        <p>It learned from web resolution figures about 750 pixels wide. Sharper figures, such as those in publisher PDFs, are scored on a copy resized to that scale. On one published paper, scoring at full resolution flagged half of its blot panels, while the same panels at training scale produced none; the paper has no ground truth labels, so that shows a resolution effect, not that the panels are unedited.</p>
         <p>The SynthID results are a hand run case study of a few dozen uploads, not a benchmark.</p>
-        <p>The blot model learned from web resolution figures about 750 pixels wide. Larger figures, such as those embedded in publisher PDFs, are screened on a copy resized to that width; on one published paper, scoring at full resolution flagged half of its blot panels at the research threshold, while the same panels scored at training scale produced no flags. We read that as a resolution mismatch; the paper has no ground truth labels, so it does not prove the panels are unedited.</p>
       </div>
       <h2>The benchmark</h2>
       <div className="prose">
-        <p>Real blot panels cut from openly licensed (CC BY) papers in Europe PMC, each forged by copy move, cross splice, AI splice, intensify or erase, then pushed through a random publishing chain of contrast, resizing, JPEG and PDF steps. Every forgery ships with a pixel mask of exactly what changed. Splits are by paper, so no paper is in both training and testing.</p>
+        <p>Real blot panels cut from openly licensed (CC BY) papers in Europe PMC, each forged by copy move, cross splice, AI splice, intensify or erase, then pushed through a random publishing chain of contrast, resizing, JPEG and PDF steps. Every forgery ships with a pixel mask of exactly what changed. Splits are by paper, so no paper is in both training and testing. Every edit was made by us; the published figures and their authors are not implicated.</p>
       </div>
     </section>
   );

@@ -62,7 +62,7 @@ export function reportToHtml(report) {
       '</div>').join("") +
     '</article>').join("");
   const rows = Object.entries(checks).map(([key, status]) =>
-    '<tr><td>' + esc(key.replaceAll("_", " ")) + '</td><td>' + esc(status) + '</td></tr>').join("");
+    '<tr><td>' + esc(key.replaceAll("_", " ")) + '</td><td>' + esc(String(status).replaceAll("_", " ")) + '</td></tr>').join("");
   const provenance = report.provenance || {};
   const limits = (report.limitations || [
     "This report does not establish authenticity or scientific misconduct.",
@@ -71,7 +71,7 @@ export function reportToHtml(report) {
   return '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Image integrity review — ' +
     esc(report.filename) + '</title><style>body{font:16px/1.5 system-ui,sans-serif;color:#1f2b33;max-width:900px;margin:40px auto;padding:0 22px}' +
     'h1,h2,h3{line-height:1.2}article{border-top:1px solid #bac9cf;padding:18px 0;margin:20px 0}img{max-width:100%;height:auto;object-fit:contain}' +
-    '.overview{max-height:540px}.pair{display:flex;gap:18px;align-items:flex-start}.pair>*{width:48%;min-width:0}.pair figure{margin:0}' +
+    '.overview{max-height:900px}.pair{display:flex;gap:18px;align-items:flex-start}.pair>*{width:48%;min-width:0}.pair figure{margin:0}' +
     '.pair figcaption{font-size:13px}th,td{text-align:left;padding:8px 14px;border-bottom:1px solid #ccd7dd}table{border-collapse:collapse}' +
     '.warning{padding:12px 16px;background:#f6f0eb}@media print{body{margin:8mm auto}article{break-inside:avoid}}' +
     '.ov,.crop{position:relative;display:inline-block;line-height:0;max-width:100%}.ov img,.crop img{display:block;max-width:100%}' +

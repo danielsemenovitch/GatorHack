@@ -16,7 +16,7 @@
   "report": "alk2_ai_band.report.json",
   "file": "alk2_ai_band.jpg",
   "hero": true,
-  "synthid": "pending",
+  "synthid": "not detected",
   "preview": {
    "id": 0,
    "label": "uploaded image",
@@ -386,7 +386,7 @@
   "report": "alk2_original.report.json",
   "file": "alk2_original.jpg",
   "hero": false,
-  "synthid": "pending"
+  "synthid": "not detected"
  },
  {
   "id": "gemini_blot",
