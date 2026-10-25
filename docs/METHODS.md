@@ -1,69 +1,54 @@
-# How Below the Watermark works (read this before pitching)
+# Methods and judge's guide — current submission
 
-This is written so you can explain every part in your own words and answer judges' questions. Each section ends with the questions you're likely to get.
+## Purpose
 
-## 1. The finding: where SynthID stops working
+Below the Watermark is a **scientific-image duplication review assistant**. It helps a human compare raster figures in a paper, find image regions reused in other figures, and trace potential reuse to open-access published sources. It does **not** determine research misconduct or publication priority.
 
-**What we did.** Using Gemini's image tools (free account, model "Auto," Gemini 3 family) we made western blots: whole fakes, and single bands pasted into published blots. We uploaded each one by hand to SynthID Detector (public since October 7, 2026). We tested one fixed scenario at a time, with no automation and no iterating to beat the detector, because the terms forbid both.
+## 1. Figure inventory and provenance
 
-**What we saw.**
-- Whole AI images were caught every time: re-saved, resized to 50%, JPEG at quality 60, cropped to 70%, contrast changed, placed as one panel of a figure, PDF round trip.
-- The visible C2PA content credential ("Created by Google Generative AI") was stripped by any re-save at all.
-- Single AI bands on their own came back "not enough details."
-- AI bands pasted into published CC BY blots: see `results/synthid_manual.json` (being re-run on open data).
+Upload a JPEG, PNG or PDF (25 MB maximum). PyMuPDF extracts embedded raster figures; the report identifies skipped/unreadable content. C2PA credentials are verified where available for supported original image files. The app **does not** check individual image signatures inside PDFs. SynthID has no public analysis API in this project; all SynthID case-study tests were done manually.
 
-**Why that matters.** Fraud in blots happens at band scale: one lane made darker or emptier changes the conclusion. A watermark needs enough watermarked pixels to be read, and a single band doesn't have them.
+The manual SynthID observations are recorded in `results/synthid_manual.json`: 10/10 whole Gemini blot variants detected, 4/4 pasted-band composites not detected, and isolated single-band inputs too small to assess. This is a **small case study**, not a general SynthID performance estimate. A draft disclosure to Google's team is in `docs/disclosure_email.md`; external submission is **not confirmed**.
 
-**Likely questions**
-- *Isn't this just a handful of uploads?* Yes. It's a case study, and we say so. Each composite takes about two minutes to make, and the pattern was consistent.
-- *Did you try to break SynthID?* No. Fixed, realistic publishing steps only, uploaded by hand. We reported what we saw to Google.
-- *Is it fair to call it a miss?* For lone bands it honestly declines ("not enough details"). For the four pasted band composites it answered "SynthID was not detected", so yes, those are misses; the untouched control was also not detected, as it should be.
+## 2. Duplication matching (the submission's central feature)
 
-## 2. The benchmark
+**Whole image:** decoded image pixels and perceptual similarity/structural checks identify exact or near duplicates.
 
-See `docs/DATA_CARD.md` for the exact counts (written automatically from the data). In one sentence: thousands of blot images from CC BY papers, clean or forged five ways (copy move, cross splice, AI splice, intensify, erase), each pushed through a random publishing chain, each with a pixel mask, split by paper.
+**Region-level reuse across separate figures:** `btw/region_match.py` extracts SIFT descriptors from visual content, suppresses mostly text/blank areas, uses one-to-one feature matching and geometric RANSAC alignment, then requires at least 0.90 aligned content correlation. It can tolerate resizing, JPEG changes, mirroring and some cropping. It does *not* scan for copying **within one composite figure**, and small texture-poor strips can be missed.
 
-**Likely questions**
-- *Why generated forgeries and not real fraud cases?* Real cases are few, legally sensitive, and don't come with pixel masks. Generated forgeries let us measure detection exactly. The tradeoff is realism, which is why we hold out a whole forgery type in testing.
-- *Why web resolution?* That's what reviewers and readers see, and what Europe PMC and PubMed Central serve. It's also the hard case.
+**Across papers:** a bundled reference library contains **112 CC BY figures from 62 papers** (demo-source exclusions are intentional). The optional `Search Europe PMC` action plans related-paper queries using Gemini if `GEMINI_API_KEY` is configured, or deterministic keywords otherwise. It retrieves open-access paper figures and runs the same matcher. Queries, paper IDs, counts and errors are reported; its result is bounded to the papers actually checked. A successful local-library match does not mean the web agent ran.
 
-## 3. The band splice detector
+**Controlled region benchmark (PR #8):**
 
-**Idea.** An edited region was made under different conditions from the rest of the blot (another camera, another blot, a generator, a resampling step), so its pixel statistics disagree with the rest of the same panel. We never ask "is this band dark?" We ask "does this band behave like its neighbors?"
+| Test class | Detected | Why both matter |
+|---|---:|---|
+| **Larger reused blot/micrograph blocks (~25–55% of a source figure)** | **110/118 (93.2%)** | Resized, cropped, mirrored or JPEG-compressed source blocks pasted into different figures. `results/region_match_eval_blocks.json` |
+| **Single smaller reused panels, often narrow blot strips** | **60/120 (50%)** | Lower texture and less spatial structure. `results/region_match_eval.json` |
+| **Untouched reference-image pairs** | **0/7,140 false matches** | Tested pairs in the provided library only, not an independently sampled real-world false-positive rate. `results/region_match_eval.json` |
 
-**Two models**
-- **Hand built features + gradient boosting.** Each panel is cut into 24 × 24 pixel windows. For each window we measure:
-  - noise level (residual after a median filter)
-  - noise shape (kurtosis)
-  - error level analysis (how much the window changes when recompressed)
-  - JPEG 8 × 8 block alignment
-  - edge sharpness
-  - background brightness and grain
+Both positive benchmarks are artificially constructed from openly licensed published figures; neither establishes recall on authentic forensic casework. The online agent's search-retrieval accuracy has **not** been benchmarked at 93.2%.
 
-  Each measure is compared with the panel's other bands, or with its background. A gradient boosted tree model scores each window.
-- **Small convolutional network (JAX, CPU).** Same windows, but the network sees the pixels directly: intensity relative to the panel background, plus a noise residual normalized by the panel's typical noise. It's about 40,000 parameters, trained with real band windows as hard negatives so it can't cheat by flagging "anything that is a band."
+Reproduce: `python -m scripts.eval_region_match --blocks`, `python -m scripts.eval_region_match`, and `python -m scripts.eval_region_match --fp`. The last option checks all untouched reference pairs and takes longer.
 
-**Panel score.** The mean of the 3 most suspicious band windows (for the CNN, on the raw logit scale, optionally relative to the panel's own median band window; the rule is picked on calibration papers). The flag line is set on clean panels from separate CALIBRATION papers (held out from training) so that 5% of them would be flagged. Test papers never touch the threshold or the rule. In the app every score is shown on a 0 to 100 scale where the flag line is exactly 50.
+## 3. Experimental Western blot CNN (supporting proof of concept)
 
-**Explanations.** When a band is flagged, the app lists the hand built measures that deviate most at that spot, in plain language ("its noise level differs from the rest of the blot").
+The CNN in `models/splice_cnn_v3.npz` uses JAX and sliding 32-pixel patches, with intensity and noise features relative to the rest of each blot. The team made synthetic edits: copied bands, cross-spliced bands, AI-donor splices, intensity changes and erasures. Panel scores are **review indices, not probabilities**. Standard flag line is 0.50 and Strict line is 0.60, calibrated separately.
 
-**Likely questions**
-- *What's the accuracy?* See `results/detector_metrics.json` and `results/cnn_metrics.json`. Quote the AUROC and the AI splice detection rate at 5% false flags. Do not round up.
-- *Why not a big pretrained forensic model?* We had a CPU and 48 hours. The benchmark is public so anyone can try one.
-- *Does it generalize to AI bands it never saw?* That's the held out method row: trained without any AI splices, tested on AI splices.
+On 2,761 synthetic test images from 72 held-out papers, v3 measured AUROC 0.703, detected 35.4% of AI-splice panels and flagged 4.1% of clean panels (`results/cnn_v3_metrics.json`). The full application flagged an edited panel in 7 of 22 artificially edited whole figures (`results/figure_level_eval.json`). After a 50% resize, recall was about 5%. **Most edits go undetected**. V4/V4.1 research runs are isolated, and no model should be promoted solely based on training loss.
 
-## 4. Copied bands
+The separate copied-band noise matcher has low recall and should be treated as supplementary.
 
-**Idea.** Two real bands can share a shape but never share noise. For each band we take the high pass residual, remove line structure (band edges and frame lines, which look alike everywhere), and search the blot for the same grain pattern, including flipped copies.
+## 4. Review, attribution, downloadable evidence
 
-**Honest status.** It finds exact copies in unresized images. At web resolution after resizing or JPEG it rarely does (see `results/duplicates_metrics.json`). Present it as a supporting check, not a headline.
+All candidate regions are presented side by side. The downloaded standalone HTML report contains performed/skipped checks, matched crops for within-paper and local-reference matches, source IDs and links, and—**only if requested before export**—the on-demand Europe PMC query/paper log and matches. A missing source or an unexecuted web search is not silently treated as “searched, nothing found.”
 
-## 5. Content credentials
+The demonstration PDF `examples/demo_reuse.pdf` contains **two team-created duplications** and explicitly identifies CC BY original figures and alterations. Original authors are not implicated.
 
-We read C2PA manifests with the official `c2pa-python` library. A raw Gemini download shows "Created by Google Generative AI" and "Applied imperceptible SynthID watermark." Any re-save removes it, so for published figures this check almost always says "none." It's still worth running, because when it is present it is signed evidence.
+## Questions judges may ask
 
-## 6. What we do not claim
-
-- A flag is a reason to look closer, never proof of misconduct.
-- Our forgeries are simulated; a careful forger can get past us.
-- The SynthID results are a small hand run case study.
+- **“93% of what?”** Only our specific benchmark of larger artificially reused blocks; tiny strips were 50% and other modalities remain unvalidated.
+- **“Did you search the whole scientific literature?”** No. The bundled 112-image library is finite; the optional agent searches a small on-demand set of related Europe PMC open-access papers.
+- **“What happens if Gemini isn't configured?”** Search falls back to keyword planning. The matcher itself uses classical computer vision, not Gemini.
+- **“Does duplication mean fraud?”** No. Legitimate reuse exists; reviewer must read captions, citations and methods.
+- **“How good is the AI-edited-band model?”** Weak, experimental and very resolution-sensitive; it is a proof of concept, not our headline tool.
+- **“Can we verify these claims?”** Yes. Figures have source metadata, controlled edit scripts are in `scripts/`, numeric outputs in `results/`, and backend/frontend checks run in CI. Internet searches require a separate live network check.
