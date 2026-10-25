@@ -30,13 +30,13 @@ Upload a PNG, JPEG, or research-paper PDF (up to 25 MB). The FastAPI + React app
 | Actual full-figure edited-input workflow (v3) | **7/22** edited panels flagged; **1/22** untouched original figures flagged | Controlled synthetic AI-band edits; `results/figure_level_eval.json` |
 | Manually tested SynthID Detector | **10/10** whole AI blots detected; **4/4** pasted AI bands not detected | Small, fixed-scenario case study; `results/synthid_manual.json` |
 
-V4/V4.1 experiments are on separate branches and **not automatically installed in the live app**. Do not quote experimental training-run outcomes as production capabilities.
+V4.1's controlled eight-epoch experiment has now **finished**: AI-splice recall **23.8%** on its newer shared held-out benchmark (v3 on the same set: **22.74%**), with AUROC **0.640** versus v3 **0.651** and more clean false flags (**4.8%** versus **3.68%**). This is **below the 40% target** and does not warrant promotion. Keep v3 deployed and treat all blot CNNs as experimental. See [recorded comparison](results/cnn_v4_1_8epoch_summary.json). Do not compare this 23.8% directly with v3's earlier 35.4% on a different benchmark.
 
 ## Demo
 
 Click **“A manuscript with two hidden duplications.”** We intentionally created a controlled PDF from CC BY figures, with a blot strip reused under another label and a separate figure region sourced from a 2023 paper. The first and last pages disclose our modifications; original scientific authors are not implicated. The app compares the regions directly and against the reference library.
 
-Click **“Search Europe PMC”** for an optional on-demand search. Verify that the service is accessible on your machine before using it live in a presentation. The agent has fixture-backed tests, but live Gemini/Europe PMC end-to-end behavior depends on connectivity and quota.
+Click **“Search Europe PMC”** for an optional on-demand search. Public keyword fallback passed a live GitHub Actions test, but test the connectivity and Gemini configuration on your actual presentation laptop before relying on it. The public **keyword-planned Europe PMC pathway passed a real live smoke test**: 16 papers, 55 figures compared, and the intentional source PMC10701888 found in 43.9 seconds ([saved result](results/europepmc_live_smoke.json)). Gemini-assisted planning has not been tested live here and still depends on the user's API key and quota.
 
 The **“A pasted AI band the model catches”** example is intentionally a *selected* positive, not representative of the CNN's average performance. The landing-page ALK2 edit illustrates a SynthID miss, **not** a CNN success.
 

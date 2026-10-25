@@ -1,0 +1,179 @@
+{
+  "input": "examples/demo_reuse.pdf (two intentionally created duplications)",
+  "type": "live_public_europe_pmc_no_gemini",
+  "status": "done",
+  "planner": "keywords",
+  "figures_compared": 55,
+  "papers_checked": 16,
+  "queries": [
+    {
+      "query": "TITLE_ABS:(\"Fludarabine\" AND \"clofarabine\")",
+      "why": "papers on the same topic",
+      "results": 10
+    },
+    {
+      "query": "TITLE_ABS:(\"Fludarabine\" AND \"clofarabine\" AND \"caspase\") AND METHODS:\"western blot\"",
+      "why": "same topic, with western blots",
+      "results": 1
+    },
+    {
+      "query": "TITLE_ABS:(\"caspase\" AND \"cleavage\" AND \"heat\")",
+      "why": "same proteins or treatments",
+      "results": 10
+    }
+  ],
+  "papers": [
+    {
+      "pmcid": "PMC12922565",
+      "title": "Salvage Treatment Options for Posttransplant Relapse in Children with Early/Very Early Relapse of Acute Lymphoblastic Leukemia: A Single-Center Experience",
+      "year": "2026",
+      "doi": "10.4274/tjh.galenos.2025.2025.0356",
+      "why": "papers on the same topic",
+      "figures": 2,
+      "error": null
+    },
+    {
+      "pmcid": "PMC12182839",
+      "title": "Effect of clofarabine and fludarabine exposure on outcome after pediatric allogeneic hematopoietic cell transplantation.",
+      "year": "2024",
+      "doi": "10.1016/j.bneo.2024.100030",
+      "why": "papers on the same topic",
+      "figures": 0,
+      "error": null
+    },
+    {
+      "pmcid": "PMC12442042",
+      "title": "Conditioning regimens in pediatric myeloid malignancies undergoing allogeneic HSCT: a comparative single-center study.",
+      "year": "2025",
+      "doi": "10.3389/fonc.2025.1623636",
+      "why": "papers on the same topic",
+      "figures": 2,
+      "error": null
+    },
+    {
+      "pmcid": "PMC13152804",
+      "title": "Risk factors for alloimmune lung syndromes after allogeneic hematopoietic cell transplantation in children.",
+      "year": "2026",
+      "doi": "10.1038/s41409-026-02829-w",
+      "why": "papers on the same topic",
+      "figures": 3,
+      "error": null
+    },
+    {
+      "pmcid": "PMC12381617",
+      "title": "Randomization in phase II trials: No exemption based on sample size.",
+      "year": "2025",
+      "doi": "10.1002/bcp.70167",
+      "why": "papers on the same topic",
+      "figures": 2,
+      "error": null
+    },
+    {
+      "pmcid": "PMC12550263",
+      "title": "The Combination Therapy With Sorafenib in Therapeutic Strategy of Acute Myeloid Leukemia. Is It Promising? A Narrative Review.",
+      "year": "2025",
+      "doi": "10.1002/hsr2.71412",
+      "why": "papers on the same topic",
+      "figures": 2,
+      "error": null
+    },
+    {
+      "pmcid": "PMC10701888",
+      "title": "Synergistic cytotoxicity of fludarabine, clofarabine, busulfan, vorinostat and olaparib in AML cells.",
+      "year": "2023",
+      "doi": "10.3389/fonc.2023.1287444",
+      "why": "papers on the same topic",
+      "figures": 6,
+      "error": null
+    },
+    {
+      "pmcid": "PMC12342995",
+      "title": "Identification of anticancer drugs associated to cancer therapy-related cardiac dysfunction: a VigiBase® disproportionality analysis.",
+      "year": "2025",
+      "doi": "10.1093/ehjcvp/pvaf027",
+      "why": "papers on the same topic",
+      "figures": 6,
+      "error": null
+    },
+    {
+      "pmcid": "PMC8941455",
+      "title": "Clofarabine-fludarabine-busulfan in HCT for pediatric leukemia: an effective, low toxicity, TBI-free conditioning regimen.",
+      "year": "2022",
+      "doi": "10.1182/bloodadvances.2021005224",
+      "why": "papers on the same topic",
+      "figures": 5,
+      "error": null
+    },
+    {
+      "pmcid": "PMC11176658",
+      "title": "Chemotherapy-induced intestinal epithelial damage directly promotes galectin-9-driven modulation of T cell behavior.",
+      "year": "2024",
+      "doi": "10.1016/j.isci.2024.110072",
+      "why": "papers on the same topic",
+      "figures": 5,
+      "error": null
+    },
+    {
+      "pmcid": "PMC12846840",
+      "title": "Caspase-3 cleaves and activates the NADase SARM1 to promote apoptosis, linking two cell death mechanisms.",
+      "year": "2026",
+      "doi": "10.1073/pnas.2528118123",
+      "why": "same proteins or treatments",
+      "figures": 4,
+      "error": null
+    },
+    {
+      "pmcid": "PMC13510392",
+      "title": "Characterization of the New Pentafluorosulfanyl-Substituted Chalcone 246TMP-3SF5 as a Potential New Treatment Option Against Hepatocellular Carcinoma.",
+      "year": "2026",
+      "doi": "10.3390/cancers18162640",
+      "why": "same proteins or treatments",
+      "figures": 0,
+      "error": null
+    },
+    {
+      "pmcid": "PMC13435474",
+      "title": "Pyrroloquinoline quinone protects heat-stressed porcine oocytes and improves early embryonic development via maintaining mitochondrial integrity and redox homeostasis.",
+      "year": "2026",
+      "doi": "10.1186/s13062-026-00845-w",
+      "why": "same proteins or treatments",
+      "figures": 6,
+      "error": null
+    },
+    {
+      "pmcid": "PMC12526280",
+      "title": "Eicosapentaenoic Acid and Urolithin a Synergistically Mitigate Heat Stroke-Induced NLRP3 Inflammasome Activation in Microglial Cells.",
+      "year": "2025",
+      "doi": "10.3390/nu17193063",
+      "why": "same proteins or treatments",
+      "figures": 6,
+      "error": null
+    },
+    {
+      "pmcid": "PMC13680443",
+      "title": "Butyrate-associated antiproliferative and antitumor effects of &lt;i&gt;Eubacterium limosum&lt;/i&gt; KGMB01548 in colorectal cancer.",
+      "year": "2026",
+      "doi": "10.3389/fmicb.2026.1973432",
+      "why": "same proteins or treatments",
+      "figures": 0,
+      "error": null
+    },
+    {
+      "pmcid": "PMC13409724",
+      "title": "αB-Crystallin Protects Against Cisplatin-Induced Nephrotoxicity by Modulating Apoptosis In Vivo and In Vitro.",
+      "year": "2026",
+      "doi": "10.3390/cimb48070667",
+      "why": "same proteins or treatments",
+      "figures": 6,
+      "error": null
+    }
+  ],
+  "matching_source_pmcids": [
+    "PMC10701888"
+  ],
+  "matched_regions": 1,
+  "duration_seconds": 43.9,
+  "note": "A live API call, not a mocked test. No result does not mean no reuse elsewhere; a match does not mean misconduct.",
+  "recorded_at_utc": "2026-10-25T18:47:13Z",
+  "workflow_url": "https://github.com/danielsemenovitch/GatorHack/actions/runs/40222789774"
+}

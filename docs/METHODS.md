@@ -16,7 +16,7 @@ The manual SynthID observations are recorded in `results/synthid_manual.json`: 1
 
 **Region-level reuse across separate figures:** `btw/region_match.py` extracts SIFT descriptors from visual content, suppresses mostly text/blank areas, uses one-to-one feature matching and geometric RANSAC alignment, then requires at least 0.90 aligned content correlation. It can tolerate resizing, JPEG changes, mirroring and some cropping. It does *not* scan for copying **within one composite figure**, and small texture-poor strips can be missed.
 
-**Across papers:** a bundled reference library contains **112 CC BY figures from 62 papers** (demo-source exclusions are intentional). The optional `Search Europe PMC` action plans related-paper queries using Gemini if `GEMINI_API_KEY` is configured, or deterministic keywords otherwise. It retrieves open-access paper figures and runs the same matcher. Queries, paper IDs, counts and errors are reported; its result is bounded to the papers actually checked. A successful local-library match does not mean the web agent ran.
+**Across papers:** a bundled reference library contains **112 CC BY figures from 62 papers** (demo-source exclusions are intentional). The optional `Search Europe PMC` action plans related-paper queries using Gemini if `GEMINI_API_KEY` is configured, or deterministic keywords otherwise. It retrieves open-access paper figures and runs the same matcher. Queries, paper IDs, counts and errors are reported; its result is bounded to the papers actually checked. A successful local-library match does not mean the web agent ran. A **real keyword-fallback Europe PMC smoke** retrieved and compared 55 figures from 16 papers and found the deliberately lifted 2023 source (`results/europepmc_live_smoke.json`); this verifies one online run, **not** agent search recall or Gemini planning.
 
 **Controlled region benchmark (PR #8):**
 
@@ -34,7 +34,7 @@ Reproduce: `python -m scripts.eval_region_match --blocks`, `python -m scripts.ev
 
 The CNN in `models/splice_cnn_v3.npz` uses JAX and sliding 32-pixel patches, with intensity and noise features relative to the rest of each blot. The team made synthetic edits: copied bands, cross-spliced bands, AI-donor splices, intensity changes and erasures. Panel scores are **review indices, not probabilities**. Standard flag line is 0.50 and Strict line is 0.60, calibrated separately.
 
-On 2,761 synthetic test images from 72 held-out papers, v3 measured AUROC 0.703, detected 35.4% of AI-splice panels and flagged 4.1% of clean panels (`results/cnn_v3_metrics.json`). The full application flagged an edited panel in 7 of 22 artificially edited whole figures (`results/figure_level_eval.json`). After a 50% resize, recall was about 5%. **Most edits go undetected**. V4/V4.1 research runs are isolated, and no model should be promoted solely based on training loss.
+On 2,761 synthetic test images from 72 held-out papers, v3 measured AUROC 0.703, detected 35.4% of AI-splice panels and flagged 4.1% of clean panels (`results/cnn_v3_metrics.json`). The full application flagged an edited panel in 7 of 22 artificially edited whole figures (`results/figure_level_eval.json`). After a 50% resize, recall was about 5%. **Most edits go undetected**. V4.1 eight-epoch research completed on the newer held-out dataset (synthetic AI-splice recall 23.8%, AUROC 0.640, clean flags 4.8%). It did not meet the 40% target or beat v3's AUROC and clean false flags on the same test. See `results/cnn_v4_1_8epoch_summary.json`. **Keep v3 deployed and the blot CNN a proof of concept.**
 
 The separate copied-band noise matcher has low recall and should be treated as supplementary.
 
@@ -51,4 +51,4 @@ The demonstration PDF `examples/demo_reuse.pdf` contains **two team-created dupl
 - **“What happens if Gemini isn't configured?”** Search falls back to keyword planning. The matcher itself uses classical computer vision, not Gemini.
 - **“Does duplication mean fraud?”** No. Legitimate reuse exists; reviewer must read captions, citations and methods.
 - **“How good is the AI-edited-band model?”** Weak, experimental and very resolution-sensitive; it is a proof of concept, not our headline tool.
-- **“Can we verify these claims?”** Yes. Figures have source metadata, controlled edit scripts are in `scripts/`, numeric outputs in `results/`, and backend/frontend checks run in CI. Internet searches require a separate live network check.
+- **“Can we verify these claims?”** Yes. Figures have source metadata, controlled edit scripts are in `scripts/`, numeric outputs in `results/`, and backend/frontend checks run in CI. The keyword-planned public search succeeded in a separate live smoke, but Gemini-assisted planning and the presentation laptop require their own live checks.
