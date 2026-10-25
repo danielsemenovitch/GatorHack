@@ -107,55 +107,64 @@ function MatchPair({ left, right, leftLabel, rightLabel, children }) {
 const cite = (src) => `${src.figLabel ? src.figLabel.replace(/\.$/, "") + " of " : ""}${src.pmcid}${src.year ? ` (${src.year})` : ""}`;
 const howMatched = (m) => [m.scale && Math.abs(m.scale - 1) > 0.04 ? `resized ${Math.round(m.scale * 100)}%` : null, m.flipped ? "mirrored" : null].filter(Boolean).join(", ");
 
-function WebSearch({ file, report, onResult }) {
-  const [state, setState] = useState(null);
-  const [busy, setBusy] = useState(false);
-  const run = async () => {
-    if (!file) return;
-    setBusy(true); setState(null); onResult(null);
-    try {
-      const fd = new FormData(); fd.append("file", file);
-      const r = await fetch(`${API}/api/search_web`, { method: "POST", body: fd });
-      const j = await r.json();
-      if (!r.ok) throw new Error(j.detail || "The search failed.");
-      setState(j); onResult(j);
-    } catch (e) { setState({ status: "error", note: e.message }); onResult(null); } finally { setBusy(false); }
-  };
+function WebSearch({ file, search, onRetry }) {
+  const state = search.result;
+  const busy = search.status === "searching";
+  const matches = state?.matches || [];
+  const papers = state?.papers || [];
+  const compared = state?.figures_compared || 0;
+  const complete = state?.status === "done";
+  const headline = busy ? "Looking for similar papers…"
+    : search.status === "error" ? "Online search could not finish"
+    : state?.status === "offline" ? "Online search is unavailable"
+    : state?.status === "no_queries" ? "More context is needed to search"
+    : complete && !compared ? "No published images were compared"
+    : complete && matches.length ? `${matches.length} potential source match${matches.length === 1 ? "" : "es"} found`
+    : complete ? "No matching images found in the papers checked"
+    : "Preparing the online search…";
   return (
-    <div className="detail web">
-      <h3>Search published papers online</h3>
-      {!state && !busy && <>
-        <p className="sub" style={{ margin: "0 0 10px" }}>An agent plans Europe PMC searches from this {report.figures.length > 1 ? "paper's title, authors and captions" : "figure's labels"}, pulls the figures of the open access papers it finds, and checks each one against yours. Takes about a minute.</p>
-        <button className="btn small" type="button" onClick={run} disabled={!file}>Search Europe PMC</button>
-      </>}
-      {busy && <p className="loading" style={{ padding: "4px 0" }}>Planning searches, downloading figures and comparing…</p>}
-      {state && <>
-        {state.note && <p className="sub" style={{ margin: "0 0 8px" }}>{state.note}</p>}
-        {state.status === "done" && <p style={{ margin: "0 0 8px" }}>{state.matches.length ? `${state.matches.length} match${state.matches.length === 1 ? "" : "es"} found` : "No match found"} in {state.figures_compared} figures from {state.papers.length} papers ({state.seconds}s, searches planned by {state.planner}).</p>}
-        {state.matches?.map((m, i) => (
+    <section className="online-search" aria-labelledby="online-search-title" aria-busy={busy}>
+      <div className="online-heading">
+        <div><p className="section-kicker">01 / Online paper search</p><h2 id="online-search-title">Find similar papers.</h2></div>
+        <span className="search-badge">{busy ? "Searching" : complete ? "Search complete" : "Automatic search"}</span>
+      </div>
+      <p className="search-description">We look for related open-access papers on Europe PMC, then compare their images with <strong>{file.name}</strong> to identify possible reuse.</p>
+      <div className={`search-status ${search.status === "error" || state?.status === "offline" ? "search-error" : ""}`} role={search.status === "error" ? "alert" : "status"}>
+        {busy && <span className="search-spinner" aria-hidden="true" />}
+        <div><h3>{headline}</h3>
+          {busy && <p>Looking for related research and comparing images across papers. This can take about a minute. AI screening and local matching run alongside it.</p>}
+          {search.error && <p>{search.error} Other analysis results are shown below when available.</p>}
+          {state?.note && <p>{state.note}</p>}
+          {complete && <p>{compared} images compared from {papers.length} papers{state.seconds != null ? ` in ${state.seconds}s` : ""}{state.planner ? ` · searches planned by ${state.planner}` : ""}. {compared ? "This is a targeted search, not an exhaustive check of the literature." : "An empty search does not establish that the uploaded images are original."}</p>}
+        </div>
+      </div>
+      {complete && matches.length > 0 && <div className="online-matches">
+        {matches.map((m, i) => (
           <MatchPair key={i} left={m.crop} right={m.source_crop} leftLabel={m.figure_label} rightLabel={cite(m.source)}>
-            <p className="sub" style={{ margin: "4px 0 0" }}><a href={m.source.url} target="_blank" rel="noreferrer">{m.source.title}</a>{howMatched(m) ? `. Matched ${howMatched(m)}.` : "."}</p>
+            <p className="sub" style={{ margin: "4px 0 0" }}><a href={m.source.url} target="_blank" rel="noreferrer">{m.source.title}</a>{howMatched(m) ? `. Matched ${howMatched(m)}.` : "."} Compare the captions and intended reuse before drawing conclusions.</p>
           </MatchPair>
         ))}
-        {state.queries?.length > 0 && (
-          <details className="more">
-            <summary>What the agent searched</summary>
-            <ul className="log">
-              {state.queries.map((q, i) => <li key={i}><code>{q.query}</code> {q.why ? `(${q.why})` : ""}{q.error ? `: failed, ${q.error}` : q.results != null ? `: ${q.results} papers` : ""}</li>)}
-            </ul>
-            {state.papers?.length > 0 && <ul className="log">{state.papers.map((p) => <li key={p.pmcid}>{p.pmcid} ({p.year}) {p.title} {p.error ? `: not read, ${p.error}` : `: ${p.figures} figures`}</li>)}</ul>}
-          </details>
-        )}
-        <button className="btn ghost small" type="button" onClick={run} style={{ marginTop: 10 }}>Search again</button>
-      </>}
-    </div>
+      </div>}
+      {state?.queries?.length > 0 && <details className="more">
+        <summary>Search trail: queries and papers checked</summary>
+        <ul className="log">{state.queries.map((q, i) => <li key={i}><code>{q.query}</code> {q.why ? `(${q.why})` : ""}{q.error ? `: failed, ${q.error}` : q.results != null ? `: ${q.results} papers` : ""}</li>)}</ul>
+        {papers.length > 0 && <ul className="log">{papers.map((p) => <li key={p.pmcid}>{p.pmcid} ({p.year}) {p.title} {p.error ? `: not read, ${p.error}` : `: ${p.figures} figures`}</li>)}</ul>}
+      </details>}
+      {!busy && <button className="btn ghost small" type="button" onClick={onRetry} disabled={!file}>{complete ? "Search again" : "Retry online search"}</button>}
+      <p className="search-limit">A match is a lead for human review, not proof of misconduct. No match does not establish authenticity.</p>
+    </section>
   );
 }
 
-function Report({ report, file }) {
+function Report({ report, search }) {
   const [showHeat, setShowHeat] = useState(true);
   const [active, setActive] = useState(null);
-  const [webSearchResults, setWebSearchResults] = useState(null);
+  const searchPending = search.status === "searching";
+  const webSearchResults = search.result || {
+    status: search.status,
+    note: search.error || (searchPending ? "The automatic online search was still running when this report was downloaded. Online results are incomplete." : "No completed online search result is available."),
+    matches: [], papers: [], queries: [], figures_compared: 0,
+  };
   const regionReuse = report.region_reuse || [];
   const libraryMatches = report.library_matches || [];
   const s = report.summary;
@@ -199,51 +208,16 @@ function Report({ report, file }) {
   return (
     <section className="report" aria-live="polite">
       <div>
-        <h2>{title}</h2>
+        <p className="section-kicker">02 / AI-image screening</p>
+        <h2>Experimental band screening</h2>
+        <p className="local-verdict">{title}</p>
         <p className="sub">{parts.join(", ")}{parts.length ? ". " : ""}A flag means look closer, never proof of misconduct.</p>
         {notes.length > 0 && <ul className="notes">{notes.map(([k, v, tone], i) => <li key={i} className={tone}><strong>{k}.</strong> {v}</li>)}</ul>}
         <div className="toolbar">
           {s.flagged_panels > 0 ? <label className="toggle"><input type="checkbox" checked={showHeat} onChange={(e) => setShowHeat(e.target.checked)} /> Show heat</label> : <span />}
-          <button className="btn ghost small" type="button" onClick={() => downloadReviewReport({ ...report, web_search: webSearchResults })}>Download report</button>
+          <button className="btn ghost small" type="button" onClick={() => downloadReviewReport({ ...report, web_search: webSearchResults })}>{searchPending ? "Download local results" : "Download report"}</button>
         </div>
-        {regionReuse.length > 0 && (
-          <div className="detail reuse">
-            <h3>The same blot appears twice in this paper</h3>
-            {regionReuse.map((m, i) => (
-              <MatchPair key={i} left={m.a.crop} right={m.b.crop} leftLabel={m.a.label} rightLabel={m.b.label}>
-                <p className="sub" style={{ margin: "4px 0 0" }}>{m.inliers} matching keypoints{howMatched(m) ? `, ${howMatched(m)}` : ""}. If these are labeled as different proteins or experiments, ask for the original images.</p>
-              </MatchPair>
-            ))}
-          </div>
-        )}
-        {libraryMatches.length > 0 && (
-          <div className="detail reuse">
-            <h3>Also in a published paper</h3>
-            {libraryMatches.map((m, i) => (
-              <MatchPair key={i} left={m.crop} right={m.source_crop} leftLabel={m.label} rightLabel={cite(m.source)}>
-                <p className="sub" style={{ margin: "4px 0 0" }}>{m.source.url ? <a href={m.source.url} target="_blank" rel="noreferrer">{m.source.title}</a> : m.source.title}{m.source.doi ? `, doi:${m.source.doi}` : ""}. {m.inliers} matching keypoints{howMatched(m) ? `, ${howMatched(m)}` : ""}. Check whether the figure is cited.</p>
-              </MatchPair>
-            ))}
-          </div>
-        )}
-        {imageReuse.length > 0 && (
-          <div className="detail reuse">
-            <h3>The same image appears twice</h3>
-            {imageReuse.map((m, i) => {
-              const a = report.figures[m.a.figure], b = report.figures[m.b.figure];
-              if (!a || !b) return null;
-              return <div key={i} className="reuse-pair">
-                <p>{a.label} and {b.label} {m.method === "exact_pixel_duplicate" ? "have identical pixels" : "are near identical, as a re-saved or resized copy would be"}{m.matching_bands ? `, and ${m.matching_bands} of their bands match each other` : ""}. Reuse can be legitimate, so check the captions.</p>
-                <div className="pair">
-                  {[a, b].map((f) => <figure key={f.id}>
-                    <img src={f.image} alt={f.label} />
-                    <figcaption>{f.label}</figcaption>
-                  </figure>)}
-                </div>
-              </div>;
-            })}
-          </div>
-        )}
+        {searchPending && <p className="sub export-note">Online search is still running. Its results will be included in downloads once available.</p>}
         {report.figures.map((fig) => (
           <div key={fig.id} className="figure">
             {multi && <p className="figlabel"><strong>{fig.label}</strong>
@@ -290,7 +264,44 @@ function Report({ report, file }) {
             ))}
           </div>
         )}
-        <WebSearch file={file} report={report} onResult={setWebSearchResults} />
+        {regionReuse.length > 0 && (
+          <div className="detail reuse">
+            <h3>The same blot appears twice in this paper</h3>
+            {regionReuse.map((m, i) => (
+              <MatchPair key={i} left={m.a.crop} right={m.b.crop} leftLabel={m.a.label} rightLabel={m.b.label}>
+                <p className="sub" style={{ margin: "4px 0 0" }}>{m.inliers} matching keypoints{howMatched(m) ? `, ${howMatched(m)}` : ""}. If these are labeled as different proteins or experiments, ask for the original images.</p>
+              </MatchPair>
+            ))}
+          </div>
+        )}
+        {libraryMatches.length > 0 && (
+          <div className="detail reuse">
+            <h3>Also in a published paper</h3>
+            {libraryMatches.map((m, i) => (
+              <MatchPair key={i} left={m.crop} right={m.source_crop} leftLabel={m.label} rightLabel={cite(m.source)}>
+                <p className="sub" style={{ margin: "4px 0 0" }}>{m.source.url ? <a href={m.source.url} target="_blank" rel="noreferrer">{m.source.title}</a> : m.source.title}{m.source.doi ? `, doi:${m.source.doi}` : ""}. {m.inliers} matching keypoints{howMatched(m) ? `, ${howMatched(m)}` : ""}. Check whether the figure is cited.</p>
+              </MatchPair>
+            ))}
+          </div>
+        )}
+        {imageReuse.length > 0 && (
+          <div className="detail reuse">
+            <h3>The same image appears twice</h3>
+            {imageReuse.map((m, i) => {
+              const a = report.figures[m.a.figure], b = report.figures[m.b.figure];
+              if (!a || !b) return null;
+              return <div key={i} className="reuse-pair">
+                <p>{a.label} and {b.label} {m.method === "exact_pixel_duplicate" ? "have identical pixels" : "are near identical, as a re-saved or resized copy would be"}{m.matching_bands ? `, and ${m.matching_bands} of their bands match each other` : ""}. Reuse can be legitimate, so check the captions.</p>
+                <div className="pair">
+                  {[a, b].map((f) => <figure key={f.id}>
+                    <img src={f.image} alt={f.label} />
+                    <figcaption>{f.label}</figcaption>
+                  </figure>)}
+                </div>
+              </div>;
+            })}
+          </div>
+        )}
       </div>
       <aside className="rail" aria-label="Checks">
         <Check name="Pasted or edited bands" tone={s.flagged_panels ? "bad" : "info"}
@@ -305,7 +316,7 @@ function Report({ report, file }) {
         </Check>
         <Check name="Published elsewhere" tone={libraryMatches.length ? "bad" : "info"}
                state={libraryMatches.length ? `${libraryMatches.length} match${libraryMatches.length === 1 ? "" : "es"}` : "None found"}>
-          <p>{s.library ? `Checked against ${s.library.figures} published figures from ${s.library.papers} papers. Search Europe PMC below for more.` : "Reference library not available."}</p>
+          <p>{s.library ? `Checked against ${s.library.figures} published figures from ${s.library.papers} papers. The automatic online search above checks additional candidate papers.` : "Reference library not available."}</p>
         </Check>
         <Check name="Copied bands" tone={s.duplicate_pairs ? "bad" : "info"}
                state={!s.panels ? "No blots" : s.duplicate_pairs ? `${s.duplicate_pairs} match${s.duplicate_pairs === 1 ? "" : "es"}` : "None found"}>
@@ -340,64 +351,124 @@ function CheckPage({ examples, report, setReport }) {
   const [lastFile, setLastFile] = useState(null);
   const [error, setError] = useState(null);
   const [over, setOver] = useState(false);
+  const [search, setSearch] = useState({ status: "idle", result: null, error: null });
   const input = useRef(null);
-  const hero = examples.find((e) => e.hero);
+  const reviewId = useRef(0);
+  const reviewAbort = useRef(null);
+  const searchAbort = useRef(null);
+  const currentFile = useRef(null);
   const tryable = examples.filter((e) => !e.hero);
 
-  const send = useCallback(async (file, extras = {}) => {
-    setBusy(true); setError(null); setLastFile(file);
+  useEffect(() => () => {
+    reviewId.current += 1;
+    reviewAbort.current?.abort();
+    searchAbort.current?.abort();
+  }, []);
+
+  const runSearch = useCallback(async (file, id) => {
+    if (!file || id !== reviewId.current) return;
+    searchAbort.current?.abort();
+    const controller = new AbortController();
+    searchAbort.current = controller;
+    setSearch({ status: "searching", result: null, error: null });
+    try {
+      const fd = new FormData(); fd.append("file", file);
+      const response = await fetch(`${API}/api/search_web`, { method: "POST", body: fd, signal: controller.signal });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.detail || "The online search failed.");
+      if (!["done", "offline", "no_queries"].includes(result.status)) throw new Error("The search service returned an incomplete response.");
+      if (result.status === "done" && (!Array.isArray(result.matches) || !Array.isArray(result.papers) || !Number.isFinite(result.figures_compared))) {
+        throw new Error("The search service returned an incomplete response.");
+      }
+      if (id === reviewId.current && searchAbort.current === controller) {
+        setSearch({ status: "complete", result, error: null });
+      }
+    } catch (e) {
+      if (id === reviewId.current && searchAbort.current === controller && !controller.signal.aborted) {
+        setSearch({ status: "error", result: null, error: e.message });
+      }
+    }
+  }, []);
+
+  const beginReview = useCallback(() => {
+    const id = ++reviewId.current;
+    reviewAbort.current?.abort();
+    searchAbort.current?.abort();
+    const controller = new AbortController();
+    reviewAbort.current = controller;
+    currentFile.current = null;
+    setBusy(true); setError(null); setLastFile(null); setReport(null);
+    setSearch({ status: "idle", result: null, error: null });
+    return { id, controller };
+  }, [setReport]);
+
+  const analyzeFile = useCallback(async (file, extras, review) => {
+    if (review.id !== reviewId.current) return;
+    currentFile.current = file;
+    setLastFile(file);
+    // Start the existing online service immediately, alongside local analysis.
+    void runSearch(file, review.id);
+    setTimeout(() => {
+      if (review.id === reviewId.current) document.getElementById("report")?.scrollIntoView({ block: "start" });
+    }, 50);
     try {
       const fd = new FormData(); fd.append("file", file);
       fd.append("screening_policy", strict ? "conservative" : "benchmark");
-      const r = await fetch(`${API}/api/analyze`, { method: "POST", body: fd });
-      const j = await r.json();
-      if (!r.ok) throw new Error(j.detail || "The analysis failed.");
-      setReport({ ...j, ...extras });
-      setTimeout(() => document.getElementById("report")?.scrollIntoView({ behavior: "smooth" }), 50);
+      const response = await fetch(`${API}/api/analyze`, { method: "POST", body: fd, signal: review.controller.signal });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.detail || "The analysis failed.");
+      if (review.id === reviewId.current) setReport({ ...result, ...extras });
     } catch (e) {
-      setError(`${e.message} Try a PNG, JPEG or PDF under 25 MB.`);
-    } finally { setBusy(false); }
-  }, [setReport, strict]);
+      if (review.id === reviewId.current && !review.controller.signal.aborted) {
+        setError(`${e.message} Try a PNG, JPEG or PDF under 25 MB.`);
+      }
+    } finally {
+      if (review.id === reviewId.current) setBusy(false);
+    }
+  }, [setReport, strict, runSearch]);
+
+  const send = useCallback((file, extras = {}) => {
+    return analyzeFile(file, extras, beginReview());
+  }, [analyzeFile, beginReview]);
 
   const loadExample = async (ex) => {
-    // Always re-run the current pipeline on the example's source file, so a
-    // stale saved report can never pass for a fresh analysis.
-    setError(null); setBusy(true);
+    const review = beginReview();
     try {
-      const r = await fetch(`${API}/api/examples/${encodeURIComponent(ex.file)}`);
-      if (!r.ok) throw new Error("Could not load the example file");
-      const blob = await r.blob();
-      await send(new File([blob], ex.file, { type: blob.type || "image/jpeg" }),
-                 { credit: ex.credit, known_edit: ex.known_edit, example_title: ex.title });
+      const response = await fetch(`${API}/api/examples/${encodeURIComponent(ex.file)}`, { signal: review.controller.signal });
+      if (!response.ok) throw new Error("Could not load the example file");
+      const blob = await response.blob();
+      await analyzeFile(new File([blob], ex.file, { type: blob.type || "image/jpeg" }),
+        { credit: ex.credit, known_edit: ex.known_edit, example_title: ex.title }, review);
     } catch (e) {
-      setError(`Could not analyze this example: ${e.message}`);
-      setBusy(false);
+      if (review.id === reviewId.current && !review.controller.signal.aborted) {
+        setError(`Could not analyze this example: ${e.message}`);
+        setBusy(false);
+      }
     }
   };
 
   return (
     <>
-      <section className="hero">
+      <section className="hero search-hero">
         <div>
-          <h1>AI watermarks miss a single pasted band.</h1>
-          <p className="lede">We pasted bands made with Gemini into four published Western blots. Google's SynthID Detector found none of them. Below the Watermark checks the figures a watermark can't.</p>
+          <p className="section-kicker">Scientific figure integrity</p>
+          <h1>Find similar papers.</h1>
+          <p className="lede">Upload a research paper or image. We automatically look for related open-access papers and compare their images, with experimental AI screening and matching evidence in one review.</p>
           <div className="actions">
-            <button className="btn" type="button" onClick={() => input.current?.click()} disabled={busy}>Check a figure or PDF</button>
+            <button className="btn" type="button" onClick={() => input.current?.click()} disabled={busy}>Upload & search papers</button>
             <button className="btn ghost" type="button" onClick={() => document.getElementById("try")?.scrollIntoView({ behavior: "smooth" })}>Try an example</button>
           </div>
         </div>
-        {hero?.preview && (
-          <div className="lightbox">
-            <figure>
-              <Stage fig={{ ...hero.preview, panels: [] }} showHeat={false} threshold={1}
-                     knownEdit={hero.known_edit} knownEditLabel="AI band we added" />
-              <figcaption>
-                <span className="verdict-chip">SynthID Detector: <span className="no">{hero.synthid}</span></span>
-              </figcaption>
-              {hero.credit && <p className="credit">{hero.credit}</p>}
-            </figure>
-          </div>
-        )}
+        <div className="search-intro">
+          <span className="search-badge">Online search starts automatically</span>
+          <h2>Related research. Shared image evidence.</h2>
+          <ol>
+            <li><strong>Find similar papers</strong><span>Find related open-access research on Europe PMC.</span></li>
+            <li><strong>Compare images across papers</strong><span>Inspect matching regions and follow the publication links.</span></li>
+            <li><strong>Review the other signals</strong><span>Review experimental AI screening and the matching checks in the sidebar.</span></li>
+          </ol>
+          <p>Transparent search history. Evidence for human review.</p>
+        </div>
       </section>
 
       <section className="upload" aria-labelledby="upload-title">
@@ -406,14 +477,15 @@ function CheckPage({ examples, report, setReport }) {
              onDragLeave={() => setOver(false)}
              onDrop={(e) => { e.preventDefault(); setOver(false); const f = e.dataTransfer.files?.[0]; if (f) send(f); }}>
           <div>
-            <h2 id="upload-title">Drop a figure or a paper PDF</h2>
-            <p>PNG, JPEG or PDF up to 25 MB. Checked in memory and never stored.</p>
+            <h2 id="upload-title">Drop a paper PDF or research image</h2>
+            <p>PNG, JPEG or PDF up to 25 MB. Online search starts automatically and can take about a minute.</p>
+            <p className="upload-search-note">Search uses Europe PMC and, when configured, Gemini to interpret manuscript context or figure labels.</p>
           </div>
           <input ref={input} className="sr" type="file" accept="image/*,.pdf" onChange={(e) => e.target.files?.[0] && send(e.target.files[0])} />
           <button className="btn" type="button" onClick={() => input.current?.click()} disabled={busy}>{busy ? "Checking…" : "Choose a file"}</button>
         </div>
         <div className="sensitivity" role="radiogroup" aria-label="Flag sensitivity">
-          <span>Flags</span>
+          <span>AI screening sensitivity</span>
           <button type="button" role="radio" aria-checked={!strict} onClick={() => setStrict(false)}>Standard</button>
           <button type="button" role="radio" aria-checked={strict} onClick={() => setStrict(true)}>Strict</button>
           <small>{strict ? "About 1 in 40 unedited panels flagged; catches about a quarter of pasted AI bands." : "About 1 in 20 unedited panels flagged; catches about a third of pasted AI bands."}</small>
@@ -430,9 +502,12 @@ function CheckPage({ examples, report, setReport }) {
           </div>
         )}
       </section>
-      {error && <div className="error" role="alert">{error}</div>}
-      {busy && <p className="loading">Finding figures and blot panels, then scoring every band…</p>}
-      <div id="report">{report && <Report key={report.seconds + report.filename} report={report} file={lastFile} />}</div>
+      <div id="report" className="review-flow">
+        {lastFile && <WebSearch file={lastFile} search={search} onRetry={() => runSearch(currentFile.current, reviewId.current)} />}
+        {error && <div className="error" role="alert"><strong>Local analysis could not finish.</strong> {error} The online search is shown above independently.</div>}
+        {busy && <p className="loading local-loading" role="status">{lastFile ? "AI screening and local image matching are running alongside the online search…" : "Loading the selected example…"}</p>}
+        {report && <Report key={reviewId.current} report={report} search={search} />}
+      </div>
     </>
   );
 }
@@ -659,7 +734,7 @@ export default function App() {
           </nav>
         </header>
         <main>
-          {page === "check" && <CheckPage examples={examples} report={report} setReport={setReport} />}
+          <div hidden={page !== "check"}><CheckPage examples={examples} report={report} setReport={setReport} /></div>
           {page === "gap" && <GapPage results={results} />}
           {page === "method" && <MethodPage />}
         </main>
