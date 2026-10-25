@@ -1,0 +1,93 @@
+{
+ "model": "v3",
+ "rule": "lowest grid line flagging at most 1% of clean panels on calibration papers",
+ "n_calibration_clean": 186,
+ "n_calibration_papers": 6,
+ "n_test_images": 2071,
+ "n_test_papers": 20,
+ "chosen_line": 0.6,
+ "calibration_clean_flagged": {
+  "0.5": 0.027,
+  "0.55": 0.016,
+  "0.6": 0.005,
+  "0.65": 0.005,
+  "0.7": 0.005,
+  "0.75": 0.005,
+  "0.8": 0.0,
+  "0.9": 0.0
+ },
+ "test": {
+  "0.5": {
+   "clean_flagged": 0.055,
+   "ai_splice_caught": 0.329,
+   "cross_splice_caught": 0.245,
+   "copy_move_caught": 0.232,
+   "intensify_caught": 0.469,
+   "erase_caught": 0.152,
+   "any_edit_caught": 0.287
+  },
+  "0.55": {
+   "clean_flagged": 0.038,
+   "ai_splice_caught": 0.282,
+   "cross_splice_caught": 0.218,
+   "copy_move_caught": 0.196,
+   "intensify_caught": 0.417,
+   "erase_caught": 0.12,
+   "any_edit_caught": 0.248
+  },
+  "0.6": {
+   "clean_flagged": 0.025,
+   "ai_splice_caught": 0.239,
+   "cross_splice_caught": 0.199,
+   "copy_move_caught": 0.159,
+   "intensify_caught": 0.366,
+   "erase_caught": 0.094,
+   "any_edit_caught": 0.213
+  },
+  "0.65": {
+   "clean_flagged": 0.011,
+   "ai_splice_caught": 0.211,
+   "cross_splice_caught": 0.169,
+   "copy_move_caught": 0.141,
+   "intensify_caught": 0.333,
+   "erase_caught": 0.068,
+   "any_edit_caught": 0.185
+  },
+  "0.7": {
+   "clean_flagged": 0.009,
+   "ai_splice_caught": 0.168,
+   "cross_splice_caught": 0.13,
+   "copy_move_caught": 0.116,
+   "intensify_caught": 0.291,
+   "erase_caught": 0.042,
+   "any_edit_caught": 0.151
+  },
+  "0.75": {
+   "clean_flagged": 0.006,
+   "ai_splice_caught": 0.146,
+   "cross_splice_caught": 0.119,
+   "copy_move_caught": 0.101,
+   "intensify_caught": 0.236,
+   "erase_caught": 0.026,
+   "any_edit_caught": 0.126
+  },
+  "0.8": {
+   "clean_flagged": 0.005,
+   "ai_splice_caught": 0.1,
+   "cross_splice_caught": 0.088,
+   "copy_move_caught": 0.083,
+   "intensify_caught": 0.197,
+   "erase_caught": 0.01,
+   "any_edit_caught": 0.096
+  },
+  "0.9": {
+   "clean_flagged": 0.0,
+   "ai_splice_caught": 0.039,
+   "cross_splice_caught": 0.015,
+   "copy_move_caught": 0.04,
+   "intensify_caught": 0.097,
+   "erase_caught": 0.006,
+   "any_edit_caught": 0.04
+  }
+ }
+}
