@@ -1,0 +1,55 @@
+{
+  "experiment": "controlled V4.1 five-epoch versus eight-epoch retraining on identical expanded synthetic paper-disjoint data",
+  "source": "https://github.com/danielsemenovitch/GatorHack/actions/runs/40216508778",
+  "artifact": "v4-1-five-versus-eight-epoch-evaluation",
+  "finished_utc": "2026-10-25",
+  "frozen_v3": {
+    "auroc": 0.6512,
+    "ai_splice_recall": 0.2274,
+    "clean_false_flag_rate": 0.0368
+  },
+  "v4_1_five_epochs": {
+    "auroc": 0.628,
+    "ai_splice_recall": 0.231,
+    "clean_false_flag_rate": 0.049
+  },
+  "v4_1_eight_epochs": {
+    "auroc": 0.64,
+    "ai_splice_recall": 0.238,
+    "clean_false_flag_rate": 0.048
+  },
+  "heldout_openai_g3_native": {
+    "v3": {
+      "detected": 39,
+      "n": 120,
+      "recall": 0.325,
+      "clean_flags": 13
+    },
+    "v4_1_five": {
+      "detected": 42,
+      "n": 120,
+      "recall": 0.35,
+      "clean_flags": 14
+    },
+    "v4_1_eight": {
+      "detected": 38,
+      "n": 120,
+      "recall": 0.317,
+      "clean_flags": 12
+    }
+  },
+  "heldout_openai_g3_resize_50": {
+    "v3_detected": 4,
+    "v4_1_five_detected": 4,
+    "v4_1_eight_detected": 4,
+    "n": 120
+  },
+  "model_promotion": "not_recommended",
+  "rationale": "8 epochs increased same-benchmark AUROC by 0.012 over 5 but remains below frozen v3. AI recall 23.8%, below 40% target; clean FPR 4.8% versus v3 3.68%; unseen native donor performance decreased versus five epochs; resized recall remained 4/120.",
+  "caveats": [
+    "Synthetic manipulations, not validated real-world forgeries",
+    "One held-out OpenAI source generation is not a generator-family-disjoint evaluation",
+    "Do not compare directly with earlier 35.4% v3 recall from a different benchmark",
+    "v3 remains the installed experimental blot checkpoint; no production change"
+  ]
+}
