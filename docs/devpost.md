@@ -45,7 +45,7 @@ Flags are leads for a human reviewer, never verdicts.
 
 ## Results (honest numbers)
 
-- On 72 held out papers: AUROC 0.703; at our flag line it caught 35% of pasted AI bands while flagging 4% of clean panels.
+- The installed experimental CNN v3 measured AUROC 0.703 and caught 35.4% of AI-band splices with 4.1% clean flags on its original 72-paper held-out synthetic panel test. A newer, harder matched benchmark for the eight-epoch V4.1 research model yielded only 23.8% AI-splice recall, AUROC 0.640 and 4.8% clean flags; v3 had AUROC 0.651 and 3.68% clean flags on that same set. **We did not promote V4.1** (`results/cnn_v4_1_8epoch_summary.json`).
 - End to end, as the app actually runs: we pasted one Gemini band into each of 22 held out published figures. The app flagged the edited panel in 7, flagged no untouched panel in any edited figure, and flagged 1 of the 22 unedited originals.
 - An optional Strict setting, set on calibration papers to flag at most 1% of unedited panels: on 20 held out papers it caught 24% of pasted AI bands while flagging 2.5% of unedited panels (Standard on the same papers: 33% and 5.5%). On the 22 whole figures, Strict flagged 4 edited panels and none of the unedited originals.
 - After a 50% resize it catches about 5%. Resizing erases most of what it relies on.
