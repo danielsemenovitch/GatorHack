@@ -1,7 +1,3 @@
-# Devpost submission (final text, ready to paste)
-
-This submission uses the deployed **V3** blot CNN. Every number below comes from a file in `results/` or a recorded run; all reported CNN results are measurements of V3.
-
 **Title:** Below the Watermark
 
 **Tagline:** An image integrity checker for scientific papers. It finds what AI watermarks can't: images reused inside a paper, figures lifted from other papers, and pasted-in bands.
