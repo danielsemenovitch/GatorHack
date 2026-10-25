@@ -17,7 +17,7 @@
 - **0/7,140** untouched reference-pair matches on the evaluated library, not population-level specificity.
 - V3 experimental CNN (held-out synthetic panel benchmark): AUROC 0.703; 35.4% AI splices caught; 4.1% clean flags on 72 held-out papers. Whole-figure analysis identified an edited panel in 7/22 controlled cases.
 - Manual SynthID: 10/10 whole-blot images detected; 4/4 individual pasted AI-band composites not detected. Small case study.
-- V4.1 five-versus-eight-epoch work runs on a separate experimental branch with no automatic promotion.
+- V4.1 five-versus-eight-epoch work **finished** on a separate experimental branch. Eight epochs: 23.8% synthetic AI-splice recall, AUROC 0.640, 4.8% clean flags, compared with v3 on identical test images: 22.74%, AUROC 0.6512, 3.68% clean flags. No promotion: keep v3 deployed. See `results/cnn_v4_1_8epoch_summary.json` and the linked Actions artifact.
 
 Always report the type of test alongside the number. **93.2% does not apply to tiny strips, arbitrary intra-figure copy-move, real-world misconduct detection, or the internet agent's search recall.**
 
