@@ -181,6 +181,12 @@ def main():
     for profile in ["realistic","stress"]:
         ix=[i for i,r in enumerate(test) if r["profile"]==profile]
         results["profiles"][profile]=metric([test[i] for i in ix],test_scores[ix])
+    # Persist scores in a research artifact so the frozen V3 comparison can
+    # reuse EXACTLY the data scored by the trained V5, without rescoring and
+    # consuming another expensive JAX CPU inference pass.
+    (RESULTS/"v5_test_scores.json").write_text(json.dumps(
+        [{"id":r["id"],"score":round(float(v),7)} for r,v in zip(test,test_scores)]
+    ))
     out=RESULTS/"cnn_v5_metrics.json"
     out.write_text(json.dumps(results,indent=2))
     print("V5_METRICS",json.dumps(results,indent=2),flush=True)
