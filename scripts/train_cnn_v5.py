@@ -144,9 +144,17 @@ def main():
     del tr # retain only rows? count previously needed use total
     params,history,pos_weight=train(X,y)
     del X,y
-    cal_logits={}
-    for rule in cnn_v5.RULES:
-        cal_logits[rule]=evaluate_scores(params,cal,rule)
+    # One expensive forward pass per calibration figure, not three
+    # redundant CNN passes to rank the three fixed panel-score rules.
+    cal_logits={rule:[] for rule in cnn_v5.RULES}
+    for i,row in enumerate(cal):
+        im=load_rgb(BENCH/"images"/f"{row['id']}.png")
+        xp,_,band,_=cnn_v5.extract(to_gray(im))
+        z=cnn_v5.predict(params,xp,batch=128,logits=True)
+        for rule0 in cnn_v5.RULES:
+            cal_logits[rule0].append(cnn_v5.relative(z,band,rule0)[1])
+        if (i+1)%500==0:print("V5_CALIBRATION_SCORED",i+1,len(cal),flush=True)
+    cal_logits={k:np.asarray(v) for k,v in cal_logits.items()}
     labels=np.array([r["label"] for r in cal])
     rule=max(cnn_v5.RULES,key=lambda k:roc_auc_score(labels,cal_logits[k]))
     clean=cal_logits[rule][labels==0]
