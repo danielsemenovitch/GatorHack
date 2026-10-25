@@ -30,7 +30,7 @@ Upload a PNG, JPEG, or research-paper PDF (up to 25 MB). The FastAPI + React app
 | Actual full-figure edited-input workflow (v3) | **7/22** edited panels flagged; **1/22** untouched original figures flagged | Controlled synthetic AI-band edits; `results/figure_level_eval.json` |
 | Manually tested SynthID Detector | **10/10** whole AI blots detected; **4/4** pasted AI bands not detected | Small, fixed-scenario case study; `results/synthid_manual.json` |
 
-V4/V4.1 experiments are on separate branches and **not automatically installed in the live app**. Do not quote experimental training-run outcomes as production capabilities.
+V4.1's controlled eight-epoch experiment has now **finished**: AI-splice recall **23.8%** on its newer shared held-out benchmark (v3 on the same set: **22.74%**), with AUROC **0.640** versus v3 **0.651** and more clean false flags (**4.8%** versus **3.68%**). This is **below the 40% target** and does not warrant promotion. Keep v3 deployed and treat all blot CNNs as experimental. See [recorded comparison](results/cnn_v4_1_8epoch_summary.json). Do not compare this 23.8% directly with v3's earlier 35.4% on a different benchmark.
 
 ## Demo
 
