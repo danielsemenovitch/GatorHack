@@ -33,10 +33,10 @@ CACHE = ROOT / ".cache/reference_index.npz"
 # to show (otherwise every demo figure would trivially match itself).
 DEMO_PAPERS = {"PMC10352194", "PMC10755782", "PMC10315040", "PMC10376983"}
 
-MAX_FEATURES = 1500
+MAX_FEATURES = 0          # no cap: a reused panel must not lose its keypoints to the rest of the figure
 UPSCALE = 1.0             # SIFT already doubles the image internally
 RATIO = 0.75
-MIN_INLIERS = 14          # keypoints agreeing on one transform
+MIN_INLIERS = 18          # keypoints agreeing on one transform (15 matched identical rotated lane labels)
 MIN_SIDE = 24             # px, smallest side of the matched region in both images
 MIN_WIDTH = 45            # px; narrow vertical matches are ladder and label columns, not panels
 
