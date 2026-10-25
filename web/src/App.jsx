@@ -598,7 +598,7 @@ const PIPELINE = [
    "AI images straight from the generator.", "Any re-save strips the credential; in PDFs it is not checked."],
   ["Find duplicated images",
    "Every pair of figures is compared region by region with keypoints that survive cropping, resizing, re-saving and mirroring, so a blot reused under a different label still lines up. Every figure is also checked against a library of published figures, and an agent can search Europe PMC for the same figure in other papers: Gemini plans the searches from the title, captions or figure labels.",
-   "A panel reused inside the paper, or lifted from a published one.", "Small uniform strips (about a quarter of lifted panels are found), and papers that are not open access."],
+   "A panel reused inside the paper, or lifted from a published one.", "About 1 in 2 single small strips (larger reused panels: 93%), and papers that are not open access."],
   ["Screen Western blots",
    "Panels that look like blots (grey, framed, rows of bands) go to a small neural network that scores each band against the rest of the same blot. A noise matcher looks for copied bands.",
    "On held-out figures, 7 of 22 pasted AI bands, with about 1 in 20 unedited panels flagged.", "Most edits after resizing, most erased bands, any image type other than blots."],

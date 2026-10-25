@@ -49,7 +49,7 @@ Flags are leads for a human reviewer, never verdicts.
 - End to end, as the app actually runs: we pasted one Gemini band into each of 22 held out published figures. The app flagged the edited panel in 7, flagged no untouched panel in any edited figure, and flagged 1 of the 22 unedited originals.
 - An optional Strict setting, set on calibration papers to flag at most 1% of unedited panels: on 20 held out papers it caught 24% of pasted AI bands while flagging 2.5% of unedited panels (Standard on the same papers: 33% and 5.5%). On the 22 whole figures, Strict flagged 4 edited panels and none of the unedited originals.
 - After a 50% resize it catches about 5%. Resizing erases most of what it relies on.
-- Duplication matcher: it found 29 of 120 blot or image panels we lifted into a figure from another paper (resized 70 to 130%, some re saved as JPEG, cropped or mirrored). Small, uniform strips like an actin loading control are the hardest: their identical bands give it little to hold on to. On untouched published figures it linked none of 7,140 pairs, including 54 pairs from the same paper.
+- Duplication matcher: we lifted a blot panel or micrograph block from one published figure into a figure from another paper (resized 70 to 130%, some re saved as JPEG, cropped or mirrored). It found 110 of 118 (93%); every resized copy and 30 of 31 mirrored ones. On 7,140 pairs of untouched published figures it raised no false match, including 54 pairs from the same paper. A single small strip on its own is harder (60 of 120).
 
 That is a first baseline on a hard problem, at a scale where the watermark can't help at all. The benchmark is open so others can beat it.
 

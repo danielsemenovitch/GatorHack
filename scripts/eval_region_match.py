@@ -19,6 +19,7 @@ import json
 import random
 from pathlib import Path
 
+import numpy as np
 from PIL import Image
 
 from btw import region_match as rm
@@ -36,6 +37,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--trials", type=int, default=120)
     ap.add_argument("--fp", action="store_true", help="also re-run the all-pairs false match check (slow)")
+    ap.add_argument("--blocks", action="store_true",
+                    help="lift larger regions (a multi-strip blot or a micrograph block, 25 to 55%% of the figure) instead of single panels")
     args = ap.parse_args()
     rng = random.Random(7)
     meta = {m["file"]: m for m in json.loads((rm.LIBRARY_DIR / "metadata.json").read_text())}
@@ -51,6 +54,19 @@ def main():
             continue
         sp = rng.choice(panels[src]); hp = rng.choice(panels[host])
         crop = figs[src].crop((sp.x, sp.y, sp.x + sp.w, sp.y + sp.h))
+        if args.blocks:
+            # A larger reused region: a block of the figure that is mostly image
+            # content (blots or micrographs), like a whole panel with several strips.
+            W, H = figs[src].size
+            gray = np.asarray(figs[src].convert("L")); mask = rm.content_mask(gray)
+            for _ in range(30):
+                bw, bh = int(W * rng.uniform(0.25, 0.55)), int(H * rng.uniform(0.25, 0.55))
+                bx, by = rng.randint(0, W - bw), rng.randint(0, H - bh)
+                if mask[by:by + bh, bx:bx + bw].mean() / 255 > 0.5:
+                    break
+            else:
+                continue
+            crop = figs[src].crop((bx, by, bx + bw, by + bh))
         kind = rng.choice(["resize", "resize+jpeg", "flip", "crop+resize"])
         if kind == "crop+resize":
             cw, ch = int(crop.width * 0.75), int(crop.height * 0.85)
@@ -60,7 +76,14 @@ def main():
         # Uniform resize (aspect kept), pasted at the host panel's position.
         s = rng.uniform(0.7, 1.3)
         crop = crop.resize((max(20, round(crop.width * s)), max(10, round(crop.height * s))), Image.LANCZOS)
-        comp = figs[host].copy(); comp.paste(crop, (hp.x, hp.y))
+        if args.blocks:
+            # Place the whole block inside the host figure (a block hanging off the
+            # edge would only be partly reused).
+            hw, hh = figs[host].size
+            px, py = rng.randint(0, max(0, hw - crop.width)), rng.randint(0, max(0, hh - crop.height))
+        else:
+            px, py = hp.x, hp.y
+        comp = figs[host].copy(); comp.paste(crop, (px, py))
         q = rng.choice([90, 75, 60]) if kind == "resize+jpeg" else 92
         comp = jpeg(comp, q)
         m = rm.match(rm.features(comp, with_flip=True), rm.features(figs[src]))
@@ -72,9 +95,10 @@ def main():
         by.setdefault(r["kind"], []).append(r["found"])
     out = {"trials": len(rows), "found": sum(r["found"] for r in rows),
            "by_kind": {k: {"trials": len(v), "found": sum(v)} for k, v in by.items()},
-           "note": "Lifted panels pasted into a figure from a different paper; panels at least 60x24 px.",
+           "note": ("Lifted blocks (25 to 55% of the source figure, mostly blot or micrograph content)" if args.blocks else
+                    "Lifted single panels (often one blot strip, at least 60x24 px)") + " pasted into a figure from a different paper.",
            "rows": rows}
-    prev = ROOT / "results/region_match_eval.json"
+    prev = ROOT / ("results/region_match_eval_blocks.json" if args.blocks else "results/region_match_eval.json")
     if args.fp:
         feats = [rm.features(figs[p.name], with_flip=True) for p in files]
         meta_p = {m["file"]: m["pmcid"] for m in json.loads((rm.LIBRARY_DIR / "metadata.json").read_text())}
