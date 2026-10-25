@@ -87,7 +87,24 @@ def main():
     by_split = collections.defaultdict(list)
     for p in panels:
         by_split[split_of(p["pmcid"])].append(p)
+    # Only ai_sources/ is used for AI splice creation. The third OpenAI
+    # generation lives in ai_sources_holdout/ and MUST NOT enter this pool.
+    manifest = json.loads((DATA / "v4_ai_donor_manifest.json").read_text())
+    import hashlib as _hashlib
+    for record in manifest["donors"]:
+        donor_path = ROOT / record["path"]
+        if _hashlib.sha256(donor_path.read_bytes()).hexdigest() != record["sha256"]:
+            raise RuntimeError("AI donor checksum mismatch: " + str(donor_path))
+        if (record["role"] == "train") != (donor_path.parent.name == "ai_sources"):
+            if record["role"] == "test_only" and donor_path.parent.name == "ai_sources_holdout":
+                continue
+            raise RuntimeError("AI donor role/location mismatch; potential holdout leakage")
+    if (DATA / "ai_sources" / "openai_donor_g3_holdout.jpg").exists():
+        raise RuntimeError("Entire held-out AI donor generation has leaked into training")
     ai = ai_panels()
+    print("V4_EXTRA_DONORS: training donor panel crops =", len(ai),
+          "; independent source generations added = 2; holdout generation = 1",
+          flush=True)
     out = DATA / "benchmark"
     idir, mdir = out / "images", out / "masks"
     idir.mkdir(parents=True, exist_ok=True)
@@ -155,7 +172,11 @@ def main():
         "n_test_papers": len({r["pmcid"] for r in index if r["split"]=="test"}),
         "n_train_papers_before_calibration": len({r["pmcid"] for r in index if r["split"]=="train"}),
         "paper_split": "MD5(PMCID)%100 <30 test, >=30 train (same as v3)",
-        "note": "Synthetic edits and matching pixel masks. Prior works are untouched. AI donors originate from TWO Gemini images: more synthetic edits do not create independent generators.",
+        "ai_donor_training_original_sources": ["gemini_clean_blot.jpeg", "gemini_film_blot.jpeg",
+                                               "openai_donor_g1_train.jpg", "openai_donor_g2_train.jpg"],
+        "ai_donor_heldout_original_sources": ["openai_donor_g3_holdout.jpg"],
+        "ai_donor_training_panel_crops": len(ai),
+        "note": "Synthetic team-created edits with masks. Two original Gemini and two additional OpenAI-generated source blots are TRAINING donor images; independent OpenAI generation g3 is HELD OUT. This is not generator-family-disjoint validation.",
     }
     dest = ROOT / "results" / "v4_benchmark.json"
     dest.write_text(json.dumps(report, indent=2))
