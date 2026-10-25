@@ -7,12 +7,62 @@ const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (ch) =>
 const safeImg = (src) => /^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(src || "")
   ? src : "";
 
+// Only known Europe PMC article URLs are linked in downloaded HTML.
+const safeSourceUrl = (url) => /^https:\/\/europepmc\.org\/article\/PMC\/\d+$/.test(url || "") ? url : "";
+const sourceLabel = (s = {}) => [s.figLabel, s.pmcid, s.year].filter(Boolean).join(" · ") || "Published figure";
+const pairHtml = (title, left, right, a, b, meta) =>
+  '<article><h3>' + esc(title) + '</h3><p>' + esc(meta) + '</p>' +
+  '<div class="pair"><figure><img src="' + safeImg(left) + '"><figcaption>' + esc(a) +
+  '</figcaption></figure><figure><img src="' + safeImg(right) +
+  '"><figcaption>' + esc(b) + '</figcaption></figure></div></article>';
+
+
 export function reportToHtml(report) {
   const figs = report.figures || [];
   const matches = report.image_reuse || [];
   const checks = report.checks || {};
   const fmt = (n) => Number.isFinite(Number(n)) ? Number(n).toFixed(2) : "n/a";
   const duplicates = report.duplicates || [];
+  const regionPairs = (report.region_reuse || []).map((m, i) =>
+    pairHtml('Region reused within this paper ' + (i + 1), m.a.crop, m.b.crop,
+      m.a.label || 'Figure A', m.b.label || 'Figure B',
+      m.inliers + ' aligned keypoints; scale ' + m.scale +
+      (m.flipped ? '; mirrored copy' : '') +
+      '. Matches require review of the figure captions and intended reuse.')).join('');
+  const libraryPairs = (report.library_matches || []).map((m, i) => {
+    const src = m.source || {};
+    const url = safeSourceUrl(src.url);
+    return pairHtml('Matching region in published reference ' + (i + 1), m.crop, m.source_crop,
+      m.label || 'Uploaded figure', sourceLabel(src),
+      (src.title || 'Published source') + (src.doi ? '; DOI ' + src.doi : '') +
+      '; ' + m.inliers + ' aligned keypoints. An image match does not establish publication order or improper reuse.') +
+      (url ? '<p>Source: <a href="' + esc(url) + '">' + esc(url) + '</a></p>' : '');
+  }).join('');
+  const agent = report.web_search || null;
+  const agentPairs = (agent?.matches || []).map((m, i) => {
+    const src = m.source || {};
+    const url = safeSourceUrl(src.url);
+    return pairHtml('Search agent match ' + (i + 1), m.crop, m.source_crop,
+      m.figure_label || 'Uploaded figure', sourceLabel(src),
+      (src.title || 'Open-access paper') + '; ' + m.inliers + ' aligned keypoints.') +
+      (url ? '<p>Source: <a href="' + esc(url) + '">' + esc(url) + '</a></p>' : '');
+  }).join('');
+  const agentLog = agent ?
+    '<p>Search status: ' + esc(agent.status || 'unknown') +
+    '; query planner: ' + esc(agent.planner || 'unknown') +
+    '; figures compared: ' + esc(agent.figures_compared || 0) +
+    '; papers considered: ' + esc((agent.papers || []).length) +
+    '; elapsed: ' + esc(agent.seconds) + ' seconds.</p>' +
+    (agent.note ? '<p>' + esc(agent.note) + '</p>' : '') +
+    '<h3>Queries</h3><ul>' + (agent.queries || []).map(q =>
+      '<li>' + esc(q.query) + (q.why ? ' — ' + esc(q.why) : '') +
+      (q.error ? ' — error: ' + esc(q.error) : ' — results: ' + esc(q.results ?? 'unknown')) + '</li>').join('') + '</ul>' +
+    '<h3>Papers checked</h3><ul>' + (agent.papers || []).map(p =>
+      '<li>' + esc(p.pmcid) + ' — ' + esc(p.title) +
+      ' (' + esc(p.figures ?? 0) + ' figures read)' +
+      (p.error ? ' — ' + esc(p.error) : '') + '</li>').join('') + '</ul>' +
+    (agentPairs || '<p>No matching regions found by this search.</p>') :
+    '<p>Online Europe PMC search was not requested in this session. The local reference-library check is separate and does not constitute a search of all publications.</p>';
   const pairs = matches.map((m, i) => {
     const a = figs[m.a.figure], b = figs[m.b.figure];
     if (!a || !b) return "";
@@ -88,6 +138,14 @@ export function reportToHtml(report) {
     ((report.skipped_images || []).length ? '<p><strong>Not analyzed:</strong> ' + esc(report.skipped_images.map((x) => x.label + ' (' + x.reason.replaceAll("_", " ") + ')').join("; ")) + '</p>' : '') +
     '<h2>Checks performed</h2><table><thead><tr><th>Check</th><th>Status</th></tr></thead><tbody>' + rows +
     '</tbody></table><h2>Provenance</h2><p>' + esc(provenance.summary || "Not assessed") + '</p>' +
+    '<h2>Reused regions between figures in this paper</h2>' +
+      (regionPairs || '<p>No matching region identified between different extracted figures. This does not test duplication within one figure.</p>') +
+    '<h2>Matches to the built-in published reference library</h2><p>' +
+      (report.summary?.library ? 'Reference coverage: ' + esc(report.summary.library.figures) +
+        ' figures from ' + esc(report.summary.library.papers) + ' papers. ' : 'Reference-library coverage unavailable. ') +
+      'A match does not establish priority or misconduct.</p>' +
+      (libraryPairs || '<p>No matching region identified in the built-in reference library.</p>') +
+    '<h2>On-demand Europe PMC search</h2>' + agentLog +
     '<h2>Potential whole-image reuse</h2>' + (pairs || '<p>No whole-image reuse was identified among the extracted figures.</p>') +
     '<h2>Experimental copied-band candidates</h2>' +
       (duplicatedBands || '<p>No copied-band candidate met the detector threshold, or the method was not run.</p>') +
