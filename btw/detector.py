@@ -94,9 +94,11 @@ class CnnDetector:
     @classmethod
     def load(cls, version: str = "v2") -> "CnnDetector":
         from . import cnn
-        if version not in ("v2", "v3"):
+        import re
+        if not re.fullmatch(r"v\d+", version or ""):
             raise ValueError("Unsupported CNN version")
-        path = cnn.WEIGHTS if version == "v2" else cnn.WEIGHTS.with_name("splice_cnn_v3.npz")
+        # v2 is the original checkpoint; v3, v4, ... are models/splice_cnn_vN.npz in the same format.
+        path = cnn.WEIGHTS if version == "v2" else cnn.WEIGHTS.with_name(f"splice_cnn_{version}.npz")
         if not path.is_file():
             raise FileNotFoundError(f"Requested CNN checkpoint unavailable: {version}")
         params, meta = cnn.load(path)

@@ -19,7 +19,7 @@ const pct = (v, total) => `${(100 * v) / total}%`;
 const scoreFmt = (v) => Number.isFinite(Number(v)) ? Number(v).toFixed(2) : "n/a";
 
 /* The figure on the lightbox: panels, heat, band boxes, duplicate links. */
-function Stage({ fig, duplicates = [], showHeat = true, activeBand, onBand, threshold, knownEdit, knownEditLabel = "known edit" }) {
+function Stage({ fig, duplicates = [], showHeat = true, activeBand, onBand, threshold, knownEdit, knownEditLabel = "known edit", marks = [] }) {
   const W = fig.width, H = fig.height;
   const links = duplicates.filter((d) => d.a.figure === fig.id && d.b.figure === fig.id);
   const panelById = Object.fromEntries(fig.panels.map((p) => [p.id, p]));
@@ -56,6 +56,11 @@ function Stage({ fig, duplicates = [], showHeat = true, activeBand, onBand, thre
           <span>{knownEditLabel}</span>
         </div>
       )}
+      {marks.map((m, i) => (
+        <div key={i} className="mark" style={{ left: pct(m.box[0], W), top: pct(m.box[1], H), width: pct(m.box[2] - m.box[0], W), height: pct(m.box[3] - m.box[1], H) }}>
+          <span>{m.label}</span>
+        </div>
+      ))}
       {links.length > 0 && (
         <svg className="links" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" aria-hidden="true">
           {links.map((d, i) => {
@@ -87,9 +92,71 @@ function Check({ name, state, tone = "info", children }) {
   );
 }
 
-function Report({ report }) {
+function MatchPair({ left, right, leftLabel, rightLabel, children }) {
+  return (
+    <div className="reuse-pair">
+      <div className="pair">
+        <figure><img src={left} alt={leftLabel} /><figcaption>{leftLabel}</figcaption></figure>
+        <figure><img src={right} alt={rightLabel} /><figcaption>{rightLabel}</figcaption></figure>
+      </div>
+      {children}
+    </div>
+  );
+}
+
+const cite = (src) => `${src.figLabel ? src.figLabel.replace(/\.$/, "") + " of " : ""}${src.pmcid}${src.year ? ` (${src.year})` : ""}`;
+const howMatched = (m) => [m.scale && Math.abs(m.scale - 1) > 0.04 ? `resized ${Math.round(m.scale * 100)}%` : null, m.flipped ? "mirrored" : null].filter(Boolean).join(", ");
+
+function WebSearch({ file, report }) {
+  const [state, setState] = useState(null);
+  const [busy, setBusy] = useState(false);
+  const run = async () => {
+    if (!file) return;
+    setBusy(true); setState(null);
+    try {
+      const fd = new FormData(); fd.append("file", file);
+      const r = await fetch(`${API}/api/search_web`, { method: "POST", body: fd });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.detail || "The search failed.");
+      setState(j);
+    } catch (e) { setState({ status: "error", note: e.message }); } finally { setBusy(false); }
+  };
+  return (
+    <div className="detail web">
+      <h3>Search published papers online</h3>
+      {!state && !busy && <>
+        <p className="sub" style={{ margin: "0 0 10px" }}>An agent plans Europe PMC searches from this {report.figures.length > 1 ? "paper's title, authors and captions" : "figure's labels"}, pulls the figures of the open access papers it finds, and checks each one against yours. Takes about a minute.</p>
+        <button className="btn small" type="button" onClick={run} disabled={!file}>Search Europe PMC</button>
+      </>}
+      {busy && <p className="loading" style={{ padding: "4px 0" }}>Planning searches, downloading figures and comparing…</p>}
+      {state && <>
+        {state.note && <p className="sub" style={{ margin: "0 0 8px" }}>{state.note}</p>}
+        {state.status === "done" && <p style={{ margin: "0 0 8px" }}>{state.matches.length ? `${state.matches.length} match${state.matches.length === 1 ? "" : "es"} found` : "No match found"} in {state.figures_compared} figures from {state.papers.length} papers ({state.seconds}s, searches planned by {state.planner}).</p>}
+        {state.matches?.map((m, i) => (
+          <MatchPair key={i} left={m.crop} right={m.source_crop} leftLabel={m.figure_label} rightLabel={cite(m.source)}>
+            <p className="sub" style={{ margin: "4px 0 0" }}><a href={m.source.url} target="_blank" rel="noreferrer">{m.source.title}</a>{howMatched(m) ? `. Matched ${howMatched(m)}.` : "."}</p>
+          </MatchPair>
+        ))}
+        {state.queries?.length > 0 && (
+          <details className="more">
+            <summary>What the agent searched</summary>
+            <ul className="log">
+              {state.queries.map((q, i) => <li key={i}><code>{q.query}</code> {q.why ? `(${q.why})` : ""}{q.error ? `: failed, ${q.error}` : q.results != null ? `: ${q.results} papers` : ""}</li>)}
+            </ul>
+            {state.papers?.length > 0 && <ul className="log">{state.papers.map((p) => <li key={p.pmcid}>{p.pmcid} ({p.year}) {p.title} {p.error ? `: not read, ${p.error}` : `: ${p.figures} figures`}</li>)}</ul>}
+          </details>
+        )}
+        <button className="btn ghost small" type="button" onClick={run} style={{ marginTop: 10 }}>Search again</button>
+      </>}
+    </div>
+  );
+}
+
+function Report({ report, file }) {
   const [showHeat, setShowHeat] = useState(true);
   const [active, setActive] = useState(null);
+  const regionReuse = report.region_reuse || [];
+  const libraryMatches = report.library_matches || [];
   const s = report.summary;
   const thr = s.threshold;
   const flagged = report.figures.flatMap((f) => f.panels.filter((p) => p.flagged).map((p) => ({ ...p, figure_label: f.label })));
@@ -98,13 +165,15 @@ function Report({ report }) {
   const aiDeclared = !!s.credential_declares_ai;
   const multi = report.figures.length > 1;
   const title = aiDeclared ? "The file says it was made by AI"
-    : flagged.length || imageReuse.length || s.duplicate_pairs ? "Worth a closer look"
+    : flagged.length || imageReuse.length || s.duplicate_pairs || regionReuse.length || libraryMatches.length ? "Worth a closer look"
     : s.panels ? "Nothing flagged" : "No Western blots found";
   const parts = [
     multi ? `${report.figures.length} figures` : null,
     s.panels ? `${s.panels} blot panel${s.panels === 1 ? "" : "s"} screened` : null,
     s.panels ? `${s.flagged_panels} flagged` : null,
     imageReuse.length ? `${imageReuse.length} image${imageReuse.length === 1 ? "" : "s"} used twice` : null,
+    regionReuse.length ? `${regionReuse.length} region${regionReuse.length === 1 ? "" : "s"} reused between figures` : null,
+    libraryMatches.length ? `${libraryMatches.length} match${libraryMatches.length === 1 ? "" : "es"} to published figures` : null,
   ].filter(Boolean);
   const skippedImages = report.skipped_images || [];
   const skippedCounts = skippedImages.reduce((acc, x) => ({ ...acc, [x.reason]: (acc[x.reason] || 0) + 1 }), {});
@@ -136,6 +205,26 @@ function Report({ report }) {
           {s.flagged_panels > 0 ? <label className="toggle"><input type="checkbox" checked={showHeat} onChange={(e) => setShowHeat(e.target.checked)} /> Show heat</label> : <span />}
           <button className="btn ghost small" type="button" onClick={() => downloadReviewReport(report)}>Download report</button>
         </div>
+        {regionReuse.length > 0 && (
+          <div className="detail reuse">
+            <h3>The same blot appears twice in this paper</h3>
+            {regionReuse.map((m, i) => (
+              <MatchPair key={i} left={m.a.crop} right={m.b.crop} leftLabel={m.a.label} rightLabel={m.b.label}>
+                <p className="sub" style={{ margin: "4px 0 0" }}>{m.inliers} matching keypoints{howMatched(m) ? `, ${howMatched(m)}` : ""}. If these are labeled as different proteins or experiments, ask for the original images.</p>
+              </MatchPair>
+            ))}
+          </div>
+        )}
+        {libraryMatches.length > 0 && (
+          <div className="detail reuse">
+            <h3>Also in a published paper</h3>
+            {libraryMatches.map((m, i) => (
+              <MatchPair key={i} left={m.crop} right={m.source_crop} leftLabel={m.label} rightLabel={cite(m.source)}>
+                <p className="sub" style={{ margin: "4px 0 0" }}>{m.source.url ? <a href={m.source.url} target="_blank" rel="noreferrer">{m.source.title}</a> : m.source.title}{m.source.doi ? `, doi:${m.source.doi}` : ""}. {m.inliers} matching keypoints{howMatched(m) ? `, ${howMatched(m)}` : ""}. Check whether the figure is cited.</p>
+              </MatchPair>
+            ))}
+          </div>
+        )}
         {imageReuse.length > 0 && (
           <div className="detail reuse">
             <h3>The same image appears twice</h3>
@@ -158,10 +247,16 @@ function Report({ report }) {
           <div key={fig.id} className="figure">
             {multi && <p className="figlabel"><strong>{fig.label}</strong>
               {imageReuse.some((m) => m.a.figure === fig.id || m.b.figure === fig.id) && <span className="tag bad">used twice</span>}
+              {regionReuse.some((m) => m.a.figure === fig.id || m.b.figure === fig.id) && <span className="tag bad">shares a region</span>}
+              {libraryMatches.some((m) => m.figure === fig.id) && <span className="tag bad">published before</span>}
               {fig.panels.some((p) => p.flagged) && <span className="tag bad">{fig.panels.filter((p) => p.flagged).length} flagged</span>}
               {fig.repeated_placements?.length ? <span className="tag">repeated on {fig.repeated_placements.length + 1} pages</span> : null}</p>}
             <div className="lightbox">
               <Stage fig={fig} duplicates={report.duplicates || []} showHeat={showHeat} threshold={thr || 0.5}
+                     marks={[
+                       ...regionReuse.flatMap((m) => ["a", "b"].filter((k) => m[k].figure === fig.id).map((k) => ({ box: m[k].box, label: `also in ${m[k === "a" ? "b" : "a"].label}` }))),
+                       ...libraryMatches.filter((m) => m.figure === fig.id).map((m) => ({ box: m.box, label: `also in ${m.source.pmcid}` })),
+                     ]}
                      knownEdit={fig.id === 0 ? report.known_edit : null} knownEditLabel="our edit"
                      activeBand={active?.key} onBand={(key, p, b) => setActive({ key, p, b })} />
               {fig.id === 0 && report.credit && <p className="credit">{report.credit}</p>}
@@ -194,6 +289,7 @@ function Report({ report }) {
             ))}
           </div>
         )}
+        <WebSearch file={file} report={report} />
       </div>
       <aside className="rail" aria-label="Checks">
         <Check name="Pasted or edited bands" tone={s.flagged_panels ? "bad" : "info"}
@@ -202,9 +298,13 @@ function Report({ report }) {
             ? <>Highest score {scoreFmt(s.max_splice_score)}, flag line {scoreFmt(thr)}. About 1 in {Math.round(1 / chance)} unedited panels is flagged by chance{s.panels * chance >= 0.5 ? `, so about ${Math.round(s.panels * chance)} here` : ""}.</>
             : "Runs only on panels that look like Western blots."}</p>
         </Check>
-        <Check name="Images used twice" tone={imageReuse.length ? "bad" : "info"}
-               state={!multi ? "One image" : imageReuse.length ? `${imageReuse.length} pair${imageReuse.length === 1 ? "" : "s"}` : "None found"}>
-          <p>{multi ? "Every pair of figures in the file is compared, including resized or re-saved copies." : "Upload a PDF to compare its figures with each other."}</p>
+        <Check name="Reused within this paper" tone={imageReuse.length || regionReuse.length ? "bad" : "info"}
+               state={!multi ? "One image" : imageReuse.length + regionReuse.length ? `${imageReuse.length + regionReuse.length} found` : "None found"}>
+          <p>{multi ? "Every pair of figures is compared, region by region, so a cropped, resized or mirrored copy still matches." : "Upload a PDF to compare its figures with each other."}</p>
+        </Check>
+        <Check name="Published elsewhere" tone={libraryMatches.length ? "bad" : "info"}
+               state={libraryMatches.length ? `${libraryMatches.length} match${libraryMatches.length === 1 ? "" : "es"}` : "None found"}>
+          <p>{s.library ? `Checked against ${s.library.figures} published figures from ${s.library.papers} papers. Search Europe PMC below for more.` : "Reference library not available."}</p>
         </Check>
         <Check name="Copied bands" tone={s.duplicate_pairs ? "bad" : "info"}
                state={!s.panels ? "No blots" : s.duplicate_pairs ? `${s.duplicate_pairs} match${s.duplicate_pairs === 1 ? "" : "es"}` : "None found"}>
@@ -236,6 +336,7 @@ function Report({ report }) {
 function CheckPage({ examples, report, setReport }) {
   const [busy, setBusy] = useState(false);
   const [strict, setStrict] = useState(false);
+  const [lastFile, setLastFile] = useState(null);
   const [error, setError] = useState(null);
   const [over, setOver] = useState(false);
   const input = useRef(null);
@@ -243,7 +344,7 @@ function CheckPage({ examples, report, setReport }) {
   const tryable = examples.filter((e) => !e.hero);
 
   const send = useCallback(async (file, extras = {}) => {
-    setBusy(true); setError(null);
+    setBusy(true); setError(null); setLastFile(file);
     try {
       const fd = new FormData(); fd.append("file", file);
       fd.append("screening_policy", strict ? "conservative" : "benchmark");
@@ -330,7 +431,7 @@ function CheckPage({ examples, report, setReport }) {
       </section>
       {error && <div className="error" role="alert">{error}</div>}
       {busy && <p className="loading">Finding figures and blot panels, then scoring every band…</p>}
-      <div id="report">{report && <Report report={report} />}</div>
+      <div id="report">{report && <Report key={report.seconds + report.filename} report={report} file={lastFile} />}</div>
     </>
   );
 }
@@ -495,9 +596,9 @@ const PIPELINE = [
   ["Read content credentials",
    "Gemini signs its downloads with a C2PA credential that says the image was made by AI. We read it and check its integrity. SynthID has no public API, so that check stays by hand.",
    "AI images straight from the generator.", "Any re-save strips the credential; in PDFs it is not checked."],
-  ["Find reused images",
-   "Every pair of figures is compared by an exact hash of the decoded pixels and by a perceptual hash confirmed with structural similarity, so a re-saved or resized copy still matches.",
-   "The same image used twice in one paper.", "Copied patches inside different images, and anything in other papers."],
+  ["Find duplicated images",
+   "Every pair of figures is compared region by region with keypoints that survive cropping, resizing, re-saving and mirroring, so a blot reused under a different label still lines up. Every figure is also checked against a library of published figures, and an agent can search Europe PMC for the same figure in other papers: Gemini plans the searches from the title, captions or figure labels.",
+   "A panel reused inside the paper, or lifted from a published one.", "Small uniform strips (about a quarter of lifted panels are found), and papers that are not open access."],
   ["Screen Western blots",
    "Panels that look like blots (grey, framed, rows of bands) go to a small neural network that scores each band against the rest of the same blot. A noise matcher looks for copied bands.",
    "On held-out figures, 7 of 22 pasted AI bands, with about 1 in 20 unedited panels flagged.", "Most edits after resizing, most erased bands, any image type other than blots."],

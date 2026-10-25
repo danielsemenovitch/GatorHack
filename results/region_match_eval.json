@@ -1,0 +1,1112 @@
+{
+ "trials": 120,
+ "found": 29,
+ "by_kind": {
+  "resize": {
+   "trials": 29,
+   "found": 8
+  },
+  "resize+jpeg": {
+   "trials": 38,
+   "found": 10
+  },
+  "crop+resize": {
+   "trials": 25,
+   "found": 4
+  },
+  "flip": {
+   "trials": 28,
+   "found": 7
+  }
+ },
+ "note": "Lifted panels pasted into a figure from a different paper; panels at least 60x24 px.",
+ "rows": [
+  {
+   "source": "PMC10482945_Fig1.jpg",
+   "host": "PMC10315040_Fig5.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 1.19,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10264620_f3.jpg",
+   "host": "PMC10501626_ppat1011620g001.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 75,
+   "scale": 0.72,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10533267_fig4.jpg",
+   "host": "PMC10179266_ijms2408064f001.jpg",
+   "kind": "crop+resize",
+   "jpeg": 92,
+   "scale": 0.74,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10641988_Fig2.jpg",
+   "host": "PMC10301924_pathogens1200801f001.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 1.05,
+   "found": true,
+   "inliers": 24
+  },
+  {
+   "source": "PMC10511514_Fig1.jpg",
+   "host": "PMC10136447_cells1201130f005.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 90,
+   "scale": 0.87,
+   "found": true,
+   "inliers": 24
+  },
+  {
+   "source": "PMC10637820_f2.jpg",
+   "host": "PMC10301924_pathogens1200801f001.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 60,
+   "scale": 0.76,
+   "found": true,
+   "inliers": 20
+  },
+  {
+   "source": "PMC10701771_mol213512fig0001.jpg",
+   "host": "PMC10334825_F6.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 1.04,
+   "found": true,
+   "inliers": 15
+  },
+  {
+   "source": "PMC10674287_viruses1502141f002.jpg",
+   "host": "PMC10352194_Fig4.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 0.98,
+   "found": true,
+   "inliers": 71
+  },
+  {
+   "source": "PMC10590423_Fig2.jpg",
+   "host": "PMC10501626_ppat1011620g001.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 90,
+   "scale": 1.12,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10243194_fig1.jpg",
+   "host": "PMC10651854_Fig3.jpg",
+   "kind": "crop+resize",
+   "jpeg": 92,
+   "scale": 1.23,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10739886_Fig3.jpg",
+   "host": "PMC10579373_Fig2.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 1.01,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10317990_Fig1.jpg",
+   "host": "PMC10743494_ijms2417271f004.jpg",
+   "kind": "crop+resize",
+   "jpeg": 92,
+   "scale": 0.95,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10706654_ijms2416814f003.jpg",
+   "host": "PMC10179266_ijms2408064f002.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 1.12,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10662044_f3.jpg",
+   "host": "PMC10608838_metabolites1301043f005.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 1.27,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10605742_cells1202432f002.jpg",
+   "host": "PMC10716122_Fig2.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 1.14,
+   "found": true,
+   "inliers": 18
+  },
+  {
+   "source": "PMC10468065_pone0286266g002.jpg",
+   "host": "PMC10701771_mol213512fig0002.jpg",
+   "kind": "crop+resize",
+   "jpeg": 92,
+   "scale": 1.23,
+   "found": true,
+   "inliers": 21
+  },
+  {
+   "source": "PMC10486525_cells1202175f001.jpg",
+   "host": "PMC10033651_Fig1.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 75,
+   "scale": 1.07,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10139118_ijms2407135f005.jpg",
+   "host": "PMC10376983_biomolecules1301129f003.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 75,
+   "scale": 0.94,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10243194_fig1.jpg",
+   "host": "PMC10317990_Fig1.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 1.23,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10779295_ijms2500243f002.jpg",
+   "host": "PMC10536113_pathogens1201126f003.jpg",
+   "kind": "crop+resize",
+   "jpeg": 92,
+   "scale": 1.29,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10710492_Fig2.jpg",
+   "host": "PMC9605769_F1.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 90,
+   "scale": 0.75,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10380564_ijms2411683f001.jpg",
+   "host": "PMC10701888_f2.jpg",
+   "kind": "crop+resize",
+   "jpeg": 92,
+   "scale": 1.2,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10334825_F5.jpg",
+   "host": "PMC10412805_fig2.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 75,
+   "scale": 0.95,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10665393_Fig2.jpg",
+   "host": "PMC10641988_Fig2.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 0.97,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC11406190_fig4.jpg",
+   "host": "PMC10748214_vaccines1101820f004.jpg",
+   "kind": "crop+resize",
+   "jpeg": 92,
+   "scale": 0.94,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10605742_cells1202432f003.jpg",
+   "host": "PMC10701771_mol213512fig0001.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 90,
+   "scale": 0.74,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10579373_Fig1.jpg",
+   "host": "PMC10315040_Fig6.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 0.76,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10641988_Fig2.jpg",
+   "host": "PMC10315040_Fig5.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 1.07,
+   "found": true,
+   "inliers": 109
+  },
+  {
+   "source": "PMC10179266_ijms2408064f002.jpg",
+   "host": "PMC11406190_fig4.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 75,
+   "scale": 1.08,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10665393_Fig1.jpg",
+   "host": "PMC10501626_ppat1011620g001.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 1.21,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10590423_Fig7.jpg",
+   "host": "PMC10605742_cells1202432f003.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 0.79,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10743494_ijms2417271f003.jpg",
+   "host": "PMC10485056_Fig1.jpg",
+   "kind": "crop+resize",
+   "jpeg": 92,
+   "scale": 1.2,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10315040_Fig6.jpg",
+   "host": "PMC10630453_Fig2.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 0.79,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10637820_f2.jpg",
+   "host": "PMC10033651_Fig5.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 1.12,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10412805_fig2.jpg",
+   "host": "PMC10630453_Fig2.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 1.16,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10631120_Fig6.jpg",
+   "host": "PMC10637820_f2.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 90,
+   "scale": 1.07,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10756753_kiad520F6.jpg",
+   "host": "PMC10380564_ijms2411683f002.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 75,
+   "scale": 0.82,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10486525_cells1202175f003.jpg",
+   "host": "PMC10739886_Fig3.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 0.98,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10334825_F6.jpg",
+   "host": "PMC10713253_fig1.jpg",
+   "kind": "crop+resize",
+   "jpeg": 92,
+   "scale": 1.19,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10728138_Fig2.jpg",
+   "host": "PMC10486525_cells1202175f001.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 75,
+   "scale": 0.76,
+   "found": true,
+   "inliers": 20
+  },
+  {
+   "source": "PMC10352194_Fig1.jpg",
+   "host": "PMC10485056_Fig1.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 0.99,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10701888_f1.jpg",
+   "host": "PMC10486525_cells1202175f001.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 1.25,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10755782_fig2.jpg",
+   "host": "PMC10728138_Fig1.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 60,
+   "scale": 0.96,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10482945_Fig2.jpg",
+   "host": "PMC10243194_fig2.jpg",
+   "kind": "crop+resize",
+   "jpeg": 92,
+   "scale": 0.94,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10243194_fig1.jpg",
+   "host": "PMC10728138_Fig2.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 60,
+   "scale": 0.72,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10590423_Fig7.jpg",
+   "host": "PMC10756753_kiad520F6.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 0.79,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10637820_f4.jpg",
+   "host": "PMC10301924_pathogens1200801f002.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 1.02,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10313560_Fig2.jpg",
+   "host": "PMC10536113_pathogens1201126f003.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 0.85,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10454486_ijms2412838f001.jpg",
+   "host": "PMC10622527_Fig1.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 1.03,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10780770_nutrients1600064f001.jpg",
+   "host": "PMC10301924_pathogens1200801f002.jpg",
+   "kind": "crop+resize",
+   "jpeg": 92,
+   "scale": 1.1,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10779295_ijms2500243f002.jpg",
+   "host": "PMC10630453_Fig2.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 60,
+   "scale": 1.02,
+   "found": true,
+   "inliers": 53
+  },
+  {
+   "source": "PMC10622527_Fig4.jpg",
+   "host": "PMC10033651_Fig1.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 90,
+   "scale": 1.07,
+   "found": true,
+   "inliers": 15
+  },
+  {
+   "source": "PMC10317990_Fig2.jpg",
+   "host": "PMC10313560_Fig3.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 1.03,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10482945_Fig1.jpg",
+   "host": "PMC10710492_Fig2.jpg",
+   "kind": "crop+resize",
+   "jpeg": 92,
+   "scale": 1.17,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10264620_f4.jpg",
+   "host": "PMC9605769_F1.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 90,
+   "scale": 0.87,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10622527_Fig1.jpg",
+   "host": "PMC10579373_Fig2.jpg",
+   "kind": "crop+resize",
+   "jpeg": 92,
+   "scale": 0.9,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10622527_Fig1.jpg",
+   "host": "PMC10665393_Fig1.jpg",
+   "kind": "crop+resize",
+   "jpeg": 92,
+   "scale": 1.0,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10756753_kiad520F6.jpg",
+   "host": "PMC10605742_cells1202432f003.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 1.25,
+   "found": true,
+   "inliers": 42
+  },
+  {
+   "source": "PMC9605769_F3.jpg",
+   "host": "PMC10352194_Fig1.jpg",
+   "kind": "crop+resize",
+   "jpeg": 92,
+   "scale": 0.77,
+   "found": true,
+   "inliers": 110
+  },
+  {
+   "source": "PMC10579373_Fig1.jpg",
+   "host": "PMC10468065_pone0286266g003.jpg",
+   "kind": "crop+resize",
+   "jpeg": 92,
+   "scale": 0.74,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10706654_ijms2416814f003.jpg",
+   "host": "PMC10454486_ijms2412838f003.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 60,
+   "scale": 1.26,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10701888_f2.jpg",
+   "host": "PMC10501626_ppat1011620g001.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 90,
+   "scale": 1.28,
+   "found": true,
+   "inliers": 16
+  },
+  {
+   "source": "PMC10743494_ijms2417271f003.jpg",
+   "host": "PMC10264620_f3.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 90,
+   "scale": 1.29,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10315040_Fig6.jpg",
+   "host": "PMC10716122_Fig4.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 0.95,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10486525_cells1202175f003.jpg",
+   "host": "PMC10468065_pone0286266g003.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 0.9,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10590423_Fig2.jpg",
+   "host": "PMC10579373_Fig1.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 1.01,
+   "found": true,
+   "inliers": 17
+  },
+  {
+   "source": "PMC10454486_ijms2412838f001.jpg",
+   "host": "PMC10622527_Fig4.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 90,
+   "scale": 1.28,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10243194_fig1.jpg",
+   "host": "PMC10412805_fig2.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 90,
+   "scale": 0.86,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10779295_ijms2500243f002.jpg",
+   "host": "PMC10536113_pathogens1201126f001.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 60,
+   "scale": 1.02,
+   "found": true,
+   "inliers": 211
+  },
+  {
+   "source": "PMC10651854_Fig3.jpg",
+   "host": "PMC10608838_metabolites1301043f005.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 0.73,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10713253_fig1.jpg",
+   "host": "PMC10334825_F5.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 1.26,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10701771_mol213512fig0001.jpg",
+   "host": "PMC10243194_fig2.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 90,
+   "scale": 0.74,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10590423_Fig2.jpg",
+   "host": "PMC10015710_Fig3.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 1.07,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10110470_F2.jpg",
+   "host": "PMC10630453_Fig4.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 90,
+   "scale": 0.86,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10352194_Fig1.jpg",
+   "host": "PMC10468065_pone0286266g002.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 60,
+   "scale": 0.87,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10706654_ijms2416814f004.jpg",
+   "host": "PMC10317990_Fig2.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 1.3,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10110470_F1.jpg",
+   "host": "PMC10015710_Fig3.jpg",
+   "kind": "crop+resize",
+   "jpeg": 92,
+   "scale": 0.85,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10579373_Fig2.jpg",
+   "host": "PMC10264620_f4.jpg",
+   "kind": "crop+resize",
+   "jpeg": 92,
+   "scale": 1.28,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10468065_pone0286266g002.jpg",
+   "host": "PMC10713253_fig1.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 0.82,
+   "found": true,
+   "inliers": 99
+  },
+  {
+   "source": "PMC7261179_F4.jpg",
+   "host": "PMC10716122_Fig4.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 1.29,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10780770_nutrients1600064f002.jpg",
+   "host": "PMC10301924_pathogens1200801f002.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 0.96,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10139118_ijms2407135f005.jpg",
+   "host": "PMC10243194_fig1.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 1.06,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10713253_fig1.jpg",
+   "host": "PMC10454486_ijms2412838f001.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 75,
+   "scale": 0.79,
+   "found": true,
+   "inliers": 48
+  },
+  {
+   "source": "PMC10015710_Fig2.jpg",
+   "host": "PMC10412805_fig2.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 0.85,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC7261179_F4.jpg",
+   "host": "PMC10468065_pone0286266g002.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 75,
+   "scale": 0.7,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10243194_fig1.jpg",
+   "host": "PMC10605742_cells1202432f002.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 90,
+   "scale": 0.85,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10243194_fig2.jpg",
+   "host": "PMC10412805_fig2.jpg",
+   "kind": "crop+resize",
+   "jpeg": 92,
+   "scale": 1.05,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10511514_Fig1.jpg",
+   "host": "PMC10033651_Fig1.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 60,
+   "scale": 0.75,
+   "found": true,
+   "inliers": 25
+  },
+  {
+   "source": "PMC11292187_f2.jpg",
+   "host": "PMC10743494_ijms2417271f004.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 1.13,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10608838_metabolites1301043f005.jpg",
+   "host": "PMC10315040_Fig5.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 1.19,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10728138_Fig1.jpg",
+   "host": "PMC9605769_F3.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 1.2,
+   "found": true,
+   "inliers": 29
+  },
+  {
+   "source": "PMC10651854_Fig4.jpg",
+   "host": "PMC10756753_kiad520F5.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 0.73,
+   "found": true,
+   "inliers": 21
+  },
+  {
+   "source": "PMC10701771_mol213512fig0001.jpg",
+   "host": "PMC10501626_ppat1011620g001.jpg",
+   "kind": "crop+resize",
+   "jpeg": 92,
+   "scale": 1.04,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10675439_viruses1502158f006.jpg",
+   "host": "PMC10033651_Fig1.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 0.7,
+   "found": true,
+   "inliers": 75
+  },
+  {
+   "source": "PMC10756753_kiad520F5.jpg",
+   "host": "PMC10179266_ijms2408064f001.jpg",
+   "kind": "crop+resize",
+   "jpeg": 92,
+   "scale": 0.85,
+   "found": true,
+   "inliers": 54
+  },
+  {
+   "source": "PMC10179266_ijms2408064f002.jpg",
+   "host": "PMC11292187_f1.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 60,
+   "scale": 0.84,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10590423_Fig2.jpg",
+   "host": "PMC10608838_metabolites1301043f005.jpg",
+   "kind": "crop+resize",
+   "jpeg": 92,
+   "scale": 1.25,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10448144_f2.jpg",
+   "host": "PMC10748214_vaccines1101820f003.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 1.06,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10482945_Fig2.jpg",
+   "host": "PMC10412805_fig1.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 90,
+   "scale": 0.71,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10608838_metabolites1301043f003.jpg",
+   "host": "PMC10424845_f2.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 75,
+   "scale": 1.11,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10716122_Fig4.jpg",
+   "host": "PMC10630453_Fig2.jpg",
+   "kind": "crop+resize",
+   "jpeg": 92,
+   "scale": 0.98,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10301924_pathogens1200801f001.jpg",
+   "host": "PMC9605769_F3.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 1.29,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10605742_cells1202432f002.jpg",
+   "host": "PMC10033651_Fig1.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 1.19,
+   "found": true,
+   "inliers": 28
+  },
+  {
+   "source": "PMC10579373_Fig2.jpg",
+   "host": "PMC10424845_f2.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 90,
+   "scale": 0.74,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10313560_Fig3.jpg",
+   "host": "PMC10743494_ijms2417271f003.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 0.78,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10779295_ijms2500243f002.jpg",
+   "host": "PMC10675439_viruses1502158f006.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 0.84,
+   "found": true,
+   "inliers": 253
+  },
+  {
+   "source": "PMC9605769_F3.jpg",
+   "host": "PMC7261179_F4.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 0.8,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10608838_metabolites1301043f003.jpg",
+   "host": "PMC10710492_Fig2.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 1.14,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10533267_fig4.jpg",
+   "host": "PMC10486525_cells1202175f001.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 1.2,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10015710_Fig2.jpg",
+   "host": "PMC10482945_Fig1.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 1.26,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10352194_Fig1.jpg",
+   "host": "PMC10728138_Fig1.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 0.92,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10511514_Fig1.jpg",
+   "host": "PMC10510463_iid3985fig0001.jpg",
+   "kind": "crop+resize",
+   "jpeg": 92,
+   "scale": 1.15,
+   "found": true,
+   "inliers": 20
+  },
+  {
+   "source": "PMC11292187_f2.jpg",
+   "host": "PMC10136447_cells1201130f005.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 1.2,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10448144_f2.jpg",
+   "host": "PMC10701771_mol213512fig0001.jpg",
+   "kind": "flip",
+   "jpeg": 92,
+   "scale": 0.96,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10468065_pone0286266g003.jpg",
+   "host": "PMC10334825_F6.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 1.19,
+   "found": true,
+   "inliers": 24
+  },
+  {
+   "source": "PMC10675439_viruses1502158f006.jpg",
+   "host": "PMC10511514_Fig2.jpg",
+   "kind": "resize",
+   "jpeg": 92,
+   "scale": 0.73,
+   "found": true,
+   "inliers": 88
+  },
+  {
+   "source": "PMC10739886_Fig3.jpg",
+   "host": "PMC10520887_fig2.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 75,
+   "scale": 1.09,
+   "found": true,
+   "inliers": 41
+  },
+  {
+   "source": "PMC10608838_metabolites1301043f003.jpg",
+   "host": "PMC10136447_cells1201130f005.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 75,
+   "scale": 0.98,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10448144_f2.jpg",
+   "host": "PMC10454486_ijms2412838f003.jpg",
+   "kind": "crop+resize",
+   "jpeg": 92,
+   "scale": 1.09,
+   "found": false,
+   "inliers": 0
+  },
+  {
+   "source": "PMC10454486_ijms2412838f003.jpg",
+   "host": "PMC10605742_cells1202432f003.jpg",
+   "kind": "resize+jpeg",
+   "jpeg": 90,
+   "scale": 1.09,
+   "found": false,
+   "inliers": 0
+  }
+ ],
+ "untouched_pairs": {
+  "pairs": 7140,
+  "matches": 0,
+  "cross_paper": 0,
+  "matched": [],
+  "note": "every pair of the untouched library figures; a same-paper match can be real shared content"
+ }
+}

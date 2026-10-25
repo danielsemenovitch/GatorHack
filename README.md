@@ -23,6 +23,14 @@ The watermark is robust when the AI image is present as a whole panel. Much scie
 2. **A band splice detector**, trained and tested on that benchmark: a small CNN and a gradient boosted baseline on hand built forensic features, both judging each band against the rest of its own blot.
 3. **A scientific image review app** accepting figure images or paper PDFs. It inventories raster figures, checks for exact and near whole-image reuse within the file, shows possible matches side by side, and exports an HTML evidence report. For confidently identified blots only, it also offers the experimental band CNN and copied-band checks; standalone images can have their C2PA credential read.
 
+## Duplication inside and across papers (October 25, 2026)
+
+- **Within a paper:** every pair of figures is compared region by region (`btw/region_match.py`: SIFT keypoints on image content only, one to one matching, RANSAC similarity transform, then the aligned content must correlate at 0.90 or more), so a blot reused under a different label still lines up after cropping, resizing, re-saving or mirroring.
+- **Against published figures:** every upload is checked against a reference library (the CC BY figures in `data/real_figures`, 112 figures from 62 papers; the four papers used as demo uploads are left out). It is built on first use and cached in `.cache/`.
+- **The search agent** (`btw/search_agent.py`, button "Search Europe PMC" in a report): plans Europe PMC searches from the manuscript's title, abstract and captions (Gemini when `GEMINI_API_KEY` is set, keyword rules otherwise; for a single image Gemini reads the figure's labels), downloads the figures of the open access papers it finds, and runs the same matcher. Every query and paper it checked is returned. Put the key in a git-ignored `.env` file in the repo root (`GEMINI_API_KEY=...`); never commit it.
+- **Measured** (`python -m scripts.eval_region_match --fp`, `results/region_match_eval.json`): 29 of 120 panels lifted into a figure from another paper were found; none of the 7,140 pairs of untouched library figures matched. Uniform strips (actin, vinculin) are the hardest. Matching panels against each other inside one figure produced many false matches on shared labels, so it is not used. Without the pixel check, figures of one paper drawn from the same chart template matched each other.
+- **Demo:** "A manuscript with two hidden duplications" (`scripts/make_demo_pdf.py`) hides a blot reused as another protein and a figure lifted from a 2023 paper; its last page states the sources and our edits.
+
 ## Independent audit update (October 24, 2026, evening)
 
 See [AUDIT_REPORT.md](AUDIT_REPORT.md) for the full audit. The changes that affect results:

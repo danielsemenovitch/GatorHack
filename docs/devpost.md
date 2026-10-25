@@ -25,9 +25,10 @@ I work in a wet lab, and Western blots are the evidence behind a huge share of b
 
 1. lists every embedded figure by page, and names anything it could not analyze;
 2. reads content credentials, and says plainly when one declares an image AI generated;
-3. finds the same image used twice in a paper, even after re saving or resizing;
-4. screens Western blots band by band with a small neural network we trained, and looks for copied bands;
-5. writes a self contained HTML review report with the flagged regions drawn on the figures.
+3. finds the same image region used twice in a paper (intrapaper duplication), even cropped, resized, re saved or mirrored;
+4. checks every figure against a library of published figures, and on request sends an agent to look for the figure in other papers (interpaper duplication): Gemini reads the title, abstract and captions and plans Europe PMC searches for the same authors and the same topic, the agent pulls the figures of the open access papers it finds and checks each one, and every search it ran is listed in the report;
+5. screens Western blots band by band with a small neural network we trained, and looks for copied bands;
+6. writes a self contained HTML review report with the flagged regions drawn on the figures.
 
 Flags are leads for a human reviewer, never verdicts.
 
@@ -37,7 +38,9 @@ Flags are leads for a human reviewer, never verdicts.
 
 - **Data:** CC BY figures from Europe PMC; panels cut out automatically; forgeries generated in Python with OpenCV, scikit image and PyMuPDF, using bands from blots we made with Gemini.
 - **Model:** a small CNN written in JAX and trained on CPU. It looks at 32 pixel windows of a blot, normalized against the rest of the same blot, and scores how out of place each one is. Trained on 151 papers and tested on 72 papers it never saw.
-- **App:** FastAPI backend, React frontend designed like a film lightbox, `c2pa-python` for credentials, perceptual hashing plus structural similarity for image reuse.
+- **Duplication:** SIFT keypoints on image content only (text on white is masked out, since labels like "beta actin" use the same fonts in every paper), one to one matching, a RANSAC similarity transform, and then a pixel check on the aligned regions, so a cropped, resized or mirrored copy still lines up but a chart drawn from the same template does not. The same matcher runs within a paper, against a library of 112 published figures from 62 papers, and on figures the agent downloads.
+- **Agent:** Gemini plans the searches from the manuscript text (or reads the labels off a single figure); the Europe PMC REST API finds open access papers; their figures come from the Europe PMC file service.
+- **App:** FastAPI backend, React frontend designed like a film lightbox, `c2pa-python` for credentials, perceptual hashing plus structural similarity for whole image reuse.
 - **Gemini** made our AI blots; **SynthID Detector** was used by hand only.
 
 ## Results (honest numbers)
@@ -46,6 +49,7 @@ Flags are leads for a human reviewer, never verdicts.
 - End to end, as the app actually runs: we pasted one Gemini band into each of 22 held out published figures. The app flagged the edited panel in 7, flagged no untouched panel in any edited figure, and flagged 1 of the 22 unedited originals.
 - An optional Strict setting, set on calibration papers to flag at most 1% of unedited panels: on 20 held out papers it caught 24% of pasted AI bands while flagging 2.5% of unedited panels (Standard on the same papers: 33% and 5.5%). On the 22 whole figures, Strict flagged 4 edited panels and none of the unedited originals.
 - After a 50% resize it catches about 5%. Resizing erases most of what it relies on.
+- Duplication matcher: it found 29 of 120 blot or image panels we lifted into a figure from another paper (resized 70 to 130%, some re saved as JPEG, cropped or mirrored). Small, uniform strips like an actin loading control are the hardest: their identical bands give it little to hold on to. On untouched published figures it linked none of 7,140 pairs, including 54 pairs from the same paper.
 
 That is a first baseline on a hard problem, at a scale where the watermark can't help at all. The benchmark is open so others can beat it.
 
@@ -60,6 +64,7 @@ That is a first baseline on a hard problem, at a scale where the watermark can't
 
 - A measured, reproducible gap in an AI safety tool that went public two weeks before the hackathon.
 - An open benchmark with pixel level ground truth for AI era blot edits.
+- A duplication agent that looks for a figure in other published papers, not just inside the one you uploaded.
 - A working tool that goes from a paper PDF to a review report in about 20 seconds, with every limit written into the report.
 - An independent audit of our own app that found and fixed a crash, a resolution bug behind most false flags, and several overclaims, backed by 29 automated tests.
 
@@ -77,7 +82,7 @@ Watermarks are strong where they are applied (whole images) and absent where sci
 
 ## Built with
 
-python, jax, opencv, scikit-image, scikit-learn, pymupdf, c2pa, fastapi, react, vite, gemini, synthid, europe-pmc
+python, jax, opencv, scikit-image, scikit-learn, pymupdf, c2pa, fastapi, react, vite, gemini, gemini-api, synthid, europe-pmc
 
 ## "Fresh off the frontier": why this is recent
 

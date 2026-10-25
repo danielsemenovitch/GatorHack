@@ -39,10 +39,10 @@ EXAMPLES = [
      "known_edit": {"x": 548, "y": 154, "w": 19, "h": 17, "image_width": 708, "image_height": 1001,
                     "source": "pmc10315040_fig5_mask_in_panel.png",
                     "note": "Region we edited for this demo (ground truth from our own mask)."}},
-    {"id": "demo_reuse", "file": "demo_reuse.pdf", "title": "A PDF with one figure used twice",
-     "blurb": "Figure 3 is a re-saved copy of Figure 1.",
-     "credit": ("A 4 page PDF we assembled from two CC BY figures (PMC10352194 Fig. 4, PMC10264620 Fig. 3). "
-                "Figure 3 is a re-saved copy of Figure 1 on purpose; nothing here reflects anything the "
+    {"id": "demo_reuse", "file": "demo_reuse.pdf", "title": "A manuscript with two hidden duplications",
+     "blurb": "One blot reused as another protein, and a figure lifted from a 2023 paper.",
+     "credit": ("A demo manuscript we assembled from three CC BY figures (PMC10755782 Fig. 2, PMC10352194 Fig. 4, "
+                "PMC10701888 Fig. 1). We made both duplications on purpose; nothing here reflects anything the "
                 "original authors did.")},
     {"id": "gemini_blot", "file": "gemini_whole_blot.jpeg", "title": "A whole blot made by Gemini",
      "blurb": "Straight from Gemini, credential intact.",
