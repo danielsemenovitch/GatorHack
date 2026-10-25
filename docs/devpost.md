@@ -6,7 +6,7 @@
 
 ## Inspiration
 
-I work in a wet lab, and Western blots are the evidence behind a huge share of biomedical papers. Image duplication turned up in 3.8% of 20,621 papers even before generative AI (Bik et al., 2016), and paper mills recycle figures across papers. Now Gemini's image tools make a convincing blot in seconds. Google's answer is SynthID, an invisible watermark in every Gemini image, and on October 7, 2026 it opened SynthID Detector to the public. We wanted to know whether that new safety net protects science.
+Some of us work in a wet lab, and Western blots are the evidence behind a huge share of biomedical papers. Image duplication turned up in 3.8% of 20,621 papers even before generative AI (Bik et al., 2016), and paper mills recycle figures across papers. Now Gemini's image tools make a convincing blot in seconds. Google's answer is SynthID, an invisible watermark in every Gemini image, and on October 7, 2026 it opened SynthID Detector to the public. We wanted to know whether that new safety net protects science.
 
 ## What it does
 
@@ -19,7 +19,7 @@ I work in a wet lab, and Western blots are the evidence behind a huge share of b
 
 Watermarks protect whole AI images. Science gets manipulated one figure, one panel, one band at a time, and the oldest trick, reusing an image, involves no new AI image at all.
 
-**The tool.** Upload a figure or a whole paper PDF. Below the Watermark:
+**The tool.** You upload a figure or a whole paper PDF. Below the Watermark:
 
 1. **Finds images reused inside the paper.** Every pair of figures is compared region by region, so a blot reused under another label is found even when it was cropped, resized, re-saved or mirrored.
 2. **Finds figures lifted from other papers.** Every figure is checked against a library of published figures, and an **online search agent starts automatically with each upload**. When Gemini is configured, it reads the manuscript's title, abstract and captions and plans Europe PMC searches for the same authors and the same topic; keyword rules take over if Gemini is unavailable. The agent downloads the figures of the open-access papers it finds, and the same matcher checks each one. Every query and paper it checked is listed.
