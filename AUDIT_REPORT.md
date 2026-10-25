@@ -4,6 +4,14 @@
 **Auditor:** Claude (Anthropic), as an independent reviewer at Daniel's request. Every claim below was checked by running code, not by reading the handoff.
 **Environment:** Linux container, Python 3.13.17 (the handoff targets 3.11), JAX 0.12, Node 22, Chromium through Playwright, FastAPI serving the built React app. Windows was not tested.
 
+## Round 3 (Oct 24, late night): submission pass
+
+- SynthID round 4 is recorded from Daniel's hand uploads: all 4 Gemini bands pasted into published blots came back "not detected", and so did the unedited control (`results/synthid_manual.json`).
+- The reuse demo no longer depends on a file someone has to make: the "A demo PDF with one figure used twice" button runs `examples/demo_reuse.pdf` (built by `scripts/make_demo_pdf.py` from two CC BY figures, with the reuse stated on its title page). The pair now appears at the top of the report, and each figure in the pair is tagged.
+- The landing page quotes the headline benchmark (72 held-out papers: 35% of pasted AI bands caught at 4% clean flags), the same numbers as the deck and Devpost. The strict line figures still come from the 20 paper resolution audit.
+- Known limit found while building the PDF: when a figure is shrunk to 90% size, two blot strips can merge into one framed box that the glyph guard then skips as "text heavy". The demo copy uses 95%; a real fix needs the panel finder to split stacked strips.
+- 29 tests pass; build clean; no console errors on any page or example at 1440, 1280 and 390 px.
+
 ## Round 2 (Oct 24, about 11pm ET): team decisions applied, open items fixed
 
 | Item | What changed | Evidence |
@@ -128,10 +136,10 @@ v3 does **not** flag the panel we edited (score 0.424). At the research threshol
 
 ## Recommended 3 minute demo path
 
-1. **The finding (Gap page):** whole AI blots detected by SynthID through every publishing step; single bands "not enough details". Fill in round 4 first.
+1. **The finding (Gap page):** whole AI blots detected by SynthID through every publishing step; single bands "not enough details"; bands pasted into published blots "not detected", 4 of 4.
 2. **Provenance:** click "A whole blot made by Gemini". The headline reads that the credential declares AI generation, with the honest caveat that any re-save removes it.
-3. **Whole image reuse:** upload a small PDF you made where one of your own figures appears twice; show the side by side pair, then download the HTML report.
-4. **The detector, honestly:** click "Another AI band the model catches (selected)": the dashed box is our edit and the flagged panel is on it. Then click "See this example" (ALK2): a miss. Then the Gap page sentence: end to end on 22 held-out figures it flagged 7 edited panels and 1 of 22 unedited figures.
+3. **Whole image reuse:** click "A demo PDF with one figure used twice"; the pair is at the top of the report. Download the HTML report.
+4. **The detector, honestly:** click "Another AI band the model catches (selected)": the dashed box is our edit and the flagged panel is on it. Then click "Run our checks on this blot" (ALK2): a miss. Then the Gap page sentence: end to end on 22 held-out figures it flagged 7 edited panels and 1 of 22 unedited figures.
 5. Optional: the Oncotarget PDF, to show a real paper running end to end in about 20 seconds, with the chance flag note explaining why 2 flags at 0.512 are expected noise.
 
 ## Improve next (in order)

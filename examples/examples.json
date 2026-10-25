@@ -380,6 +380,15 @@
   "synthid": "n/a"
  },
  {
+  "id": "demo_reuse",
+  "title": "A demo PDF with one figure used twice",
+  "credit": "A 4 page PDF we assembled from two CC BY figures (PMC10315040 Fig. 6, PMC10301924 Fig. 2). Figure 3 is a resized, recompressed copy of Figure 1 on purpose; nothing here reflects anything the original authors did.",
+  "report": "demo_reuse.report.json",
+  "file": "demo_reuse.pdf",
+  "hero": false,
+  "synthid": "n/a"
+ },
+ {
   "id": "alk2_original",
   "title": "The ALK2 figure, untouched",
   "credit": "Figure from PMC10376983 (Biomolecules, CC BY 4.0), unaltered.",

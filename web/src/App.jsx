@@ -125,7 +125,7 @@ function Report({ report }) {
   const skippedCounts = skippedImages.reduce((acc, x) => ({ ...acc, [x.reason]: (acc[x.reason] || 0) + 1 }), {});
   const SKIP_WORDS = { too_small: "too small to analyze", too_large: "over the 12 megapixel limit", figure_limit: "beyond the 48 figure limit", pixel_budget: "beyond the 150 megapixel total per upload", unreadable: "could not be decoded" };
   const sub = imageReuse.length
-    ? `${imageReuse.length} potential whole-image reuse pair${imageReuse.length === 1 ? "" : "s"} found. Image reuse can be legitimate; compare captions and methods.`
+    ? `${imageReuse.length === 1 ? "One image appears" : `${imageReuse.length} images appear`} twice in this upload${s.panels ? `, and ${s.panels} Western blot panel${s.panels === 1 ? " was" : "s were"} screened` : ""}.`
     : s.panels ? `${s.panels} Western blot panel${s.panels === 1 ? "" : "s"} screened with an experimental classifier. A negative result does not establish authenticity.`
     : "No confidently identified Western blot panels. General image inventory remains available; the blot classifier was not run on other image types.";
 
@@ -156,9 +156,29 @@ function Report({ report }) {
           <label className="toggle"><input type="checkbox" checked={showHeat} onChange={(e) => setShowHeat(e.target.checked)} disabled={!s.flagged_panels} /> Show heat on flagged panels</label>
           <button className="btn ghost small" type="button" onClick={() => downloadReviewReport(report)}>Download review report (HTML)</button>
         </div>
+        {imageReuse.length > 0 && (
+          <div className="detail reuse">
+            <h3>The same image appears twice</h3>
+            {imageReuse.map((m, i) => {
+              const a = report.figures[m.a.figure], b = report.figures[m.b.figure];
+              if (!a || !b) return null;
+              return <div key={i} className="reuse-pair">
+                <p><strong>{m.method === "exact_pixel_duplicate" ? "Identical pixels" : "Near duplicate"}:</strong> {a.label} and {b.label}. Reuse can be legitimate, so compare the captions and methods before drawing any conclusion.</p>
+                <div className="pair">
+                  {[a, b].map((f) => <figure key={f.id}>
+                    <img src={f.image} alt={f.label} />
+                    <figcaption>{f.label}, {f.native_width || f.width} × {f.native_height || f.height} px</figcaption>
+                  </figure>)}
+                </div>
+                <p className="sub">{m.note} This check compares whole images; it does not look for copied regions inside different images.</p>
+              </div>;
+            })}
+          </div>
+        )}
         {report.figures.map((fig) => (
           <div key={fig.id} style={{ marginBottom: 20 }}>
             <p className="figlabel"><strong>{fig.label}</strong> <span>{fig.native_width || fig.width} × {fig.native_height || fig.height} px</span>
+              {imageReuse.some((m) => m.a.figure === fig.id || m.b.figure === fig.id) ? <span className="tag bad">same image as {imageReuse.filter((m) => m.a.figure === fig.id || m.b.figure === fig.id).map((m) => report.figures[m.a.figure === fig.id ? m.b.figure : m.a.figure]?.label).join(", ")}</span> : null}
               <span className={`tag ${fig.panels.some((p) => p.flagged) ? "bad" : ""}`}>{fig.blot_screen === "experimental" ? `${fig.panels.length} blot panel${fig.panels.length === 1 ? "" : "s"} screened${fig.panels.some((p) => p.flagged) ? `, ${fig.panels.filter((p) => p.flagged).length} flagged` : ""}` : fig.blot_screen === "partial" ? "Partly screened" : fig.blot_screen === "not_assessed_limit" ? "Not screened (limit reached)" : "No blot panels found"}</span>
               {fig.repeated_placements?.length ? <span className="tag">also drawn {fig.repeated_placements.length} more time{fig.repeated_placements.length === 1 ? "" : "s"}</span> : null}</p>
             <div className="lightbox">
@@ -169,26 +189,6 @@ function Report({ report }) {
             </div>
           </div>
         ))}
-        {imageReuse.length > 0 && (
-          <div className="detail" style={{ marginBottom: 18 }}>
-            <h3>Potential whole-image reuse — check the context</h3>
-            {imageReuse.map((m, i) => {
-              const a = report.figures[m.a.figure], b = report.figures[m.b.figure];
-              if (!a || !b) return null;
-              return <div key={i} style={{ marginBottom: 16 }}>
-                <p><strong>{m.method === "exact_pixel_duplicate" ? "Identical image pixels" : "Near-duplicate images"}</strong>:
-                  {" "}{a.label} ↔ {b.label}. A match does not mean misconduct.</p>
-                <div style={{ display: "flex", gap: 14, alignItems: "start" }}>
-                  {[a, b].map((f) => <figure key={f.id} style={{ width: "50%", margin: 0 }}>
-                    <img src={f.image} alt={f.label} style={{ width: "100%", maxHeight: 220, objectFit: "contain" }} />
-                    <figcaption>{f.label}</figcaption>
-                  </figure>)}
-                </div>
-                <p className="sub">{m.note} {m.limitations}</p>
-              </div>;
-            })}
-          </div>
-        )}
         {active && (
           <div className="detail">
             <h3>Band in panel {active.p.id + 1}: <span className="score">{scoreFmt(active.b.score)}</span></h3>
@@ -272,6 +272,7 @@ function CheckPage({ examples, report, setReport, results }) {
   // Measured trade-off of the two v3 alert lines on held-out benchmark papers
   // (results/audit_resolution.json, written by scripts/audit_resolution.py).
   const op = results?.audit_resolution?.benchmark?.native;
+  const main = results?.cnn_v3_metrics; // the headline benchmark (same numbers as the deck and Devpost)
   const [busy, setBusy] = useState(false);
   const [blotMode, setBlotMode] = useState("auto");
   const [cnnVersion, setCnnVersion] = useState("v3");
@@ -364,8 +365,8 @@ function CheckPage({ examples, report, setReport, results }) {
           <span className="field">
             <label htmlFor="cnn-version">Experimental CNN</label>
             <select id="cnn-version" value={cnnVersion} onChange={(e) => setCnnVersion(e.target.value)}>
-              <option value="v3">V3 — larger training set (experimental)</option>
-              <option value="v2">V2 — legacy research scores (more sensitive)</option>
+              <option value="v3">V3, larger training set (experimental)</option>
+              <option value="v2">V2, legacy research scores (more sensitive)</option>
             </select>
           </span>
           <span className="field">
@@ -375,10 +376,10 @@ function CheckPage({ examples, report, setReport, results }) {
               <option value="conservative">Strict (very few alerts, misses most edits)</option>
             </select>
           </span>
-          {op && cnnVersion === "v3" && <span className="sub" style={{ fontSize: 13, margin: 0, flexBasis: "100%" }}>
-            Measured on held-out papers with simulated edits: the research threshold caught {Math.round(100 * op["ai_splice_caught@0.5"])}% of pasted AI bands
-            ({Math.round(100 * op["clean_flagged@0.5"])}% of clean panels flagged); strict caught {Math.round(100 * op["ai_splice_caught@0.9"])}%
-            ({Math.round(100 * op["clean_flagged@0.9"])}% of clean panels flagged).</span>}
+          {main && op && cnnVersion === "v3" && <span className="sub" style={{ fontSize: 13, margin: 0, flexBasis: "100%" }}>
+            On {main.n_test_papers} held-out papers with simulated edits, the research threshold caught {Math.round(100 * main.detect_rate_by_method.ai_splice)}% of
+            pasted AI bands and flagged {Math.round(100 * main.false_flag_rate_clean)}% of clean panels. On {results.audit_resolution.benchmark.n_test_papers} of
+            those papers, strict caught {Math.round(100 * op["ai_splice_caught@0.9"])}% and flagged {Math.round(100 * op["clean_flagged@0.9"])}%.</span>}
           {cnnVersion === "v2" && screeningPolicy === "conservative" &&
             <span className="sub" style={{ fontSize: 13, margin: 0 }}>V2 scores saturate near 1.0; it keeps its legacy threshold. Use V3 for the strict setting.</span>}
         </div>

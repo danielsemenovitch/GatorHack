@@ -17,8 +17,8 @@ export function reportToHtml(report) {
     const a = figs[m.a.figure], b = figs[m.b.figure];
     if (!a || !b) return "";
     return '<article><h3>Image reuse comparison ' + (i + 1) + '</h3>' +
-      '<p><strong>' + esc(m.method.replaceAll("_", " ")) + '</strong> — ' +
-      esc(a.label) + ' ↔ ' + esc(b.label) +
+      '<p><strong>' + esc(m.method.replaceAll("_", " ")) + '</strong>: ' +
+      esc(a.label) + ' and ' + esc(b.label) +
       (typeof m.similarity === "number" ? ' (' + (100 * m.similarity).toFixed(1) + '% similarity)' : '') +
       '</p><div class="pair"><figure><img src="' + safeImg(a.image) + '"><figcaption>' + esc(a.label) +
       '</figcaption></figure><figure><img src="' + safeImg(b.image) + '"><figcaption>' + esc(b.label) +
@@ -68,7 +68,7 @@ export function reportToHtml(report) {
     "This report does not establish authenticity or scientific misconduct.",
     "Missing credentials and negative scores are inconclusive.",
   ]).map(x => '<li>' + esc(x) + '</li>').join("");
-  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Image integrity review — ' +
+  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Image integrity review: ' +
     esc(report.filename) + '</title><style>body{font:16px/1.5 system-ui,sans-serif;color:#1f2b33;max-width:900px;margin:40px auto;padding:0 22px}' +
     'h1,h2,h3{line-height:1.2}article{border-top:1px solid #bac9cf;padding:18px 0;margin:20px 0}img{max-width:100%;height:auto;object-fit:contain}' +
     '.overview{max-height:900px}.pair{display:flex;gap:18px;align-items:flex-start}.pair>*{width:48%;min-width:0}.pair figure{margin:0}' +

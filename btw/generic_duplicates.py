@@ -85,7 +85,8 @@ def find_image_reuse(images: list[Image.Image], max_comparisons: int = 4000) -> 
                 findings.append({
                     **base, "method": "near_duplicate", "similarity": round(score, 4),
                     "phash_distance": distance,
-                    "note": "Similar image composition after alignment/resize; possible resave or rescaling.",
+                    "note": (f"The two images match after scaling to a common size (structural similarity {score:.3f}), "
+                             "so one may be a resized or recompressed copy of the other."),
                     "low_information": False,
                 })
     return findings

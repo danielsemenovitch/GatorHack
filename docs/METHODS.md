@@ -17,7 +17,7 @@ This is written so you can explain every part in your own words and answer judge
 **Likely questions**
 - *Isn't this just a handful of uploads?* Yes. It's a case study, and we say so. Each composite takes about two minutes to make, and the pattern was consistent.
 - *Did you try to break SynthID?* No. Fixed, realistic publishing steps only, uploaded by hand. We reported what we saw to Google.
-- *Is it fair to call it a miss?* For lone bands it honestly declines ("not enough details"), which is still a gap for science. For the pasted band composites, quote exactly what `results/synthid_manual.json` says for rows S1 to S4: "not detected" is a miss; "not enough details" is a decline; "detected" means the watermark survived and the pitch must say so.
+- *Is it fair to call it a miss?* For lone bands it honestly declines ("not enough details"). For the four pasted band composites it answered "SynthID was not detected", so yes, those are misses; the untouched control was also not detected, as it should be.
 
 ## 2. The benchmark
 

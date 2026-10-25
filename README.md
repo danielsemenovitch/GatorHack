@@ -12,9 +12,10 @@ In the past year, Gemini's image tools made it trivial to fabricate or edit a we
 |---|---|---|
 | Whole AI blot: re-saved, resized, JPEG 60, cropped, contrast, in a figure, PDF round trip | detected, every time | stripped by any re-save |
 | A single AI band on its own | "not enough details" | stripped |
-| An AI band pasted into a published blot | see [results](results/synthid_manual.json) | stripped |
+| An AI band pasted into a published CC BY blot (4 figures) | **not detected, 4 of 4** ([results](results/synthid_manual.json)) | stripped |
+| The untouched published figure (control) | not detected, as expected | none |
 
-The watermark is robust when the AI image is present as a whole panel. Much scientific image manipulation happens at the scale of a single band or panel, where it had too little to check.
+The watermark is robust when the AI image is present as a whole panel. Much scientific image manipulation happens at the scale of a single band, and there it either had too little to check or missed the band entirely.
 
 ## What we built
 
