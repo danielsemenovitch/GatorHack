@@ -1,5 +1,8 @@
 # Independent audit: Below the Watermark (GatorHack)
 
+> **Historical audit, not the current app specification.** This document preserves the original independent audit and early matcher results (through PR #7). For PR #8's larger-block duplication benchmark (110/118), use [README.md](README.md), [docs/METHODS.md](docs/METHODS.md), and [results/region_match_eval_blocks.json](results/region_match_eval_blocks.json). Older instructions and measured thresholds below may have been superseded.
+
+
 **Audited commit:** `f1371fe` on `main` (Oct 24, 2026, 8:17pm ET). **Fixes:** branch `audit/claude-2026-10-24`, [PR #5](https://github.com/danielsemenovitch/GatorHack/pull/5).
 **Auditor:** Claude (Anthropic), as an independent reviewer at Daniel's request. Every claim below was checked by running code, not by reading the handoff.
 **Environment:** Linux container, Python 3.13.17 (the handoff targets 3.11), JAX 0.12, Node 22, Chromium through Playwright, FastAPI serving the built React app. Windows was not tested.

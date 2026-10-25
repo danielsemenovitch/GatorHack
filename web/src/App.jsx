@@ -107,19 +107,19 @@ function MatchPair({ left, right, leftLabel, rightLabel, children }) {
 const cite = (src) => `${src.figLabel ? src.figLabel.replace(/\.$/, "") + " of " : ""}${src.pmcid}${src.year ? ` (${src.year})` : ""}`;
 const howMatched = (m) => [m.scale && Math.abs(m.scale - 1) > 0.04 ? `resized ${Math.round(m.scale * 100)}%` : null, m.flipped ? "mirrored" : null].filter(Boolean).join(", ");
 
-function WebSearch({ file, report }) {
+function WebSearch({ file, report, onResult }) {
   const [state, setState] = useState(null);
   const [busy, setBusy] = useState(false);
   const run = async () => {
     if (!file) return;
-    setBusy(true); setState(null);
+    setBusy(true); setState(null); onResult(null);
     try {
       const fd = new FormData(); fd.append("file", file);
       const r = await fetch(`${API}/api/search_web`, { method: "POST", body: fd });
       const j = await r.json();
       if (!r.ok) throw new Error(j.detail || "The search failed.");
-      setState(j);
-    } catch (e) { setState({ status: "error", note: e.message }); } finally { setBusy(false); }
+      setState(j); onResult(j);
+    } catch (e) { setState({ status: "error", note: e.message }); onResult(null); } finally { setBusy(false); }
   };
   return (
     <div className="detail web">
@@ -155,6 +155,7 @@ function WebSearch({ file, report }) {
 function Report({ report, file }) {
   const [showHeat, setShowHeat] = useState(true);
   const [active, setActive] = useState(null);
+  const [webSearchResults, setWebSearchResults] = useState(null);
   const regionReuse = report.region_reuse || [];
   const libraryMatches = report.library_matches || [];
   const s = report.summary;
@@ -203,7 +204,7 @@ function Report({ report, file }) {
         {notes.length > 0 && <ul className="notes">{notes.map(([k, v, tone], i) => <li key={i} className={tone}><strong>{k}.</strong> {v}</li>)}</ul>}
         <div className="toolbar">
           {s.flagged_panels > 0 ? <label className="toggle"><input type="checkbox" checked={showHeat} onChange={(e) => setShowHeat(e.target.checked)} /> Show heat</label> : <span />}
-          <button className="btn ghost small" type="button" onClick={() => downloadReviewReport(report)}>Download report</button>
+          <button className="btn ghost small" type="button" onClick={() => downloadReviewReport({ ...report, web_search: webSearchResults })}>Download report</button>
         </div>
         {regionReuse.length > 0 && (
           <div className="detail reuse">
@@ -248,7 +249,7 @@ function Report({ report, file }) {
             {multi && <p className="figlabel"><strong>{fig.label}</strong>
               {imageReuse.some((m) => m.a.figure === fig.id || m.b.figure === fig.id) && <span className="tag bad">used twice</span>}
               {regionReuse.some((m) => m.a.figure === fig.id || m.b.figure === fig.id) && <span className="tag bad">shares a region</span>}
-              {libraryMatches.some((m) => m.figure === fig.id) && <span className="tag bad">published before</span>}
+              {libraryMatches.some((m) => m.figure === fig.id) && <span className="tag bad">also in a paper</span>}
               {fig.panels.some((p) => p.flagged) && <span className="tag bad">{fig.panels.filter((p) => p.flagged).length} flagged</span>}
               {fig.repeated_placements?.length ? <span className="tag">repeated on {fig.repeated_placements.length + 1} pages</span> : null}</p>}
             <div className="lightbox">
@@ -289,7 +290,7 @@ function Report({ report, file }) {
             ))}
           </div>
         )}
-        <WebSearch file={file} report={report} />
+        <WebSearch file={file} report={report} onResult={setWebSearchResults} />
       </div>
       <aside className="rail" aria-label="Checks">
         <Check name="Pasted or edited bands" tone={s.flagged_panels ? "bad" : "info"}
