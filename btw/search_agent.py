@@ -160,8 +160,8 @@ Text excerpt:
 
 # Stable model first; preview models are often rate limited (429) or overloaded
 # (503) on the free tier. GEMINI_TEXT_MODEL in .env overrides the order.
-MODELS = [m for m in dict.fromkeys([os.environ.get("GEMINI_TEXT_MODEL"), "gemini-2.5-flash", "gemini-3-flash-preview",
-                                    "gemini-flash-latest", "gemini-2.5-flash-lite"]) if m]
+MODELS = [m for m in dict.fromkeys([os.environ.get("GEMINI_TEXT_MODEL"), "gemini-3-flash-preview",
+                                    "gemini-flash-latest", "gemini-2.5-flash"]) if m]
 LAST_MODEL: str | None = None
 
 
@@ -174,21 +174,27 @@ def _gemini(parts: list[dict], key: str) -> str:
     """Try each model; retry once on rate limit or overload. Raises with every model's reason."""
     global LAST_MODEL
     reasons = []
-    body = json.dumps({"contents": [{"parts": parts}],
-                       "generationConfig": {"temperature": 0.2, "responseMimeType": "application/json"}}).encode()
+    base = {"temperature": 0.2, "responseMimeType": "application/json"}
+    # Planning queries needs little reasoning; ask thinking models to keep it short.
+    quick = json.dumps({"contents": [{"parts": parts}], "generationConfig": {**base, "thinkingConfig": {"thinkingLevel": "low"}}}).encode()
+    plain = json.dumps({"contents": [{"parts": parts}], "generationConfig": base}).encode()
     for model in MODELS:
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
-        for attempt in range(2):
+        body = quick
+        for attempt in range(3):
             req = urllib.request.Request(url, data=body, headers={**UA, "Content-Type": "application/json", "x-goog-api-key": key})
             try:
-                with urllib.request.urlopen(req, timeout=25) as r:
+                with urllib.request.urlopen(req, timeout=60) as r:
                     out = json.loads(r.read())
                 text = "".join(p.get("text", "") for p in out["candidates"][0]["content"]["parts"])
                 LAST_MODEL = model
                 return text
             except Exception as e:  # unknown model, quota, overload, network, blocked reply
                 code = getattr(e, "code", None)
-                if code in (429, 500, 503) and attempt == 0:
+                if code == 400 and body is quick:   # model does not take thinkingLevel
+                    body = plain
+                    continue
+                if code in (429, 500, 503) and attempt < 2:
                     time.sleep(2.0)
                     continue
                 reasons.append(f"{model}: {_why(e)}")
@@ -234,6 +240,7 @@ def run(data: bytes, filename: str, images: list[Image.Image], labels: list[str]
     t0 = time.time()
     ctx = upload_context(data, filename)
     queries, planner, note = plan(ctx, images)
+    ts = time.time()  # the search budget starts after planning (Gemini can take a while)
     log, papers, seen = [], [], set()
     if not queries:
         return {"status": "no_queries", "planner": planner, "note": note or
@@ -249,7 +256,7 @@ def run(data: bytes, filename: str, images: list[Image.Image], labels: list[str]
                 seen.add(h["pmcid"]); papers.append({**h, "why": q["why"]})
         except Exception as e:
             q["error"] = type(e).__name__
-        if len(papers) >= MAX_PAPERS or time.time() - t0 > TIME_BUDGET / 3:
+        if len(papers) >= MAX_PAPERS or time.time() - ts > TIME_BUDGET / 3:
             break
     papers = papers[:MAX_PAPERS]
     if not papers and all("error" in q for q in queries):
@@ -265,7 +272,7 @@ def run(data: bytes, filename: str, images: list[Image.Image], labels: list[str]
         except Exception as e:
             return p, 0, [], type(e).__name__
         for f in figs:
-            if time.time() - t0 > TIME_BUDGET:
+            if time.time() - ts > TIME_BUDGET:
                 break
             try:
                 im = figure_image(p["pmcid"], f["file"])

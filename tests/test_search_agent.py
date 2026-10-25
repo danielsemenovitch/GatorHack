@@ -89,3 +89,19 @@ def test_reports_offline_cleanly(monkeypatch):
 def test_titles_are_plain_text():
     assert sa._plain("Effects of &lt;i&gt;Eubacterium limosum&lt;/i&gt; in cancer.") == "Effects of Eubacterium limosum in cancer."
     assert sa._plain("Role of <i>GRN</i> &amp; miR-29b") == "Role of GRN & miR-29b"
+
+
+def test_gemini_drops_thinking_setting_if_rejected(monkeypatch):
+    import io as _io, urllib.error
+    sent = []
+
+    def fake_urlopen(req, timeout=0):
+        body = json.loads(req.data)
+        sent.append(("thinkingConfig" in body["generationConfig"], req.full_url.split("/models/")[1].split(":")[0]))
+        if "thinkingConfig" in body["generationConfig"]:
+            raise urllib.error.HTTPError(req.full_url, 400, "bad", {}, None)
+        return _io.BytesIO(json.dumps({"candidates": [{"content": {"parts": [{"text": '{"queries": []}'}]}}]}).encode())
+
+    monkeypatch.setattr(sa.urllib.request, "urlopen", fake_urlopen)
+    assert sa._gemini([{"text": "x"}], "k") == '{"queries": []}'
+    assert sent[0][0] is True and sent[1][0] is False and sent[0][1] == sent[1][1]
