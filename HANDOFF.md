@@ -1,5 +1,7 @@
 # HANDOFF: Below the Watermark (Gator Hack V, UF AI Days 2026)
 
+**For an independent site/UX/code review by Claude:** read [CLAUDE_SITE_AUDIT.md](CLAUDE_SITE_AUDIT.md) alongside this technical handoff. It contains a prioritized complete-site test checklist, current known limitations, input artifacts, audit evidence requirements, and a ready-to-paste reviewer prompt.
+
 This is the continuity document for teammates and future assistants. **The current product direction was set Oct 24, and the LIVE STATUS and MVP implementation notes were updated around 4:30pm ET.** Historical model and benchmark notes below are retained as evidence; read the new strategy and hard constraints before editing.
 
 ---
