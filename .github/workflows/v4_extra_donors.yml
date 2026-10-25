@@ -1,0 +1,100 @@
+name: V4.1 cross-source synthetic blot donor experiment
+
+on:
+  push:
+    branches: [experiment/v4-extra-ai-donors-20261025]
+    paths: ['.github/workflows/v4_extra_donors.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  train-extra-donors:
+    runs-on: ubuntu-latest
+    timeout-minutes: 170
+    env:
+      PYTHONUNBUFFERED: '1'
+      JAX_PLATFORM_NAME: cpu
+      XLA_PYTHON_CLIENT_PREALLOCATE: 'false'
+      OPENBLAS_NUM_THREADS: '2'
+      OMP_NUM_THREADS: '2'
+      EPOCHS: '5'
+      SKIP_HELDOUT: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install model and test dependencies
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip install "jax[cpu]" optax
+      - name: Verify AI donor sources and train/holdout isolation
+        run: |
+          python - <<'PY'
+          from scripts.eval_v4_extra_unseen_donor import verify_donors
+          from btw.sources import ai_panels
+          from pathlib import Path
+          verify_donors()
+          train=ai_panels()
+          held=ai_panels(Path('data/ai_sources_holdout'))
+          assert train and held
+          print(f"Donor check: {len(train)} training strips; {len(held)} strips from one heldout image generation")
+          PY
+      - name: Collect original and newly discovered attributed CC BY source figures
+        run: |
+          set -o pipefail
+          python -m scripts.collect_v4_ccby --new-papers 240 --workers 7 | tee results/v4_extra_collect_log.txt
+      - name: Build labeled edits with existing Gemini and new OpenAI donor blots
+        run: |
+          set -o pipefail
+          python -m scripts.build_v4_benchmark --max-panels 1750 | tee results/v4_extra_build_log.txt
+      - name: Train fresh V4.1 checkpoint, five fixed epochs
+        run: |
+          set -o pipefail
+          python -m scripts.train_cnn_v4 | tee results/v4_extra_train_log.txt
+      - name: Compare v3 to V4.1 on paper-disjoint holdout
+        run: |
+          set -o pipefail
+          python -m scripts.eval_v3_on_v4 | tee results/v4_extra_v3_compare_log.txt
+      - name: Evaluate never-trained-on AI source generation (native, resized, JPEG)
+        run: |
+          set -o pipefail
+          python -m scripts.eval_v4_extra_unseen_donor | tee results/v4_extra_unseen_source_log.txt
+      - name: Rename outputs to versioned experimental V4.1 filenames
+        run: |
+          mv models/splice_cnn_v4.npz models/splice_cnn_v4_extra_donors.npz
+          mv results/cnn_v4_metrics.json results/cnn_v4_extra_metrics.json
+          mv results/cnn_v4_comparison.json results/cnn_v4_extra_comparison.json
+      - name: Archive model, source licenses and evaluation logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v4-extra-donor-results
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            data/v4_ai_donor_manifest.json
+            results/v4_sources.json
+            results/v4_benchmark.json
+            results/cnn_v4_extra_metrics.json
+            results/cnn_v4_extra_comparison.json
+            results/v4_extra_unseen_ai_source_eval.json
+            results/v4_extra_collect_log.txt
+            results/v4_extra_build_log.txt
+            results/v4_extra_train_log.txt
+            results/v4_extra_v3_compare_log.txt
+            results/v4_extra_unseen_source_log.txt
+            models/splice_cnn_v4_extra_donors.npz
+            models/splice_cnn_v4.npz
+      - name: Preserve v4.1 model and evaluation on EXPERIMENT BRANCH ONLY
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add models/splice_cnn_v4_extra_donors.npz results/v4_sources.json results/v4_benchmark.json results/cnn_v4_extra_metrics.json results/cnn_v4_extra_comparison.json results/v4_extra_unseen_ai_source_eval.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Save V4.1 extra AI donor experiment and independent-source evaluation"
+            git push origin HEAD:refs/heads/experiment/v4-extra-ai-donors-20261025
+          fi
