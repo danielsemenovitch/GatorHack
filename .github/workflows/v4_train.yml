@@ -1,0 +1,90 @@
+name: V4 expanded CC-BY Western blot CNN experiment
+on:
+  push:
+    branches: [experiment/v4-broader-licensed-data-20261025]
+    paths: ['.github/workflows/v4_train.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+
+jobs:
+  v4-experiment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 170
+    env:
+      PYTHONUNBUFFERED: '1'
+      JAX_PLATFORM_NAME: cpu
+      XLA_PYTHON_CLIENT_PREALLOCATE: 'false'
+      OPENBLAS_NUM_THREADS: '2'
+      OMP_NUM_THREADS: '2'
+      EPOCHS: '5'
+      SKIP_HELDOUT: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install libraries for public-source scientific-image experiment
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip install "jax[cpu]" optax
+      - name: Rehydrate prior papers and discover more verified CC-BY papers
+        run: |
+          set -o pipefail
+          python -m scripts.collect_v4_ccby --new-papers 240 --workers 7 | tee results/v4_download_log.txt
+      - name: Create expanded paper-disjoint synthetic edit dataset
+        run: |
+          set -o pipefail
+          python -m scripts.build_v4_benchmark --max-panels 1750 | tee results/v4_build_log.txt
+      - name: Verify test/calibration/train disjointness and source licenses
+        run: |
+          python - <<'PY'
+          import json,zlib
+          from pathlib import Path
+          r=json.loads(Path('data/benchmark/index.json').read_text())
+          groups={k:{x['pmcid'] for x in r if x['split']==k} for k in ('train','test')}
+          assert not groups['train'] & groups['test']
+          calib={p for p in groups['train'] if zlib.crc32(p.encode())%5 == 0}
+          assert not calib & groups['test']
+          assert len(groups['train'])>=100 and len(groups['test'])>=40
+          source=json.loads(Path('results/v4_sources.json').read_text())
+          assert source['genuinely_new_papers']>=70
+          assert source['prior_papers_rehydrated']>=130
+          print('CHECKED: papers disjoint, source expansion verified; '
+                f"train {len(groups['train'])}, calib {len(calib)}, test {len(groups['test'])}")
+          PY
+      - name: Train new CNN v4 checkpoint (five fixed epochs, no test-based tuning)
+        run: |
+          set -o pipefail
+          python -m scripts.train_cnn_v4 | tee results/v4_train_log.txt
+      - name: Compare frozen v3 vs v4 on SAME newly expanded held-out test papers
+        run: |
+          set -o pipefail
+          python -m scripts.eval_v3_on_v4 | tee results/v4_compare_log.txt
+      - name: Collect source manifest, trained model and metrics (always)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v4-trained-model-experiment
+          path: |
+            models/splice_cnn_v4.npz
+            results/v4_sources.json
+            results/v4_benchmark.json
+            results/cnn_v4_metrics.json
+            results/cnn_v4_comparison.json
+            results/v4_download_log.txt
+            results/v4_build_log.txt
+            results/v4_train_log.txt
+            results/v4_compare_log.txt
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Commit versioned v4 model and results to experiment branch only
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add models/splice_cnn_v4.npz results/v4_sources.json results/v4_benchmark.json results/cnn_v4_metrics.json results/cnn_v4_comparison.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Save verified experimental v4 model and matched v3 comparison (do not deploy)"
+            git push origin HEAD:refs/heads/experiment/v4-broader-licensed-data-20261025
+          fi
