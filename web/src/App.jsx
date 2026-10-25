@@ -224,6 +224,8 @@ function Report({ report }) {
           <h3>Band splice detector</h3>
           <span className={`state ${s.flagged_panels ? "bad" : "info"}`}>{!s.panels ? "Not assessed" : s.flagged_panels ? `${s.flagged_panels} review flag${s.flagged_panels === 1 ? "" : "s"}` : "No flags found"}</span>
           <p>Experimental model for blot-like panels only. Stricter settings reduce review alerts but can miss more real edits. The displayed alert threshold is not an accuracy guarantee.</p>
+          {s.panels > 0 && s.screening_policy === "benchmark" && s.model_version === "v3" &&
+            <p><strong>Expect some chance flags:</strong> this threshold flags about 1 in 20 unedited panels, so with {s.panels} panel{s.panels === 1 ? "" : "s"} screened about {(s.panels * 0.05).toFixed(1)} flag{s.panels * 0.05 === 1 ? "" : "s"} would be expected even if nothing was edited.</p>}
           {s.panels > 0 && thr != null && <div className="row" style={{ display: "block" }}>
             <p style={{ margin: 0 }}>Model {s.model_version || report.cnn_version || "not recorded"}: highest panel anomaly index <strong>{scoreFmt(s.max_splice_score)}</strong>; review threshold <strong>{scoreFmt(thr)}</strong>. These are uncalibrated model indices, not percentages or probabilities.</p>
           </div>}
@@ -356,7 +358,7 @@ function CheckPage({ examples, report, setReport, results }) {
           <span className="field">
             <label htmlFor="blot-mode">Western blot screen</label>
             <select id="blot-mode" value={blotMode} onChange={(e) => setBlotMode(e.target.value)}>
-              <option value="auto">Automatic (conservative)</option>
+              <option value="auto">Automatic</option>
               <option value="blot">I confirm this image includes Western blots</option>
               <option value="off">Skip blot-specific screening</option>
             </select>
@@ -476,6 +478,10 @@ function GapPage({ results }) {
           {results?.audit_resolution?.benchmark?.native && (() => {
             const op = results.audit_resolution.benchmark.native, n = results.audit_resolution.benchmark.n;
             return <p className="sub" style={{ marginTop: 10 }}><strong>The optional strict line (0.90) is much stricter:</strong> on {results.audit_resolution.benchmark.n_test_papers} of these held-out papers ({n.clean} clean and {n.ai_splice} AI splice images) it caught {Math.round(100 * op["ai_splice_caught@0.9"])}% of pasted AI bands and flagged {Math.round(100 * op["clean_flagged@0.9"])}% of clean panels, versus {Math.round(100 * op["ai_splice_caught@0.5"])}% and {Math.round(100 * op["clean_flagged@0.5"])}% at the research line.</p>;
+          })()}
+          {results?.figure_level_eval && (() => {
+            const r = results.figure_level_eval.summary.benchmark;
+            return <p style={{ marginTop: 14 }}><strong>End to end on whole figures:</strong> we pasted one Gemini band into one blot panel of each of {r.figures} held-out published figures and ran the app exactly as on an upload. At the default research threshold it flagged the edited panel in {r.edited_panel_flagged} of {r.figures}, flagged an untouched panel in {r.edited_figure_with_untouched_panel_flagged} of the edited figures, and flagged {r.original_figure_with_any_flag} of the {r.figures} unedited originals.</p>;
           })()}
           {legacy && <p className="sub" style={{ marginTop: 10 }}>Legacy CNN v2 on its own (smaller) test set: AUROC {legacy.image_auroc}, {pctR(legacy.detect_rate_by_method?.ai_splice)} of pasted AI bands caught, {pctR(legacy.false_flag_rate_clean)} of clean panels flagged.</p>}
           {base && <p className="sub" style={{ marginTop: 6 }}>A gradient boosted model on hand built forensic features reached an AUROC of {base.image_auroc} on the earlier, smaller benchmark.</p>}

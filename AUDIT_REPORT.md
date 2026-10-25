@@ -1,8 +1,34 @@
 # Independent audit: Below the Watermark (GatorHack)
 
-**Audited commit:** `f1371fe` on `main` (Oct 24, 2026, 8:17pm ET). **Fixes:** branch `audit/claude-2026-10-24`.
+**Audited commit:** `f1371fe` on `main` (Oct 24, 2026, 8:17pm ET). **Fixes:** branch `audit/claude-2026-10-24`, [PR #5](https://github.com/danielsemenovitch/GatorHack/pull/5).
 **Auditor:** Claude (Anthropic), as an independent reviewer at Daniel's request. Every claim below was checked by running code, not by reading the handoff.
 **Environment:** Linux container, Python 3.13.17 (the handoff targets 3.11), JAX 0.12, Node 22, Chromium through Playwright, FastAPI serving the built React app. Windows was not tested.
+
+## Round 2 (Oct 24, about 11pm ET): team decisions applied, open items fixed
+
+| Item | What changed | Evidence |
+|---|---|---|
+| Default threshold | Research threshold (0.50) is the default in the API, `report.analyze` and the UI; the 0.90 line is now the optional "strict" setting, labeled with its measured 3% catch rate | `test_research_threshold_is_the_default` |
+| P2-6 single bands as panels | A blob inside an elongated framed strip is part of that strip; the strip itself becomes the panel | Oncotarget: 11 single band crops before, 0 after; `test_framed_strip_bands_are_not_separate_panels` |
+| P2-7 frame lines in crops | Frames thicker than 2 px are trimmed fully (plus halo); 1 to 2 px frames keep the old 2 px margin so web resolution crops stay identical to the training panels; arrows and labels touching a frame are cut off; text heavy framed boxes (tables) are not routed | Bundle 1 figures: 240 of 241 reference panels still found, automatic routing of the reference panels 130 of 241 (same as before); the ALK2 example scores are unchanged to 3 decimals |
+| P2-8 CORS | Only the Vite dev origin, or origins in `BTW_CORS_ORIGINS` | `test_cors_is_not_open_to_every_origin` |
+| Resource limit | 150 MP total decode budget per upload, overflow listed as skipped | `test_total_pixel_budget_limits_one_request` |
+| Offline demo | Archivo font self-hosted (no Google Fonts request); page description no longer claims it "finds AI edits that watermark detectors miss" | UI walk shows zero console errors |
+| Stale examples | `examples/*.report.json` regenerated with current code | `python -m scripts.make_examples` |
+| Second demo example | `examples/pmc10315040_fig5_ai_band.jpg`, labeled as **selected** from the end-to-end test below, with its ground truth box | The CNN flags the edited IL-6 panel and nothing else |
+| Chance flags | The report now states how many flags to expect by chance (about 5% of screened panels at the research threshold) | UI and HTML export |
+
+**New end-to-end result (`scripts/eval_figure_level.py`, `results/figure_level_eval.json`):** one Gemini band pasted into one routed panel of each of 22 held-out figures from 15 test papers, saved as JPEG 90, analyzed exactly like an upload.
+
+| | Research threshold (default) | Strict |
+|---|---|---|
+| Edited panel flagged | 7 of 22 | 0 of 22 |
+| Edited figures with an untouched panel flagged | 0 of 22 | 0 of 22 |
+| Unedited originals with any flag | 1 of 22 | 0 of 22 |
+
+**Final Oncotarget numbers (default settings):** 30 panels screened, 2 flagged, both at 0.512, just over the 0.50 line (one is the p62 strip, now screened as a whole strip for the first time). That matches the chance rate of about 1.5 flags for 30 unedited panels; it is not evidence of editing.
+
+**Methodological note found in round 2:** the automatic forgery generator sometimes pastes shapes that do not look like bands (a grey smear, a black wedge). Those easy cases are in the benchmark and inflate its recall. Filter or regenerate them before training a v4.
 
 ## Bottom line
 
@@ -41,9 +67,9 @@ The app runs, the tests pass, and the HTML export is safe. But at `f1371fe` it h
 | P2-3 | HTML export showed a transparent heat PNG beside each crop | Download any report with panels | Heat could not be related to the crop | `web/src/reportExport.js:48` | **Fixed**: heat laid over the crop for flagged panels; panel boxes and the known edit drawn on each figure |
 | P2-4 | Upload controls wrapped apart from their labels | Desktop, 1440 px | "Alert sensitivity:" on one line, its menu on the next | `web/src/App.jsx` controls row | **Fixed** |
 | P2-5 | "Download for SynthID" on crops of real published blots | Any flagged panel | SynthID cannot say anything useful about a 2017 journal figure | `web/src/App.jsx:181` | **Fixed**: "Download panel crop" |
-| P2-6 | Single bands routed as whole "panels" | Oncotarget p4, p8, p9 | Tiny crops (99×22 to 129×57 px) of one band are screened as blots and boxed in the UI | `btw/report.py:_blot_candidates`, `btw/panels.py` | **Open**. Not flagged after P1-1, but they inflate "36 panels screened". A lane count and a coverage test did not separate them; needs frame aware panel detection |
-| P2-7 | Published frame lines inside crops | Oncotarget strips at 2,000 px | The fixed 2 px trim leaves 4 to 6 px black frames; heat clustered on frame and band junctions before P1-1 | `btw/panels.py:56` | **Open** (mitigated by P1-1, since frames are about 2 px at training scale) |
-| P2-8 | CORS allows any origin | n/a | Fine for a local demo; restrict before any public deployment | `btw/api.py:21` | Open |
+| P2-6 | Single bands routed as whole "panels" | Oncotarget p4, p8, p9 | Tiny crops (99×22 to 129×57 px) of one band are screened as blots and boxed in the UI | `btw/report.py:_blot_candidates`, `btw/panels.py` | **Fixed in round 2** (frame-aware panels) |
+| P2-7 | Published frame lines inside crops | Oncotarget strips at 2,000 px | The fixed 2 px trim leaves 4 to 6 px black frames; heat clustered on frame and band junctions before P1-1 | `btw/panels.py:56` | **Fixed in round 2** |
+| P2-8 | CORS allows any origin | n/a | Fine for a local demo; restrict before any public deployment | `btw/api.py:21` | **Fixed in round 2** |
 
 ## Scientific statements that were not supported (now corrected)
 
@@ -105,13 +131,12 @@ v3 does **not** flag the panel we edited (score 0.424). At the research threshol
 1. **The finding (Gap page):** whole AI blots detected by SynthID through every publishing step; single bands "not enough details". Fill in round 4 first.
 2. **Provenance:** click "A whole blot made by Gemini". The headline reads that the credential declares AI generation, with the honest caveat that any re-save removes it.
 3. **Whole image reuse:** upload a small PDF you made where one of your own figures appears twice; show the side by side pair, then download the HTML report.
-4. **The hard part, honestly:** click "See this example" in research mode. Show the dashed box (our edit), and say the model flagged the wrong panel. That is the gap the open benchmark exists for, and the Gap page has the numbers.
-5. Optional: the Oncotarget PDF, to show that real papers run end to end in about 20 seconds with no flags after the resolution fix, and say that this is not proof the paper is clean.
+4. **The detector, honestly:** click "Another AI band the model catches (selected)": the dashed box is our edit and the flagged panel is on it. Then click "See this example" (ALK2): a miss. Then the Gap page sentence: end to end on 22 held-out figures it flagged 7 edited panels and 1 of 22 unedited figures.
+5. Optional: the Oncotarget PDF, to show a real paper running end to end in about 20 seconds, with the chance flag note explaining why 2 flags at 0.512 are expected noise.
 
 ## Improve next (in order)
 
-1. Make the research threshold the default, or relabel conservative as "very few alerts, about 3% of simulated AI splices caught".
-2. Fill SynthID round 4 and the pasted band rows before submitting.
-3. Frame aware panel detection (trim published borders at any resolution; merge single band crops into their strip).
-4. Train v4 on figures at several resolutions instead of resizing at inference, with more AI generators and real hard negatives, and calibrate per paper on 10 to 20 unedited published papers.
-5. Restrict CORS and add a request timeout before any public deployment.
+1. Fill SynthID round 4 and the pasted band rows before submitting.
+2. Regenerate the forgery benchmark without the implausible pastes (see round 2 note), then train v4 on figures at several resolutions instead of resizing at inference, with more AI generators and real hard negatives.
+3. Calibrate the research threshold per paper on 10 to 20 unedited published papers, so the chance flag estimate is measured rather than assumed from panels.
+4. Before any public deployment: put the app behind HTTPS, set `BTW_CORS_ORIGINS`, and add a per-request time limit (the 150 MP budget bounds memory, not time).

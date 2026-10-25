@@ -26,8 +26,9 @@ The watermark is robust when the AI image is present as a whole panel. Much scie
 
 See [AUDIT_REPORT.md](AUDIT_REPORT.md) for the full audit. The changes that affect results:
 
-- **Resolution mismatch fixed.** CNN v3 learned from web figures about 750 px wide; publisher PDFs embed figures at 1,000 to 2,000+ px. Scoring at full resolution inflated flags on unedited blots (on held-out test papers, enlarging clean panels 2.5x raised clean false flags from 7% to 18% at the research threshold). Blot panels from large figures are now scored on a copy resized to training scale. On the published Oncotarget paper PDF we use for testing (DOI 10.18632/oncotarget.23647) this changes the research threshold count from 18 of 36 screened panels to 0 of 36, and the conservative count from 2 to 0. That paper is unlabeled, so this shows the scores were tracking resolution, not that the paper is clean.
-- **The conservative line (0.90) is close to blind on our benchmark:** on held-out test papers it caught about 3% of pasted AI bands. Choose the research threshold when you want the detector to find anything.
+- **Resolution mismatch fixed.** CNN v3 learned from web figures about 750 px wide; publisher PDFs embed figures at 1,000 to 2,000+ px. Scoring at full resolution inflated flags on unedited blots (on held-out test papers, enlarging clean panels 2.5x raised clean false flags from 7% to 18% at the research threshold). Blot panels from large figures are now scored on a copy resized to training scale. On the published Oncotarget paper PDF we use for testing (DOI 10.18632/oncotarget.23647) this changes the research threshold count from 18 of 36 screened panels to 0 of 36, and the conservative count from 2 to 0. That paper is unlabeled, so this shows the scores were tracking resolution, not that the paper is clean. With the later frame-aware panel finder (below) the same PDF screens 30 panels and flags 2, both at 0.512, just over the 0.50 line; at this threshold about 1 in 20 unedited panels is flagged by chance, so 1 to 2 flags are expected.
+- **The research threshold is now the default.** The old default line (0.90, now "strict") caught about 3% of pasted AI bands on held-out test papers. End to end on 22 held-out whole figures with one pasted AI band each, the research threshold flagged the edited panel in 7, flagged no untouched panel in any edited figure, and flagged 1 of the 22 unedited originals (`results/figure_level_eval.json`).
+- **Frame-aware panels:** published frame lines are trimmed at any resolution, a band inside a framed strip is no longer screened as its own panel, arrows and labels touching a frame are cut off, and framed tables are not routed. On the bundle 1 figures this keeps 240 of 241 reference panels and the same automatic routing coverage (130 of 241).
 - **Bugs fixed:** PDFs with grayscale embedded images no longer crash; a journal logo on every page is no longer reported as image reuse; oversized and unreadable images are listed instead of silently dropped; C2PA text found by byte search is no longer reported as "signed by Google"; heat is drawn only on flagged panels; the demo example now shows where we actually edited it.
 
 ## Conservative screening and heat-map update (October 24, 2026, afternoon; superseded where the audit update above differs)
@@ -142,7 +143,7 @@ Numbers are written by `python -m scripts.results_table` from `results/*.json`, 
 | ai splice caught | 35% |
 | intensify caught | 49% |
 | erase caught | 20% |
-| At the app's default conservative line (0.90), on 20 of the test papers | 3% of AI splices caught, 0% of clean panels flagged |
+| At the optional strict line (0.90), on 20 of the test papers | 3% of AI splices caught, 0% of clean panels flagged |
 | Legacy CNN v2 on its own smaller test set (20 papers) | AUROC 0.643, 22% of AI splices caught, 3% of clean panels flagged |
 | Baseline: gradient boosting on hand built features (earlier benchmark), AUROC | 0.543 |
 
@@ -157,6 +158,14 @@ Numbers are written by `python -m scripts.results_table` from `results/*.json`, 
 | JPEG quality 60 | 42% | 6% |
 | Contrast adjusted | 53% | 13% |
 | PDF round trip | 44% | 4% |
+
+**Whole figures, end to end** (routing + CNN v3 exactly as the app runs; one Gemini band pasted into one panel of each of 22 held-out figures from 15 papers; `results/figure_level_eval.json`)
+
+| | Research threshold (default) | Strict line |
+|---|---|---|
+| Edited panel flagged | 7 of 22 | 0 of 22 |
+| Edited figures where an untouched panel was flagged | 0 of 22 | 0 of 22 |
+| Unedited figures with any flag | 1 of 22 | 0 of 22 |
 
 **Figure resolution** (CNN v3, research threshold 0.50; `results/audit_resolution.json`)
 

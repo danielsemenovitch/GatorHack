@@ -1,0 +1,537 @@
+{
+ "description": "Whole-figure, end-to-end evaluation of the app pipeline (routing + CNN v3 + flag line).",
+ "papers": 15,
+ "summary": {
+  "benchmark": {
+   "figures": 22,
+   "edited_panel_still_routed": 20,
+   "edited_panel_flagged": 7,
+   "edited_figure_with_untouched_panel_flagged": 0,
+   "original_figure_with_any_flag": 1,
+   "clean_hit": 6
+  },
+  "conservative": {
+   "figures": 22,
+   "edited_panel_still_routed": 20,
+   "edited_panel_flagged": 0,
+   "edited_figure_with_untouched_panel_flagged": 0,
+   "original_figure_with_any_flag": 0,
+   "clean_hit": 0
+  }
+ },
+ "trials": [
+  {
+   "figure": "PMC10015710_Fig2.jpg",
+   "pmcid": "PMC10015710",
+   "edit_box": [
+    200,
+    125,
+    215,
+    137
+   ],
+   "routed_panels": 4,
+   "benchmark": {
+    "edited_panel_flagged": true,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "conservative": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "saved_as_example": "PMC10015710_Fig2_ai_band.jpg"
+  },
+  {
+   "figure": "PMC10015710_Fig3.jpg",
+   "pmcid": "PMC10015710",
+   "edit_box": [
+    199,
+    185,
+    212,
+    200
+   ],
+   "routed_panels": 2,
+   "benchmark": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "conservative": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   }
+  },
+  {
+   "figure": "PMC10033651_Fig1.jpg",
+   "pmcid": "PMC10033651",
+   "edit_box": [
+    380,
+    443,
+    397,
+    466
+   ],
+   "routed_panels": 4,
+   "benchmark": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "conservative": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   }
+  },
+  {
+   "figure": "PMC10033651_Fig5.jpg",
+   "pmcid": "PMC10033651",
+   "edit_box": [
+    39,
+    156,
+    54,
+    166
+   ],
+   "routed_panels": 3,
+   "benchmark": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": false,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "conservative": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": false,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   }
+  },
+  {
+   "figure": "PMC10301924_pathogens1200801f001.jpg",
+   "pmcid": "PMC10301924",
+   "edit_box": [
+    142,
+    640,
+    165,
+    680
+   ],
+   "routed_panels": 4,
+   "benchmark": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "conservative": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   }
+  },
+  {
+   "figure": "PMC10301924_pathogens1200801f002.jpg",
+   "pmcid": "PMC10301924",
+   "edit_box": [
+    457,
+    350,
+    500,
+    401
+   ],
+   "routed_panels": 3,
+   "benchmark": {
+    "edited_panel_flagged": true,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "conservative": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "saved_as_example": "PMC10301924_pathogens1200801f002_ai_band.jpg"
+  },
+  {
+   "figure": "PMC10315040_Fig5.jpg",
+   "pmcid": "PMC10315040",
+   "edit_box": [
+    548,
+    154,
+    567,
+    171
+   ],
+   "routed_panels": 2,
+   "benchmark": {
+    "edited_panel_flagged": true,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "conservative": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "saved_as_example": "PMC10315040_Fig5_ai_band.jpg"
+  },
+  {
+   "figure": "PMC10315040_Fig6.jpg",
+   "pmcid": "PMC10315040",
+   "edit_box": [
+    692,
+    110,
+    713,
+    130
+   ],
+   "routed_panels": 3,
+   "benchmark": {
+    "edited_panel_flagged": true,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "conservative": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "saved_as_example": "PMC10315040_Fig6_ai_band.jpg"
+  },
+  {
+   "figure": "PMC10376983_biomolecules1301129f003.jpg",
+   "pmcid": "PMC10376983",
+   "edit_box": [
+    110,
+    221,
+    177,
+    290
+   ],
+   "routed_panels": 2,
+   "benchmark": {
+    "edited_panel_flagged": true,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": true
+   },
+   "conservative": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   }
+  },
+  {
+   "figure": "PMC10501626_ppat1011620g001.jpg",
+   "pmcid": "PMC10501626",
+   "edit_box": [
+    573,
+    103,
+    632,
+    122
+   ],
+   "routed_panels": 1,
+   "benchmark": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": false,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "conservative": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": false,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   }
+  },
+  {
+   "figure": "PMC10501626_ppat1011620g002.jpg",
+   "pmcid": "PMC10501626",
+   "edit_box": [
+    170,
+    932,
+    193,
+    946
+   ],
+   "routed_panels": 2,
+   "benchmark": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "conservative": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   }
+  },
+  {
+   "figure": "PMC10536113_pathogens1201126f003.jpg",
+   "pmcid": "PMC10536113",
+   "edit_box": [
+    196,
+    187,
+    201,
+    203
+   ],
+   "routed_panels": 1,
+   "benchmark": {
+    "edited_panel_flagged": true,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "conservative": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "saved_as_example": "PMC10536113_pathogens1201126f003_ai_band.jpg"
+  },
+  {
+   "figure": "PMC10605742_cells1202432f002.jpg",
+   "pmcid": "PMC10605742",
+   "edit_box": [
+    592,
+    517,
+    629,
+    542
+   ],
+   "routed_panels": 4,
+   "benchmark": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "conservative": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   }
+  },
+  {
+   "figure": "PMC10605742_cells1202432f003.jpg",
+   "pmcid": "PMC10605742",
+   "edit_box": [
+    422,
+    118,
+    442,
+    134
+   ],
+   "routed_panels": 2,
+   "benchmark": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "conservative": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   }
+  },
+  {
+   "figure": "PMC10608838_metabolites1301043f005.jpg",
+   "pmcid": "PMC10608838",
+   "edit_box": [
+    453,
+    666,
+    466,
+    671
+   ],
+   "routed_panels": 2,
+   "benchmark": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "conservative": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   }
+  },
+  {
+   "figure": "PMC10637820_f2.jpg",
+   "pmcid": "PMC10637820",
+   "edit_box": [
+    628,
+    145,
+    646,
+    161
+   ],
+   "routed_panels": 5,
+   "benchmark": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "conservative": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   }
+  },
+  {
+   "figure": "PMC10637820_f4.jpg",
+   "pmcid": "PMC10637820",
+   "edit_box": [
+    380,
+    416,
+    392,
+    434
+   ],
+   "routed_panels": 3,
+   "benchmark": {
+    "edited_panel_flagged": true,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "conservative": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "saved_as_example": "PMC10637820_f4_ai_band.jpg"
+  },
+  {
+   "figure": "PMC10701771_mol213512fig0002.jpg",
+   "pmcid": "PMC10701771",
+   "edit_box": [
+    641,
+    149,
+    644,
+    156
+   ],
+   "routed_panels": 2,
+   "benchmark": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "conservative": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   }
+  },
+  {
+   "figure": "PMC10701888_f1.jpg",
+   "pmcid": "PMC10701888",
+   "edit_box": [
+    233,
+    291,
+    260,
+    308
+   ],
+   "routed_panels": 8,
+   "benchmark": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "conservative": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   }
+  },
+  {
+   "figure": "PMC10744682_jof0901183f001.jpg",
+   "pmcid": "PMC10744682",
+   "edit_box": [
+    488,
+    133,
+    545,
+    151
+   ],
+   "routed_panels": 1,
+   "benchmark": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "conservative": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   }
+  },
+  {
+   "figure": "PMC10755782_fig2.jpg",
+   "pmcid": "PMC10755782",
+   "edit_box": [
+    236,
+    417,
+    249,
+    429
+   ],
+   "routed_panels": 2,
+   "benchmark": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "conservative": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   }
+  },
+  {
+   "figure": "PMC11406190_fig4.jpg",
+   "pmcid": "PMC11406190",
+   "edit_box": [
+    418,
+    305,
+    429,
+    312
+   ],
+   "routed_panels": 4,
+   "benchmark": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   },
+   "conservative": {
+    "edited_panel_flagged": false,
+    "edited_panel_screened": true,
+    "untouched_flagged_in_edited": 0,
+    "original_any_flag": false
+   }
+  }
+ ],
+ "note": "Simulated edits (one Gemini lane per figure) on held-out CC BY test figures; JPEG q90 after editing. Every edit was made by us; the published figures are unaltered and their authors are not implicated."
+}

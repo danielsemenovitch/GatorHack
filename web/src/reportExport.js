@@ -97,6 +97,9 @@ export function reportToHtml(report) {
     esc(report.summary?.flagged_panels) +
     '; unassessed candidates due to limit: ' + esc(report.summary?.skipped_panels || 0) +
     '. These scores are not probabilities of tampering.</p>' +
+    (report.summary?.panels && report.summary?.screening_policy === "benchmark" && report.summary?.model_version === "v3"
+      ? '<p>At this threshold about 1 in 20 unedited panels is flagged, so about ' + esc((report.summary.panels * 0.05).toFixed(1)) +
+        ' chance flags are expected for ' + esc(report.summary.panels) + ' screened panels.</p>' : '') +
     '<p>Screening policy: ' + esc(report.summary?.screening_policy || report.screening_policy || "legacy") +
     '. ' + esc(report.summary?.policy_note || "") +
     ' Heat overlays show overlapping 32-pixel model patches, not pixel-accurate manipulation boundaries.</p>' +

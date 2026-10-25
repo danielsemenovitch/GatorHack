@@ -55,6 +55,16 @@ def main():
                   "| Step | Pasted AI bands caught | Clean panels flagged |", "|---|---|---|"]
         lines += [f"| {r['label']} | {pct(r['detect_rate'])} | {pct(r['false_flag_rate'])} |" for r in rob["rows"]]
         lines.append("")
+    fl = load("figure_level_eval.json")
+    if fl:
+        r, c = fl["summary"]["benchmark"], fl["summary"]["conservative"]
+        lines += [f"**Whole figures, end to end** (routing + CNN v3 exactly as the app runs; one Gemini band pasted into one panel of each of "
+                  f"{r['figures']} held-out figures from {fl['papers']} papers; `results/figure_level_eval.json`)", "",
+                  "| | Research threshold (default) | Strict line |", "|---|---|---|",
+                  f"| Edited panel flagged | {r['edited_panel_flagged']} of {r['figures']} | {c['edited_panel_flagged']} of {c['figures']} |",
+                  f"| Edited figures where an untouched panel was flagged | {r['edited_figure_with_untouched_panel_flagged']} of {r['figures']} | {c['edited_figure_with_untouched_panel_flagged']} of {c['figures']} |",
+                  f"| Unedited figures with any flag | {r['original_figure_with_any_flag']} of {r['figures']} | {c['original_figure_with_any_flag']} of {c['figures']} |",
+                  ""]
     if audit and v3:
         b = audit["benchmark"]
         lines += ["**Figure resolution** (CNN v3, research threshold 0.50; `results/audit_resolution.json`)", "",

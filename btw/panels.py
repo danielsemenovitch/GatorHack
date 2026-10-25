@@ -74,8 +74,11 @@ def trim_frame(gray: np.ndarray, x0: int, y0: int, x1: int, y1: int) -> tuple[in
     bottom = _edge_run(dark, (dark[h - 1 - i] for i in range(h)))
     left = _edge_run(dark, (dark[:, i] for i in range(w)))
     right = _edge_run(dark, (dark[:, w - 1 - i] for i in range(w)))
-    # one extra pixel removes the anti-aliased halo next to a frame line
-    pad = lambda n: n + 1 if n else 0
+    # Frames of 1 to 2 px (web resolution figures, like every training panel)
+    # are left to the caller's fixed 2 px margin, so those crops stay exactly
+    # as the CNN saw them in training. Thicker frames (high resolution PDF
+    # figures) are trimmed fully, plus one pixel of anti-aliased halo.
+    pad = lambda n: n + 1 if n > 2 else 0
     nx0, ny0, nx1, ny1 = x0 + pad(left), y0 + pad(top), x1 - pad(right), y1 - pad(bottom)
     if nx1 - nx0 < 16 or ny1 - ny0 < 8:
         return x0, y0, x1, y1
@@ -159,7 +162,12 @@ def find_panels(im: Image.Image, min_area: int = 1200, min_score: float = 0.3,
         area = (box[2] - box[0]) * (box[3] - box[1])
         inner = [f for f in frames if _inside(f, box) and (f[2] - f[0]) * (f[3] - f[1]) >= 0.6 * area]
         if inner:
-            box = max(inner, key=lambda f: (f[2] - f[0]) * (f[3] - f[1]))
+            f = max(inner, key=lambda f: (f[2] - f[0]) * (f[3] - f[1]))
+            # Only when something real is attached (more than a few pixels of
+            # anti-aliasing outside the frame); otherwise keep the component
+            # box exactly as the training panels were cut.
+            if max(f[0] - box[0], f[1] - box[1], box[2] - f[2], box[3] - f[3]) > 6:
+                box = f
         # A blob INSIDE a framed strip that spans most of the strip's height is
         # one band on a white membrane, not a panel of its own (Oncotarget p62).
         # Strips inside a frame drawn around a whole figure are kept: they are
