@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "dataset_purpose": "v4 experimental AI-splice donor diversity and leave-one-generation-out test",
+  "origin": "OpenAI image generation via ChatGPT on 2026-10-25; these are NOT Gemini outputs",
+  "generator_families": [
+    "OpenAI (new)",
+    "Gemini (preexisting v3 sources)"
+  ],
+  "donors": [
+    {
+      "path": "data/ai_sources/openai_donor_g1_train.jpg",
+      "role": "train",
+      "origin_generation": "8a7b082a-dbe8-486c-a9db-047e857f4788",
+      "source_family": "OpenAI"
+    },
+    {
+      "path": "data/ai_sources/openai_donor_g2_train.jpg",
+      "role": "train",
+      "origin_generation": "27dd47a0-7018-491e-9689-3172ec1ecc48",
+      "source_family": "OpenAI"
+    },
+    {
+      "path": "data/ai_sources_holdout/openai_donor_g3_holdout.jpg",
+      "role": "test_only",
+      "origin_generation": "86aba4ba-43b3-4a4a-8406-260f94098849",
+      "source_family": "OpenAI"
+    }
+  ],
+  "existing_gemini": "Retain both pre-existing Gemini donor files in data/ai_sources",
+  "rules": [
+    "Never load files under ai_sources_holdout during training or calibration",
+    "Hold out the entire generation g3, not merely one pasted sample",
+    "The holdout is same OpenAI generator family as g1/g2, so this is leave-one-source-out, not generator-family-held-out",
+    "All pasted bands are team-created synthetic edits, never evidence against published authors"
+  ],
+  "truthfulness": "Not Gemini-generated; never attribute AI donor family incorrectly."
+}
