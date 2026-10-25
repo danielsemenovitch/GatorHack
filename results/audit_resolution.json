@@ -1,0 +1,71 @@
+{
+ "model": "v3",
+ "training_figure_width_px": {
+  "median": 751,
+  "p10": 682,
+  "p90": 791
+ },
+ "benchmark": {
+  "n": {
+   "ai_splice": 138,
+   "clean": 318,
+   "cross_splice": 131,
+   "intensify": 156
+  },
+  "n_test_papers": 20,
+  "native": {
+   "auroc": 0.74,
+   "clean_flagged@0.5": 0.066,
+   "ai_splice_caught@0.5": 0.384,
+   "intensify_caught@0.5": 0.474,
+   "cross_splice_caught@0.5": 0.237,
+   "clean_flagged@0.9": 0.0,
+   "ai_splice_caught@0.9": 0.029,
+   "intensify_caught@0.9": 0.083,
+   "cross_splice_caught@0.9": 0.0
+  },
+  "up2.5": {
+   "auroc": 0.622,
+   "clean_flagged@0.5": 0.182,
+   "ai_splice_caught@0.5": 0.326,
+   "intensify_caught@0.5": 0.282,
+   "cross_splice_caught@0.5": 0.275,
+   "clean_flagged@0.9": 0.0,
+   "ai_splice_caught@0.9": 0.0,
+   "intensify_caught@0.9": 0.0,
+   "cross_splice_caught@0.9": 0.0
+  },
+  "up2.5->norm": {
+   "auroc": 0.701,
+   "clean_flagged@0.5": 0.031,
+   "ai_splice_caught@0.5": 0.21,
+   "intensify_caught@0.5": 0.308,
+   "cross_splice_caught@0.5": 0.137,
+   "clean_flagged@0.9": 0.0,
+   "ai_splice_caught@0.9": 0.0,
+   "intensify_caught@0.9": 0.0,
+   "cross_splice_caught@0.9": 0.0
+  }
+ },
+ "pdf": {
+  "file": "oncotarget-09-4161.pdf",
+  "panels": 36,
+  "figure_widths": [
+   1192,
+   1828,
+   1227,
+   2028,
+   1038,
+   2028,
+   1598,
+   1735
+  ],
+  "flagged@0.5_full_resolution": 18,
+  "flagged@0.9_full_resolution": 2,
+  "flagged@0.5_training_scale": 0,
+  "flagged@0.9_training_scale": 0,
+  "median_score_full_resolution": 0.512,
+  "median_score_training_scale": 0.248,
+  "note": "Unlabeled real paper: flags are not known to be false, but the score shift tracks resolution alone."
+ }
+}

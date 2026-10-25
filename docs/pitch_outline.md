@@ -1,96 +1,25 @@
 # Pitch outline (Monday, top 10, about 5 minutes)
 
-Slide by slide content plus what to say. Numbers in [brackets] must be copied from `results/*.json` at the end (the README results table is generated from the same files, so you can copy from there). Never round up.
+The deck is a Claude Slides artifact titled "Below the Watermark pitch" (11 slides, speaker notes on every slide; it downloads as PowerPoint or PDF). Order and the one line each slide must land:
 
-The slide deck itself is being built as a Claude Slides artifact; if that isn't available, this outline is enough to build it in Google Slides in about an hour.
-
----
-
-**1. Title**
-- Below the Watermark
-- "AI watermarks catch whole fake images. Science gets faked one band at a time."
-- Team names, Gator Hack V, "Fresh off the frontier"
-
-Say: "I work in a wet lab. Western blots are how we show a protein went up or down, and they sit behind a huge share of biomedical papers."
-
-**2. The problem got easier this year**
-- Picture: a whole western blot Gemini made for us from one sentence (from `data/ai_sources/`)
-- Bik et al. 2016: 782 of 20,621 papers (3.8%) had inappropriate image duplication, before generative AI
-- Gemini's image tools (Gemini 3 family, including Nano Banana Pro, Nov 2025) now make a convincing blot in seconds
-
-Say: "Image fraud in papers was already common. This year it got a lot cheaper."
-
-**3. The frontier safety net**
-- SynthID: Google's invisible watermark in every Gemini image
-- SynthID Detector opened to the public October 7, 2026, 2 weeks before this hackathon
-- Plus a C2PA content credential ("Created by Google Generative AI") attached to downloads
-
-Say: "Google's answer is SynthID. We wanted to know whether it protects science."
-
-**4. We tested it by hand (the finding)**
-- Matrix (from the app's Gap page):
-  - whole AI blot, after re-save, 50% resize, JPEG 60, crop, contrast, as a figure panel, PDF round trip: detected every time
-  - content credential: gone after the first re-save
-  - a single AI band on its own: "not enough details" (4 of 4)
-  - an AI band pasted into a published CC BY blot: [S1 to S4 verdicts from results/synthid_manual.json]
-- Footnote: done by hand, one fixed scenario at a time, within the detector's terms
-
-Say: "The watermark is genuinely robust on whole images. But that's not how blots get faked."
-
-**5. Fraud happens one band at a time**
-- Three tiny pictures: a band copied from another lane, a band darkened, a band pasted in
-- The watermark works at image scale; the fraud is at band scale (a band can be 13 by 6 pixels in a web figure)
-
-Say: "If someone pastes one AI band into a real blot, the watermark has almost nothing to work with."
-
-**6. What we built**
-- An open benchmark of band level forgeries with pixel masks
-- A band splice detector trained on it
-- A web app: figure or PDF in, panels and bands found, every band scored, copied bands checked, content credentials read, panel handed to SynthID
-
-**7. The benchmark**
-- [N images] from [P] CC BY papers via Europe PMC (see the DATA_CARD table)
-- Five forgeries: copy move, cross splice, AI splice (Gemini bands), intensify, erase
-- Every image pushed through a random publishing chain (contrast, resize, JPEG, PDF), clean ones too
-- Split by paper so test papers are never seen in training
-- Picture: one forged panel next to its mask
-
-Say: "Existing datasets like BioFors predate generative AI. This is the dataset the problem was missing."
-
-**8. Live demo** (the app, about 60 seconds)
-- Upload or click the ALK2 example, show the heat and click a band for the explanation
-- Show the untouched figure
-- Say exactly what the model did on the example, even if it is not flagged (see HANDOFF section 6 for the current behavior)
-
-**9. Honest results**
-- On [T] papers it never saw: AUROC [x] (hand built baseline [b])
-- At a [z]% false flag rate: catches [y]% of pasted AI bands
-- Trained with no AI splices at all: still catches [h]% (it generalizes to edits it never saw)
-- Side by side table: our detector keeps its signal through JPEG, contrast and PDF, loses it when the figure is downscaled
-
-Say: "This is a first baseline on a hard problem, at a scale where the watermark can't run at all. The benchmark is open so others can beat it."
-
-**10. Limits and ethics**
-- A flag means look closer. It is never proof of misconduct.
-- Forgeries are simulated; web resolution figures are the hardest case
-- SynthID tests by hand, within its terms; no evasion loop against Google's tool
-- Every figure CC BY with attribution; every edit made by us; no private lab data
-- We reported the gap to Google [only say this once the email is sent]
-
-**11. What's next**
-- Full resolution figures from publishers (far more signal)
-- A bigger and more varied AI donor pool, more generators
-- A public leaderboard on the benchmark
-- Signing images at capture on lab imagers
-
-Close: "Watermarks protect whole images. Science needs protection one band at a time."
-
----
+1. **Cover:** a published blot with one Gemini band pasted in; SynthID Detector: not detected.
+2. **Stakes:** 3.8% of 20,621 papers had image duplication before generative AI (Bik et al. 2016); Gemini makes a blot in seconds.
+3. **Safety net:** SynthID (public October 7, 2026) and the C2PA credential.
+4. **Finding:** whole AI blot detected 10 of 10; one band alone "not enough details" 4 of 4; one band pasted into a published blot not detected 4 of 4; credential stripped on the first re save.
+5. **Statement:** watermarks protect whole images; science gets edited one band at a time.
+6. **What we built:** five steps (list figures, read credentials, find reused images, screen blots, write the report) plus the open benchmark.
+7. **Live demo:** Gemini blot credential; PDF with a figure used twice; the caught example; the miss; download the report. The slide's screenshot is the fallback if the live demo fails.
+8. **Honest numbers:** 72 held out papers, AUROC 0.703, 35% of AI splices at 4% clean flags; 22 whole figures end to end, 7 edited panels flagged, 1 of 22 originals flagged; about 5% after a 50% resize.
+9. **Lessons:** resolution (false flags 7% to 18%, fixed to 3%); chance flags; show the misses.
+10. **Limits and ethics.**
+11. **Next and close.**
 
 ## Likely judge questions
 
 - **"Is anything mocked?"** No. Every number comes from `results/*.json`, produced by scripts in `scripts/`. The SynthID results are hand uploads recorded in `results/synthid_manual.json`.
 - **"Why not just use SynthID?"** It works on whole images. It can't read a single band, and a pasted band is the realistic attack.
-- **"Isn't your detector weak?"** Yes, and we say so. The contribution is the measured gap plus the open benchmark, and the detector is the first baseline on it.
+- **"Isn't your detector weak?"** Yes, and we say so: on 22 held out whole figures it flagged 7 of the edited panels. The contribution is the measured gap plus the open benchmark plus a working review tool; the detector is the first baseline.
+- **"Why does the Oncotarget paper get 2 flags?"** At the research threshold about 1 in 20 unedited panels is flagged; with 30 panels, 1 or 2 are expected by chance, and both scores (0.512) sit just over the 0.50 line. The report says this.
+- **"Did you just tune it until the demo worked?"** No. The thresholds come from calibration papers; the caught demo example is labeled as selected and the miss is shown next to it.
 - **"How is this different from Proofig or ImageTwin?"** Those are closed commercial tools for duplication. We measured where the new public watermark stops, and we released a benchmark for AI era band edits that anyone can test against.
 - **"What's recent?"** SynthID Detector (public Oct 7, 2026) and Gemini's current image tools are both central: one is the threat, one is the defense we measured.
