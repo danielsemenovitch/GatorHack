@@ -1,0 +1,108 @@
+name: V5 final CNN research experiment (50 percent realistic target)
+on:
+  push:
+    branches: [experiment/v5-final-cnn-20261025]
+    paths: ['.github/workflows/v5_final_train.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: v5-final-single-controlled-run
+  cancel-in-progress: false
+jobs:
+  train-v5:
+    runs-on: ubuntu-latest
+    timeout-minutes: 170
+    env:
+      PYTHONUNBUFFERED: '1'
+      JAX_PLATFORM_NAME: cpu
+      XLA_PYTHON_CLIENT_PREALLOCATE: 'false'
+      OPENBLAS_NUM_THREADS: '2'
+      OMP_NUM_THREADS: '2'
+      PYTHONHASHSEED: '0'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned project libraries and CPU JAX
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip install "jax[cpu]" optax
+      - name: Preflight model geometry, JAX autodiff, mask label and donor integrity
+        run: |
+          set -o pipefail
+          python -m compileall -q btw/cnn_v5.py scripts/build_v5_benchmark.py scripts/train_cnn_v5.py scripts/eval_cnn_v5.py scripts/eval_v5_unseen_donor.py scripts/preflight_v5.py
+          python -m scripts.preflight_v5 --unit | tee results/v5_unit_preflight_log.txt
+      - name: Collect original and new verified CC BY Western blot images
+        run: |
+          set -o pipefail
+          python -m scripts.collect_v4_ccby --new-papers 240 --workers 7 | tee results/v5_collect_log.txt
+      - name: Build fixed realistic and stress heldout benchmark
+        run: |
+          set -o pipefail
+          python -m scripts.build_v5_benchmark --max-panels 1750 | tee results/v5_benchmark_log.txt
+      - name: Abort on data-leakage, zero-mask, class-balance or cohort failures
+        run: |
+          set -o pipefail
+          python -m scripts.preflight_v5 --dataset | tee results/v5_dataset_preflight_log.txt
+      - name: Train final V5 residual CNN for six fixed epochs and evaluate
+        run: |
+          set -o pipefail
+          python -m scripts.train_cnn_v5 | tee results/v5_train_log.txt
+      - name: Matched heldout-paper frozen V3 versus V5 comparison
+        run: |
+          set -o pipefail
+          python -m scripts.eval_cnn_v5 | tee results/v5_compare_log.txt
+      - name: Completely unseen OpenAI donor validation at native JPEG and 50 percent
+        run: |
+          set -o pipefail
+          python -m scripts.eval_v5_unseen_donor | tee results/v5_unseen_log.txt
+      - name: Report prespecified realistic success criterion
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          c=json.loads(Path('results/cnn_v5_vs_v3.json').read_text())
+          print('TARGET_MET',c['primary_target_met'])
+          print('REALISTIC_V3',c['v3']['realistic'])
+          print('REALISTIC_V5',c['v5']['realistic'])
+          print('STRESS_V3',c['v3']['stress'])
+          print('STRESS_V5',c['v5']['stress'])
+          print('NOTE: no model deployed; does not establish real-world fraud detection')
+          PY
+      - name: Archive checkpoint, manifest, benchmark and every evaluation log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v5-final-research-checkpoint-and-matched-evaluation
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            models/splice_cnn_v5.npz
+            results/v4_sources.json
+            results/v5_benchmark.json
+            results/v5_preflight.json
+            results/cnn_v5_metrics.json
+            results/v5_test_scores.json
+            results/cnn_v5_vs_v3.json
+            results/v5_unseen_ai_source_eval.json
+            results/v5_unit_preflight_log.txt
+            results/v5_collect_log.txt
+            results/v5_benchmark_log.txt
+            results/v5_dataset_preflight_log.txt
+            results/v5_train_log.txt
+            results/v5_compare_log.txt
+            results/v5_unseen_log.txt
+      - name: Commit model and results to experimental branch only
+        if: success()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add models/splice_cnn_v5.npz results/v5_benchmark.json results/v5_preflight.json results/cnn_v5_metrics.json results/cnn_v5_vs_v3.json results/v5_unseen_ai_source_eval.json results/v4_sources.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Preserve final experimental V5 CNN, paper-disjoint comparison and unseen donor evidence"
+            git fetch origin experiment/v5-final-cnn-20261025
+            git rebase origin/experiment/v5-final-cnn-20261025
+            git push origin HEAD:refs/heads/experiment/v5-final-cnn-20261025
+          fi
