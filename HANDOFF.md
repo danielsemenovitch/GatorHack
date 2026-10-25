@@ -24,7 +24,7 @@ Always report the type of test alongside the number. **93.2% does not apply to t
 ## Architecture
 
 - `btw/region_match.py`: SIFT content features, one-to-one matching, RANSAC similarity transform and 0.90 content correlation; includes the local reference library and match crops.
-- `btw/search_agent.py`: Europe PMC search, open full-text figure retrieval; optional Gemini planner and keyword fallback, with query and paper logs. End-to-end internet availability must be tested on demo machine.
+- `btw/search_agent.py`: Europe PMC search, open full-text figure retrieval; optional Gemini planner and keyword fallback, with query and paper logs. A live **keyword-fallback Europe PMC** integration run succeeded on Oct 25: 16 papers, 55 downloaded figures, one correct intentional source match (PMC10701888), 43.9 seconds. See `results/europepmc_live_smoke.json`. Gemini-planned search has NOT been tested here; still test the presentation laptop.
 - `btw/report.py`: paper raster extraction, reuse and blot routing, report schemas; `btw/api.py` FastAPI endpoints `/api/health`, `/api/analyze`, `/api/search_web`, `/api/examples`, `/api/results`.
 - `web/src/App.jsx`: React review website. `web/src/reportExport.js`: offline HTML evidence export, including local and published region matches and the **most recent agent search result if actually performed**.
 - `models/splice_cnn_v3.npz`: current CNN. `data/real_figures/metadata.json`: CC BY attribution and research sources.
@@ -60,7 +60,7 @@ Check `python -m pytest -q tests`; in `web/` run `node --test src/reportExport.t
 
 1. Record `docs/video_script.md` (duplication-first, ~3 min) and attach YouTube/Vimeo link to Devpost.
 2. Verify `docs/devpost.md` and deck say **110/118 larger blocks**, **60/120 small strips**, **0/7,140 untouched comparisons**; keep CNN experimental.
-3. Run live Europe PMC agent once, with a real query log, before presenting it as successful (Gemini mode only if key works). Otherwise show the locally grounded library match and honestly frame online search as optional.
+3. The public keyword-based agent passed a real cloud-runner smoke (`results/europepmc_live_smoke.json`); repeat on the presentation laptop and verify Gemini mode separately if a key is configured. Otherwise use the library match and frame online search as optional.
 4. Confirm HTML report includes the region/library evidence, and that the search log appears if requested *before* download.
 5. Submit before the published hackathon deadline; confirm team eligibility and completed registration independently.
 
