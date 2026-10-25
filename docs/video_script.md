@@ -2,7 +2,7 @@
 
 **Current pitch choice, updated after PR #8:** Lead with **scientific image reuse within and across papers**. Keep the Western blot CNN as an explicitly experimental proof of concept until a new model independently demonstrates a meaningful improvement. This script does **not** assume an eight-epoch V4.1 win.
 
-**Before recording:** pull latest `main` with merged PR #8 and the updated HTML export, restart both servers, and click through the demo manuscript locally. Confirm the reference-library results and source crops load. Test `Search Europe PMC` on your laptop **before recording**; it has fixture-backed tests but has not been independently verified live end to end. If you want Gemini search planning, supply `GEMINI_API_KEY` in the git-ignored `.env`; without it the search uses keywords. Don't show a key. The updated downloadable HTML report includes region and reference-library matches; if the online search ran before download, its real search log and findings are also exported. Verify this on the demo laptop.
+**Before recording:** pull latest `main` with merged PR #8 and the updated HTML export, restart both servers, and click through the demo manuscript locally. Confirm the reference-library results and source crops load. Test `Search Europe PMC` on your laptop **before recording**; its public keyword pathway passed a live test (16 papers, 55 figures, one correct source match); independently test your laptop and Gemini key before recording. If you want Gemini search planning, supply `GEMINI_API_KEY` in the git-ignored `.env`; without it the search uses keywords. Don't show a key. The updated downloadable HTML report includes region and reference-library matches; if the online search ran before download, its real search log and findings are also exported. Verify this on the demo laptop.
 
 Use the full browser window, around 1440 pixels wide, and record at 1080p. **All duplications shown in the demo manuscript were intentionally created by our team from CC BY images. Published authors did not make our edits.**
 
@@ -29,7 +29,7 @@ Use the full browser window, around 1440 pixels wide, and record at 1080p. **All
 > Here's our test manuscript. We assembled it from openly licensed figures and deliberately hid two duplications. First, a blot labeled Vinculin in Figure One actually comes from the HO-1 image in Figure Two. We resized the strip; the matcher still finds the shared pixels. Second, Figure Three contains part of an image from a 2023 paper. Our reference library finds the published source and shows the matching regions alongside each other. Every example here is our own controlled edit—not an allegation about the researchers.
 
 ## 1:46–2:14 — Search beyond the local library
-**Screen:** Scroll to “Search published papers online.” If a previously verified live run works, click “Search Europe PMC” and show its query log; otherwise show the built-in published-source match above.
+**Screen:** Scroll to “Search published papers online.” After you verify your local connection, click “Search Europe PMC” and show its query log; otherwise show the built-in published-source match above.
 
 > The built-in library is only a starting point. Our search agent can search Europe PMC for related open-access papers, download their figures, and run the same region matcher. With Gemini configured, it plans searches using the manuscript's title and captions; otherwise it uses keyword queries. It shows exactly which searches and papers it checked.
 
