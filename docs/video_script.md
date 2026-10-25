@@ -2,7 +2,7 @@
 
 **Current pitch choice, updated after PR #8:** Lead with **scientific image reuse within and across papers**. Keep the Western blot CNN as an explicitly experimental proof of concept until a new model independently demonstrates a meaningful improvement. The completed eight-epoch V4.1 experiment did **not** meet our ~40% target (23.8% synthetic AI-splice recall on its newer test). Keep the CNN explicitly a work-in-progress and the main demo focused on verified duplication matches.
 
-**Before recording:** pull latest `main` with merged PR #8 and the updated HTML export, restart both servers, and click through the demo manuscript locally. Confirm the reference-library results and source crops load. Test `Search Europe PMC` on your laptop **before recording**; its public keyword pathway passed a live test (16 papers, 55 figures, one correct source match); independently test your laptop and Gemini key before recording. If you want Gemini search planning, supply `GEMINI_API_KEY` in the git-ignored `.env`; without it the search uses keywords. Don't show a key. The updated downloadable HTML report includes region and reference-library matches; if the online search ran before download, its real search log and findings are also exported. Verify this on the demo laptop.
+**Before recording:** pull latest `main`, restart both servers, and run the demo search once (this builds the reference library and wakes Gemini, so it answers quickly on camera). Gemini planning works with `GEMINI_API_KEY` in the git-ignored `.env` (it uses `gemini-flash-latest`); never show the key. Spoken narration is about 2:45; if you run over, cut "Spotting that can take hours of comparing figures by eye."
 
 Use the full browser window, around 1440 pixels wide, and record at 1080p. **All duplications shown in the demo manuscript were intentionally created by our team from CC BY images. Published authors did not make our edits.**
 
@@ -16,7 +16,7 @@ Use the full browser window, around 1440 pixels wide, and record at 1080p. **All
 ## 0:23–0:44 — Why provenance isn't enough
 **Screen:** Click “The gap”; show the whole-image versus pasted-band results.
 
-> We tested Google's SynthID Detector by hand. It identified all ten whole AI blots in our small test, but found none of four AI-generated bands we pasted into real, published blots. Watermarks are valuable, but they don't tell the whole story. We wanted to check the image evidence itself.
+> Google just opened its SynthID Detector to the public, on October 7. We tested it by hand. It identified all ten whole AI blots in our small test, but found none of four AI-generated bands we pasted into real, published blots. Watermarks are valuable, but they don't tell the whole story. We wanted to check the image evidence itself.
 
 ## 0:44–1:03 — What we built
 **Screen:** Click “How it works,” then return to “Review images.”
@@ -29,9 +29,11 @@ Use the full browser window, around 1440 pixels wide, and record at 1080p. **All
 > Here's our test manuscript. We assembled it from openly licensed figures and deliberately hid two duplications. First, a blot labeled Vinculin in Figure One actually comes from the HO-1 image in Figure Two. We resized the strip; the matcher still finds the shared pixels. Second, Figure Three contains part of an image from a 2023 paper. Our reference library finds the published source and shows the matching regions alongside each other. Every example here is our own controlled edit—not an allegation about the researchers.
 
 ## 1:46–2:14 — Search beyond the local library
-**Screen:** Scroll to “Search published papers online.” After you verify your local connection, click “Search Europe PMC” and show its query log; otherwise show the built-in published-source match above.
+**Screen:** Scroll to “Search published papers online” and click “Search Europe PMC.” Keep the result on screen (“1 match found… searches planned by Gemini”), then open “What the agent searched.”
 
-> The built-in library is only a starting point. Our search agent can search Europe PMC for related open-access papers, download their figures, and run the same region matcher. With Gemini configured, it plans searches using the manuscript's title and captions; otherwise it uses keyword queries. It shows exactly which searches and papers it checked.
+> The built-in library is only a starting point, so we built a search agent. Gemini reads the manuscript's title and captions and plans searches on Europe PMC. The agent downloads the figures of every open-access paper it finds and runs the same matcher. Here it found the 2023 source after checking just a few papers, and it lists every search it ran.
+
+*(Say "Gemini" and "a few papers" only if the run on screen shows them; if it fell back to keywords, say "it plans searches".)*
 
 ## 2:14–2:38 — Honest evidence and limitations
 **Screen:** Return to the matched regions; briefly show methodology or a simple metric card.
@@ -41,7 +43,7 @@ Use the full browser window, around 1440 pixels wide, and record at 1080p. **All
 ## 2:38–2:51 — Experimental frontier
 **Screen:** Click “A pasted AI band the model catches”; point to the dashed known-edit box and heat.
 
-> We're also training a neural network for altered Western blot bands. That's a research proof of concept, not a reliable forensic detector yet. We publish its misses alongside its successes.
+> We're also training a neural network for altered Western blot bands. It's a research proof of concept: it catches about a third of pasted bands in our tests. With more data and HiPerGator compute, that's our next step.
 
 ## 2:51–3:00 — Close
 **Screen:** Return to the hero and project title.
