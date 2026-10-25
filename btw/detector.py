@@ -176,6 +176,6 @@ def load_best(version: str = "v2"):
     but it is still experimental and its scores are not guilt probabilities.
     The legacy v2 checkpoint remains available for direct comparison.
     """
-    if version not in ("v2", "v3"):
-        raise ValueError("CNN version must be v2 or v3")
+    if version not in ("v2", "v3", "v5"):
+        raise ValueError("CNN version must be v2, v3 or v5")
     return CnnDetector.load(version)
