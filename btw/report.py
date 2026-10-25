@@ -223,14 +223,17 @@ def _text_heavy(crop: Image.Image, scale: float = 1.0) -> bool:
 STRICT_LINE = 0.60
 CHANCE_FLAG_RATE = {"benchmark": 0.05, "conservative": 0.025}
 
-# The model the site uses. A newer model (models/splice_cnn_v4.npz, same format
-# as v3) is switched on with BTW_MODEL=v4 once its strict line is calibrated:
-#   python -m scripts.calibrate_strict --model v4   -> results/strict_line_v4.json
-DEFAULT_MODEL = os.environ.get("BTW_MODEL", "v3")
+# V5 is the default Western blot checkpoint. Explicit BTW_MODEL=v3 still
+# selects the old two-channel experimental model.
+DEFAULT_MODEL = os.environ.get("BTW_MODEL", "v5")
 
 
-def strict_line(model: str) -> tuple[float, float]:
-    """(strict line, chance flag rate at it) for a model; v3's are fixed above."""
+def strict_line(model: str) -> tuple[float, float | None]:
+    """(strict line, observed clean flag rate), if separately calibrated."""
+    if model == "v5":
+        # A stricter display threshold is available, but unlike V3 its
+        # false-alarm rate has not been measured at that specific cutoff.
+        return STRICT_LINE, None
     if model == "v3":
         return STRICT_LINE, CHANCE_FLAG_RATE["conservative"]
     f = Path(__file__).resolve().parents[1] / "results" / f"strict_line_{model}.json"
@@ -446,7 +449,9 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
             "screening_policy": screening_policy,
             "chance_flag_rate": ((strict_line(cnn_version)[1] if screening_policy == "conservative" else CHANCE_FLAG_RATE["benchmark"])
                                  if cnn_version != "v2" else None),
-            "policy_note": (f"Strict line {strict_line(cnn_version)[0]:.2f}: set on calibration papers to flag at most 1% of clean panels."
+            "policy_note": ("V5 strict display line 0.60; its false-positive rate has not been separately calibrated."
+                            if cnn_version == "v5" and screening_policy == "conservative" else
+                            f"Strict line {strict_line(cnn_version)[0]:.2f}: set on calibration papers to flag at most 1% of clean panels."
                             if cnn_version != "v2" and screening_policy == "conservative" else
                             "V2 output saturates at 1.0; stricter cutoffs are not defensibly calibrated, so v2 retains its legacy benchmark threshold."
                             if cnn_version == "v2" and screening_policy == "conservative" else
