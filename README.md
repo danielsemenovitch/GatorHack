@@ -131,31 +131,40 @@ Numbers are written by `python -m scripts.results_table` from `results/*.json`, 
 
 <!-- RESULTS_TABLE -->
 
-**Band splice detector (CNN), 20 test papers, 2071 test images**
+**Band splice detector, CNN v3 (the app's default): 72 held out test papers, 2,761 test images, research threshold set on separate calibration papers**
 
 | | |
 |---|---|
-| AUROC, forged vs clean panels | 0.643 |
-| Clean panels flagged | 3% |
-| copy move caught | 16% |
-| cross splice caught | 19% |
-| ai splice caught | 22% |
-| intensify caught | 38% |
-| erase caught | 2% |
-| AI splice caught with NO AI splices in training (earlier v1 experiment; not rerun for v2) | 38% at 8% false flags (AUROC 0.717) |
-| Baseline: gradient boosting on hand built features, AUROC | 0.543 |
+| AUROC, forged vs clean panels | 0.703 |
+| Clean panels flagged | 4% |
+| copy move caught | 23% |
+| cross splice caught | 31% |
+| ai splice caught | 35% |
+| intensify caught | 49% |
+| erase caught | 20% |
+| At the app's default conservative line (0.90), on 20 of the test papers | 3% of AI splices caught, 0% of clean panels flagged |
+| Legacy CNN v2 on its own smaller test set (20 papers) | AUROC 0.643, 22% of AI splices caught, 3% of clean panels flagged |
+| Baseline: gradient boosting on hand built features (earlier benchmark), AUROC | 0.543 |
 
-**One publishing step after pasting an AI band** (same steps as the SynthID test)
+**One publishing step after pasting an AI band** (CNN v3, research threshold; same steps as the SynthID test)
 
 | Step | Pasted AI bands caught | Clean panels flagged |
 |---|---|---|
-| None (straight after the edit) | 38% | 4% |
-| Re-saved | 38% | 4% |
-| Resized to 50% | 2% | 0% |
-| JPEG quality 85 | 39% | 4% |
-| JPEG quality 60 | 36% | 2% |
-| Contrast adjusted | 38% | 6% |
-| PDF round trip | 39% | 3% |
+| None (straight after the edit) | 47% | 3% |
+| Re-saved | 47% | 3% |
+| Resized to 50% | 5% | 1% |
+| JPEG quality 85 | 45% | 6% |
+| JPEG quality 60 | 42% | 6% |
+| Contrast adjusted | 53% | 13% |
+| PDF round trip | 44% | 4% |
+
+**Figure resolution** (CNN v3, research threshold 0.50; `results/audit_resolution.json`)
+
+| Input | AUROC | Clean panels flagged | AI splices caught |
+|---|---|---|---|
+| Web resolution, as trained | 0.74 | 7% | 38% |
+| Same panels enlarged 2.5x (like a high resolution PDF figure) | 0.622 | 18% | 33% |
+| Enlarged, then resized back to training scale (what the app now does) | 0.701 | 3% | 21% |
 
 **Copied band detector** (exact pixel copies within a test panel)
 
@@ -165,6 +174,7 @@ Numbers are written by `python -m scripts.results_table` from `results/*.json`, 
 | JPEG quality 85 | 2% | 2% |
 | PDF round trip | 2% | 1% |
 | Resized to 50% | 2% | 2% |
+| The app's strict setting (noise and shape 0.90), 204 in-sample pairs, no publishing step | 6.9% | 2.0% |
 
 ## Run it
 

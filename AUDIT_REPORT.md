@@ -53,6 +53,8 @@ The app runs, the tests pass, and the HTML export is safe. But at `f1371fe` it h
 - README: "Scientific image fraud happens one band at a time" softened; the results table was v2 under a v3 default and claimed the flag line was "set on training data". Regenerated from `results/*.json` by `scripts/results_table.py`, v3 first.
 - README and handoff quoted "18/37 to 2/37" as the effect of the conservative mode. That reduction came from cutting the tail of a resolution shifted score distribution, and the conservative line costs almost all sensitivity (next section).
 
+- README and handoff cited `results/duplicates_conservative_sanity.json` for the copied band numbers (6.86% caught, 1.96% false flags), but the file was never committed. Regenerated with `python -m scripts.eval_precision_band_duplicates`; it reproduces the same 204 pairs and rates exactly, and is now in `results/`.
+
 ## Oncotarget results (exact PDF, before and after)
 
 8 embedded figures (all RGB, 1,038 to 2,028 px wide); 36 blot panels routed in automatic mode, 38 in user-confirmed mode.

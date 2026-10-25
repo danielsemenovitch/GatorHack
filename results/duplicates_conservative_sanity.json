@@ -1,0 +1,11 @@
+{
+  "method": "Conservative copied-band review candidate operating point",
+  "threshold_noise": 0.9,
+  "threshold_shape": 0.9,
+  "n_pairs": 204,
+  "false_flag_rate_clean": 0.0196,
+  "detect_rate_synthetic_copy": 0.0686,
+  "false_flags": 4,
+  "hits": 14,
+  "note": "In-sample panel-set sanity check; not held-out by paper, not comparable to old metrics. This high-confidence policy sacrifices recall."
+}

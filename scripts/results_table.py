@@ -67,6 +67,10 @@ def main():
         lines += ["**Copied band detector** (exact pixel copies within a test panel)", "",
                   "| Step | Copies caught | Clean panels flagged |", "|---|---|---|"]
         lines += [f"| {r['label']} | {pct(r['detect_rate'])} | {pct(r['false_flag_rate'])} |" for r in dup["rows"]]
+        strict = load("duplicates_conservative_sanity.json")
+        if strict:
+            lines.append(f"| The app's strict setting (noise and shape 0.90), {strict['n_pairs']} in-sample pairs, no publishing step | "
+                         f"{strict['detect_rate_synthetic_copy'] * 100:.1f}% | {strict['false_flag_rate_clean'] * 100:.1f}% |")
     table = "\n".join(lines)
     readme = (ROOT / "README.md").read_text()
     readme = re.sub(r"<!-- RESULTS_TABLE -->.*?(?=\n## )", lambda m: "<!-- RESULTS_TABLE -->\n\n" + table + "\n", readme, flags=re.S)
