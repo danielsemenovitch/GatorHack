@@ -1,0 +1,47 @@
+{
+  "benchmark": "same new v4 held-out-paper benchmark; both thresholds calibrated using same separate clean-paper subset",
+  "v3_frozen_calibrated": {
+    "n_test_images": 3576,
+    "n_test_papers": 168,
+    "auroc": 0.6589,
+    "threshold": 4.234451,
+    "clean_false_flag_fraction": 0.064,
+    "clean_papers_with_any_flags_fraction": 0.2143,
+    "detect_by_method": {
+      "clean": 0.064,
+      "ai_splice": 0.2928,
+      "copy_move": 0.2014,
+      "cross_splice": 0.2426,
+      "intensify": 0.3626,
+      "erase": 0.1614
+    },
+    "ai_splice_resize_50_recall": 0.0928,
+    "ai_splice_resize_50_n": 194
+  },
+  "v4_new": {
+    "n_test_images": 3576,
+    "n_test_papers": 168,
+    "auroc": 0.618,
+    "threshold": 3.4534,
+    "clean_false_flag_fraction": 0.06,
+    "detect_by_method": {
+      "clean": 0.06,
+      "ai_splice": 0.234,
+      "copy_move": 0.188,
+      "cross_splice": 0.211,
+      "intensify": 0.322,
+      "erase": 0.11
+    }
+  },
+  "delta_auroc": -0.0409,
+  "delta_ai_splice_recall": -0.0588,
+  "delta_clean_false_flags": -0.004,
+  "passes_predeclared_improvement_screen": false,
+  "next_step": "Validate on whole untouched real papers and generator-disjoint AI edits; do NOT auto-promote.",
+  "limitations": [
+    "Forgeries are synthetic; samples from the two Gemini AI donor blots still lack generator diversity.",
+    "v4 metrics are used after one fixed 5-epoch training job; not tuned on heldout test.",
+    "Source papers must be checked for license and paper-disjointness, and the older v3-trained set is only partially reproduced from public Europe PMC.",
+    "A change in AUROC/recall on this expanded benchmark is not proof of better real-world integrity screening."
+  ]
+}

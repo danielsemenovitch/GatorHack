@@ -1,0 +1,47 @@
+{
+ "model": "cnn_v4_experimental",
+ "training_data": "v4_expanded_paper_disjoint",
+ "n_train_images": 8086,
+ "n_test_images": 3576,
+ "n_train_papers": 388,
+ "n_test_papers": 168,
+ "threshold": 3.4534,
+ "image_auroc": 0.618,
+ "false_flag_rate_clean": 0.06,
+ "detect_rate_by_method": {
+  "clean": 0.06,
+  "ai_splice": 0.234,
+  "copy_move": 0.188,
+  "cross_splice": 0.211,
+  "intensify": 0.322,
+  "erase": 0.11
+ },
+ "auroc_by_panel_size": {
+  "small (<10k px)": {
+   "n": 2487,
+   "auroc": 0.611
+  },
+  "medium": {
+   "n": 937,
+   "auroc": 0.681
+  },
+  "large (>=40k px)": {
+   "n": 152,
+   "auroc": 0.626
+  }
+ },
+ "top_patch_on_edit": 0.659,
+ "calibration_auroc_by_rule": {
+  "top": 0.633,
+  "outlier": 0.624,
+  "z": 0.596
+ },
+ "held_out_method": {
+  "not_evaluated": {
+   "note": "No method-heldout V4 experiment; never attribute historical v1 results to V4."
+  }
+ },
+ "score_rule": "top",
+ "n_calib_papers": 88,
+ "seconds": 2019
+}
