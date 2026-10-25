@@ -4,6 +4,16 @@
 **Auditor:** Claude (Anthropic), as an independent reviewer at Daniel's request. Every claim below was checked by running code, not by reading the handoff.
 **Environment:** Linux container, Python 3.13.17 (the handoff targets 3.11), JAX 0.12, Node 22, Chromium through Playwright, FastAPI serving the built React app. Windows was not tested.
 
+## Round 4 (Oct 25, midday): Daniel's review of the site
+
+- **Daniel's local copy was months behind** (`c3751e1`, before PR #3). That old build ran the legacy V2 model in user-confirmed blot mode and flagged the whole Gemini photo. Current main never screens that photo in any setting (checked all 8 combinations).
+- **The model choice is gone from the site.** One model, unnamed. The API still accepts `cnn_version` for scripts and tests.
+- **The ALK2 figure is no longer a clickable example.** Our model misses that edit (0.42) and flags the untouched loading control (0.62 > 0.50), so "Run our checks on this blot" demonstrated a false positive. None of the other three SynthID-tested composites works as a detector demo either: on S2 the edit sits in a nearly blank CASP8 strip the panel finder skips, and an untouched GSDME panel is flagged (0.60); S3's edit is outside every screened panel; S4 has no panels. The ALK2 image stays as the hero because it is the SynthID finding. The detector demo is the PMC10315040 example, labeled as one of the third the model catches.
+- **Strict line recalibrated.** The old 0.90 line caught 4% of pasted AI bands on the 20 held-out bundle 1 papers. The new line is chosen on calibration papers only: the lowest line on a fixed grid (0.50 to 0.90) that flags at most 1% of clean calibration panels, which is **0.60**. On the 20 held-out papers it catches 24% of pasted AI bands and flags 2.5% of clean panels (Standard: 33% and 5.5%). `scripts/calibrate_strict.py`, `results/strict_line.json`. Caveat: the calibration set is small (6 papers, 186 clean panels), so 1% is two panels.
+- **Reuse demo PDF rebuilt** from two compact blot-only figures (PMC10352194 Fig. 4, used twice; PMC10264620 Fig. 3). The copy is a re-saved JPEG at the same size, because panel finding is fragile under rescaling and heavy recompression (a 90% copy found 1 to 2 panels instead of 6, and a quality 70 copy found 2 and flagged one). That fragility is a real limit worth fixing next.
+- **Band matches between a reused pair are folded into the reuse finding** (the demo PDF produced 20 "copied band" candidates, all between the figure and its copy). Matches inside one figure are still listed. Regression test added.
+- **Site reorganized:** one upload area with a Standard or Strict switch, three example cards with thumbnails, a short findings column, collapsible detail tables on the Gap page, and no model names or internal parameters on screen.
+
 ## Round 3 (Oct 24, late night): submission pass
 
 - SynthID round 4 is recorded from Daniel's hand uploads: all 4 Gemini bands pasted into published blots came back "not detected", and so did the unedited control (`results/synthid_manual.json`).

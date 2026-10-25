@@ -44,6 +44,7 @@ Flags are leads for a human reviewer, never verdicts.
 
 - On 72 held out papers: AUROC 0.703; at our flag line it caught 35% of pasted AI bands while flagging 4% of clean panels.
 - End to end, as the app actually runs: we pasted one Gemini band into each of 22 held out published figures. The app flagged the edited panel in 7, flagged no untouched panel in any edited figure, and flagged 1 of the 22 unedited originals.
+- An optional Strict setting, set on calibration papers to flag at most 1% of unedited panels: on 20 held out papers it caught 24% of pasted AI bands while flagging 2.5% of unedited panels (Standard on the same papers: 33% and 5.5%). On the 22 whole figures, Strict flagged 4 edited panels and none of the unedited originals.
 - After a 50% resize it catches about 5%. Resizing erases most of what it relies on.
 
 That is a first baseline on a hard problem, at a scale where the watermark can't help at all. The benchmark is open so others can beat it.
@@ -51,7 +52,7 @@ That is a first baseline on a hard problem, at a scale where the watermark can't
 ## Challenges we ran into
 
 - **Resolution.** Web figures put a band in about 13 by 6 pixels. Our first model learned "this is a band" instead of "this band was edited"; hard negatives fixed that. Later we found the opposite problem: publisher PDFs embed figures two to three times larger than what the model learned from, which nearly tripled false flags on clean blots (7% to 18% in a controlled test). The app now scores blots at the training scale.
-- **Honesty under a deadline.** Our own first demo figure is a miss: the model does not flag the band we pasted into it. The site shows that with the edit outlined, instead of hiding it.
+- **Honesty under a deadline.** The figure SynthID missed is a miss for our model too: it doesn't flag the band we pasted and flags an untouched loading control instead. The example we demo is labeled as one of the third it catches, and the site publishes the full rates next to it.
 - **Terms of service.** SynthID Detector forbids automated or adversarial use, so every test was a fixed scenario uploaded by hand, and any adversarial work targets our own model.
 - **Data rights.** Every real figure is CC BY and attributed, every edit is ours, and no unpublished lab data is used.
 

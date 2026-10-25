@@ -169,7 +169,7 @@ def test_api_errors_are_readable_and_do_not_leak_internals():
 
 
 def test_research_threshold_is_the_default(monkeypatch):
-    """Team decision Oct 24: the strict 0.90 line caught ~3% of held-out AI splices."""
+    """Team decision Oct 24: Standard is the default; Strict (0.60 since Oct 25) is optional."""
     import inspect
     from btw.api import analyze_upload
     assert inspect.signature(report.analyze).parameters["screening_policy"].default == "benchmark"
@@ -211,3 +211,46 @@ def test_framed_strip_bands_are_not_separate_panels():
     p = panels[0]
     assert p.w >= 560 and p.h >= 100  # the whole strip
     assert p.x >= 56 and p.y >= 46 and p.x + p.w <= 644 and p.y + p.h <= 154  # frame trimmed
+
+
+def test_band_matches_inside_a_reused_figure_pair_are_folded_into_it(monkeypatch):
+    """Oct 25: a figure used twice made every band match its twin (20 'copied band'
+    candidates on the demo PDF). Those restate the reuse finding, so they are
+    counted on the reuse pair; a match inside one figure is still listed."""
+    from types import SimpleNamespace
+    from PIL import Image as _Image
+    grey = _Image.new("RGB", (180, 120), "#bbbbbb")
+    monkeypatch.setattr(report, "_figures_from_upload",
+                        lambda data, name: ([("page 1, image 1", grey), ("page 2, image 1", grey.copy())], [], {}))
+    monkeypatch.setattr(report, "find_image_reuse",
+                        lambda ims: [{"a": {"figure": 0}, "b": {"figure": 1}, "method": "near_duplicate", "similarity": 0.99}])
+
+    class P:
+        def __init__(self, i): self.id, self.x, self.y, self.w, self.h = i, 10, 10, 75, 25
+        def to_dict(self): return {"id": self.id, "x": 10, "y": 10, "w": 75, "h": 25, "blot_score": 0.99}
+
+    monkeypatch.setattr(report, "_blot_candidates", lambda fig, mode="auto": [(P(0), _Image.new("RGB", (75, 25), "gray"))])
+
+    class Quiet:
+        threshold, space = 0.5, "logit"
+        def analyze(self, im):
+            return SimpleNamespace(score=0.1, bands=[], heat=np.zeros((im.height, im.width), np.float32), top_features=[])
+
+    monkeypatch.setattr(report, "detector", lambda version="v3": Quiet())
+    band = {"x": 2, "y": 2, "w": 12, "h": 7, "id": 0}
+    cross = {"a": {"panel": 0, **band}, "b": {"panel": 1, **band}, "transform": "none", "noise_similarity": 0.99, "shape_similarity": 0.99}
+    within = {"a": {"panel": 0, **band}, "b": {"panel": 0, **band, "x": 30}, "transform": "none", "noise_similarity": 0.95, "shape_similarity": 0.95}
+    monkeypatch.setattr(report, "find_duplicates", lambda grays, **kw: [dict(cross), dict(within)])
+    r = report.analyze(b"%PDF-stub", "two.pdf")
+    assert r["summary"]["duplicate_pairs"] == 1
+    assert r["duplicates"][0]["a"]["figure"] == r["duplicates"][0]["b"]["figure"] == 0
+    assert r["image_reuse"][0]["matching_bands"] == 1
+
+
+def test_strict_line_matches_its_calibration_record():
+    """The Strict line in the app is the one scripts/calibrate_strict.py chose."""
+    import json
+    from pathlib import Path
+    rec = json.loads((Path(__file__).resolve().parents[1] / "results/strict_line.json").read_text())
+    assert abs(report.STRICT_LINE - rec["chosen_line"]) < 1e-9
+    assert rec["calibration_clean_flagged"][str(rec["chosen_line"])] <= 0.01

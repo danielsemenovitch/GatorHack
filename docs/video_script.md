@@ -18,17 +18,17 @@ Never show the old AKT blot or any unpublished lab data. Every edited figure on 
 
 > So we built Below the Watermark, a review assistant for the figures a watermark can't vouch for. Drop in a figure or a whole paper PDF. It lists every figure, reads content credentials, finds images used twice, screens Western blots band by band with a model we trained, and writes a report a reviewer can check.
 
-**1:15 to 1:35. Provenance.** Screen: click "Review images", then "A whole blot made by Gemini".
+**1:15 to 1:35. Provenance.** Screen: click "Review images", scroll to the examples, click "A whole blot made by Gemini".
 
 > When the credential is still there, we read it. This blot came straight from Gemini, and the report says so up front.
 
-**1:35 to 2:10. The detector, honestly.** Screen: click "Another AI band the model catches (selected)". Point at the dashed box and the flagged panel. Then scroll up and click "Run our checks on this blot" (the ALK2 figure) and point at the dashed box.
+**1:35 to 2:05. The detector, honestly.** Screen: click "A pasted AI band the model catches". Point at the dashed box, then at the flagged panel and its heat.
 
-> This is a published figure where we pasted one AI band into the IL 6 strip. The dashed box is our edit, and the model flagged the panel that contains it. Now our first example: same kind of edit, and the model misses it. We show both, because both happen. On twenty two held out figures, it flagged the edited panel in seven, and it flagged one of the twenty two unedited originals.
+> This is a published figure where we pasted one AI band into the IL 6 strip. The dashed box is our edit, and the model flagged the panel that contains it. It doesn't catch everything: on twenty two held out figures it flagged the edited panel in seven, and it flagged one of the twenty two unedited originals. So this is one of the good ones, and the site says that.
 
-**2:10 to 2:35. A real paper.** Screen: drag the Oncotarget PDF onto the page (or have it already analyzed), scroll the report, then click "Download review report".
+**2:05 to 2:35. Whole papers.** Screen: click "A PDF with one figure used twice". Point at the pair at the top, then click "Download report".
 
-> It runs on whole papers. This PDF takes about twenty seconds: thirty blot panels, two weak flags, and the report says about that many are expected by chance. Everything it did and everything it skipped goes into one HTML report.
+> It runs on whole papers. In this PDF we put the same figure in twice. The report puts the pair at the top, screens every blot panel, and everything it did and skipped goes into one report you can send.
 
 **2:35 to 2:50. Close.** Screen: back to the landing page.
 
@@ -36,6 +36,6 @@ Never show the old AKT blot or any unpublished lab data. Every edited figure on 
 
 ---
 
-**If the Oncotarget PDF isn't handy (or you'd rather show reuse):** at 2:10 click "A demo PDF with one figure used twice" instead and say: "It runs on whole papers. In this PDF we put the same figure in twice, once resized and recompressed. The report puts the pair at the top, screens every blot panel, and everything goes into one HTML report."
+**Optional, if you have time:** drag your Oncotarget PDF onto the page instead of the demo PDF at 2:05 and say: "This real paper takes about twenty seconds: thirty blot panels, two weak flags, about what chance predicts, and the report says so."
 **If you run over:** cut the provenance section (1:15 to 1:35) first.
 **Upload:** YouTube (unlisted is fine) or Vimeo, then paste the link into Devpost.

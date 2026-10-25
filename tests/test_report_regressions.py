@@ -96,9 +96,10 @@ def test_conservative_v3_reduces_flags_not_scores(monkeypatch):
         space = "logit"
 
         def analyze(self, im):
-            return SimpleNamespace(score=0.84,
-                                   bands=[{"id": 0, "x": 2, "y": 2, "w": 12, "h": 7, "score": 0.84}],
-                                   heat=np.full((im.height, im.width), 0.84, np.float32),
+            mid = (0.5 + review.STRICT_LINE) / 2   # above Standard, below Strict
+            return SimpleNamespace(score=mid,
+                                   bands=[{"id": 0, "x": 2, "y": 2, "w": 12, "h": 7, "score": mid}],
+                                   heat=np.full((im.height, im.width), mid, np.float32),
                                    top_features=[])
     monkeypatch.setattr(review, "_blot_candidates", fake_candidates(5))
     monkeypatch.setattr(review, "detector", lambda version="v3": MidrangeDetector())
@@ -107,7 +108,7 @@ def test_conservative_v3_reduces_flags_not_scores(monkeypatch):
     baseline = review.analyze(png(), "synth.png", cnn_version="v3", screening_policy="benchmark")
     assert strict["summary"]["flagged_panels"] == 0
     assert baseline["summary"]["flagged_panels"] == 5
-    assert strict["summary"]["threshold"] == 0.9
+    assert strict["summary"]["threshold"] == review.STRICT_LINE
     assert baseline["summary"]["threshold"] == 0.5
     assert strict["summary"]["max_splice_score"] == baseline["summary"]["max_splice_score"]
     assert strict["checks"]["heat_localization"] == "patch_level_32px_not_pixel_boundaries"

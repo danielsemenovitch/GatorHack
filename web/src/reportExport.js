@@ -11,7 +11,7 @@ export function reportToHtml(report) {
   const figs = report.figures || [];
   const matches = report.image_reuse || [];
   const checks = report.checks || {};
-  const fmt = (n) => Number.isFinite(Number(n)) ? Number(n).toFixed(4) : "n/a";
+  const fmt = (n) => Number.isFinite(Number(n)) ? Number(n).toFixed(2) : "n/a";
   const duplicates = report.duplicates || [];
   const pairs = matches.map((m, i) => {
     const a = figs[m.a.figure], b = figs[m.b.figure];
@@ -91,17 +91,16 @@ export function reportToHtml(report) {
     '<h2>Potential whole-image reuse</h2>' + (pairs || '<p>No whole-image reuse was identified among the extracted figures.</p>') +
     '<h2>Experimental copied-band candidates</h2>' +
       (duplicatedBands || '<p>No copied-band candidate met the detector threshold, or the method was not run.</p>') +
-    '<h2>Western blot screen summary</h2><p>Model: ' + esc(report.summary?.model_version || report.cnn_version || 'unknown') +
-    ' (experimental); panel review threshold: ' + esc(fmt(report.summary?.threshold)) +
+    '<h2>Western blot screen summary</h2><p>Setting: ' + esc(report.summary?.screening_policy === "conservative" ? "Strict" : "Standard") +
+    '; flag line: ' + esc(fmt(report.summary?.threshold)) +
     '; scored panels: ' + esc(report.summary?.panels) + '; flagged panels: ' +
     esc(report.summary?.flagged_panels) +
     '; unassessed candidates due to limit: ' + esc(report.summary?.skipped_panels || 0) +
     '. These scores are not probabilities of tampering.</p>' +
-    (report.summary?.panels && report.summary?.screening_policy === "benchmark" && report.summary?.model_version === "v3"
-      ? '<p>At this threshold about 1 in 20 unedited panels is flagged, so about ' + esc((report.summary.panels * 0.05).toFixed(1)) +
-        ' chance flags are expected for ' + esc(report.summary.panels) + ' screened panels.</p>' : '') +
-    '<p>Screening policy: ' + esc(report.summary?.screening_policy || report.screening_policy || "legacy") +
-    '. ' + esc(report.summary?.policy_note || "") +
+    (report.summary?.panels && report.summary?.chance_flag_rate
+      ? '<p>At this setting about 1 in ' + esc(Math.round(1 / report.summary.chance_flag_rate)) + ' unedited panels is flagged by chance, so about ' +
+        esc((report.summary.panels * report.summary.chance_flag_rate).toFixed(1)) + ' chance flags are expected for ' + esc(report.summary.panels) + ' screened panels.</p>' : '') +
+    '<p>' + esc(report.summary?.policy_note || "") +
     ' Heat overlays show overlapping 32-pixel model patches, not pixel-accurate manipulation boundaries.</p>' +
     (report.summary?.widespread_flag_figures?.length ?
       '<p>Numerous panels in the same figure were flagged. Shared imaging and publishing artifacts may explain multiple alerts.</p>' : '') +

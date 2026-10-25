@@ -39,11 +39,12 @@ def main():
     if cnn:
         name = "CNN v3 (the app's default)" if v3 else "CNN v2"
         lines += cnn_table(cnn, f"**Band splice detector, {name}: {cnn['n_test_papers']} held out test papers, "
-                                f"{cnn['n_test_images']:,} test images, research threshold set on separate calibration papers**")
-        if audit and v3:
-            op = audit["benchmark"]["native"]
-            lines.append(f"| At the optional strict line (0.90), on {audit['benchmark']['n_test_papers']} of the test papers | "
-                         f"{pct(op['ai_splice_caught@0.9'])} of AI splices caught, {pct(op['clean_flagged@0.9'])} of clean panels flagged |")
+                                f"{cnn['n_test_images']:,} test images, Standard line set on separate calibration papers**")
+        sl = load("strict_line.json")
+        if sl and v3:
+            t = sl["test"][str(sl["chosen_line"])]
+            lines.append(f"| Strict line ({sl['chosen_line']:.2f}, set on calibration papers), on {sl['n_test_papers']} held-out test papers | "
+                         f"{pct(t['ai_splice_caught'])} of AI splices caught, {pct(t['clean_flagged'])} of clean panels flagged |")
         if v3 and v2:
             lines.append(f"| Legacy CNN v2 on its own smaller test set ({v2['n_test_papers']} papers) | AUROC {v2['image_auroc']}, "
                          f"{pct(v2['detect_rate_by_method']['ai_splice'])} of AI splices caught, {pct(v2['false_flag_rate_clean'])} of clean panels flagged |")
@@ -51,7 +52,7 @@ def main():
             lines.append(f"| Baseline: gradient boosting on hand built features (earlier benchmark), AUROC | {gbm['image_auroc']} |")
         lines.append("")
     if rob:
-        lines += [f"**One publishing step after pasting an AI band** ({'CNN v3' if v3 else 'CNN v2'}, research threshold; same steps as the SynthID test)", "",
+        lines += [f"**One publishing step after pasting an AI band** ({'CNN v3' if v3 else 'CNN v2'}, Standard line; same steps as the SynthID test)", "",
                   "| Step | Pasted AI bands caught | Clean panels flagged |", "|---|---|---|"]
         lines += [f"| {r['label']} | {pct(r['detect_rate'])} | {pct(r['false_flag_rate'])} |" for r in rob["rows"]]
         lines.append("")
@@ -60,14 +61,14 @@ def main():
         r, c = fl["summary"]["benchmark"], fl["summary"]["conservative"]
         lines += [f"**Whole figures, end to end** (routing + CNN v3 exactly as the app runs; one Gemini band pasted into one panel of each of "
                   f"{r['figures']} held-out figures from {fl['papers']} papers; `results/figure_level_eval.json`)", "",
-                  "| | Research threshold (default) | Strict line |", "|---|---|---|",
+                  "| | Standard line (default) | Strict line |", "|---|---|---|",
                   f"| Edited panel flagged | {r['edited_panel_flagged']} of {r['figures']} | {c['edited_panel_flagged']} of {c['figures']} |",
                   f"| Edited figures where an untouched panel was flagged | {r['edited_figure_with_untouched_panel_flagged']} of {r['figures']} | {c['edited_figure_with_untouched_panel_flagged']} of {c['figures']} |",
                   f"| Unedited figures with any flag | {r['original_figure_with_any_flag']} of {r['figures']} | {c['original_figure_with_any_flag']} of {c['figures']} |",
                   ""]
     if audit and v3:
         b = audit["benchmark"]
-        lines += ["**Figure resolution** (CNN v3, research threshold 0.50; `results/audit_resolution.json`)", "",
+        lines += ["**Figure resolution** (CNN v3, Standard line 0.50; `results/audit_resolution.json`)", "",
                   "| Input | AUROC | Clean panels flagged | AI splices caught |", "|---|---|---|---|",
                   f"| Web resolution, as trained | {b['native']['auroc']} | {pct(b['native']['clean_flagged@0.5'])} | {pct(b['native']['ai_splice_caught@0.5'])} |",
                   f"| Same panels enlarged 2.5x (like a high resolution PDF figure) | {b['up2.5']['auroc']} | {pct(b['up2.5']['clean_flagged@0.5'])} | {pct(b['up2.5']['ai_splice_caught@0.5'])} |",

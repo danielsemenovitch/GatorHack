@@ -109,16 +109,33 @@ h1 {
 .hero .heat { animation: glow 2.6s ease-in-out 3; }
 @media (prefers-reduced-motion: reduce) { .hero .heat { animation: none; } }
 
-/* Drop zone */
+/* Upload: one drop zone, one sensitivity switch, three examples. */
+.upload { margin: 8px 0 56px; display: grid; gap: 14px; }
 .drop {
-  margin: 8px 0 48px; border: 1.5px dashed var(--film); border-radius: var(--radius-m);
-  padding: 28px; display: flex; gap: 24px; align-items: center; justify-content: space-between; flex-wrap: wrap;
-  background: #fbfcfd;
+  border: 1.5px dashed var(--film); border-radius: var(--radius-m); background: #fbfcfd;
+  padding: 24px 28px; display: flex; gap: 20px; align-items: center; justify-content: space-between; flex-wrap: wrap;
 }
 .drop.over { border-color: var(--ponceau); background: var(--ponceau-soft); }
-.drop p { margin: 0; color: var(--muted); max-width: 60ch; }
-.drop strong { color: var(--ink); }
-.examples { display: flex; gap: 8px; flex-wrap: wrap; }
+.drop h2 { margin: 0 0 4px; font-size: var(--step-1); font-weight: 800; font-variation-settings: "wdth" 110; letter-spacing: -0.01em; }
+.drop p { margin: 0; color: var(--muted); font-size: var(--step--1); }
+.sensitivity { display: flex; align-items: center; gap: 4px 6px; flex-wrap: wrap; font-size: var(--step--1); }
+.sensitivity > span { font-weight: 650; margin-right: 6px; }
+.sensitivity button {
+  border: 1px solid var(--line); background: #fff; padding: 5px 12px; border-radius: 999px; cursor: pointer; color: var(--muted); font-weight: 600;
+}
+.sensitivity button[aria-checked="true"] { background: var(--ink); border-color: var(--ink); color: var(--light); }
+.sensitivity small { color: var(--muted); margin-left: 8px; font-size: inherit; }
+.tries { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 10px; }
+@media (max-width: 760px) { .tries { grid-template-columns: 1fr; } }
+.try {
+  display: grid; gap: 4px; text-align: left; padding: 12px; background: #fff; cursor: pointer;
+  border: 1px solid var(--line); border-radius: var(--radius-m);
+}
+.try:hover { border-color: var(--ink); }
+.try[disabled] { opacity: .6; cursor: progress; }
+.try img { width: 100%; height: 150px; object-fit: contain; background: var(--light); border-radius: var(--radius-s); margin-bottom: 6px; }
+.try .t { font-weight: 700; }
+.try .b { color: var(--muted); font-size: var(--step--1); }
 
 /* Report */
 .report { display: grid; grid-template-columns: minmax(0, 8fr) minmax(280px, 4fr); gap: 40px; padding-bottom: 64px; }
@@ -151,13 +168,21 @@ h1 {
 .reuse .pair figcaption { margin-top: 6px; font-size: var(--step--1); color: var(--muted); }
 @media (max-width: 640px) {
   .reuse .pair { grid-template-columns: 1fr; }
-  .controls .field { flex: 1 1 100%; }
-  .controls select { width: 100%; }
 }
 .score { font-weight: 800; font-variation-settings: "wdth" 110; }
 .meter { height: 6px; border-radius: 3px; background: var(--wash); overflow: hidden; margin: 8px 0 4px; position: relative; }
 .meter span { position: absolute; inset: 0 auto 0 0; background: var(--ponceau); }
 .meter i { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--ink); }
+
+.figure { margin-bottom: 20px; }
+.check .dupe { grid-column: 1 / -1; margin-top: 6px; }
+.dupe-pair { display: flex; gap: 6px; }
+.dupe-pair img { height: 34px; width: auto; max-width: 50%; background: #fff; border: 1px solid var(--line); border-radius: 2px; image-rendering: pixelated; }
+.dupe p { margin: 4px 0 0; }
+
+details.more { margin-top: 14px; max-width: 980px; }
+details.more summary { cursor: pointer; font-weight: 650; color: var(--ink); padding: 6px 0; width: fit-content; }
+details.more summary:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 .panels { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; margin-top: 28px; }
 .pcard { margin: 0; }
@@ -199,11 +224,6 @@ table.matrix { border-collapse: collapse; width: 100%; margin-top: 18px; font-si
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 .credit { margin: 8px 0 0; font-size: 0.78rem; line-height: 1.4; color: var(--muted); max-width: 70ch; }
 
-/* Audit Oct 24: upload controls keep each label with its select when wrapping. */
-.controls { margin: 12px 0 16px; display: flex; gap: 12px 18px; align-items: flex-end; flex-wrap: wrap; }
-.controls .field { display: flex; flex-direction: column; gap: 4px; min-width: 0; max-width: 100%; }
-.controls label { font-weight: 600; font-size: var(--step--1); }
-.controls select { padding: 9px; border: 1px solid #9eafb8; border-radius: 6px; background: white; max-width: 100%; }
 /* Ground truth outline for our own demo edit (never shown for user uploads). */
 .stage .known-edit { position: absolute; border: 2px dashed #1F2B33; border-radius: 2px; pointer-events: none; }
 .stage .known-edit span { position: absolute; left: 0; top: -1.45em; font-size: 11px; line-height: 1.2; background: #1F2B33; color: #fff; padding: 1px 5px; border-radius: 3px; white-space: nowrap; }

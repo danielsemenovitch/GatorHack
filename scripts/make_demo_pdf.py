@@ -1,7 +1,7 @@
 """Build examples/demo_reuse.pdf: a small PDF with one figure used twice.
 
-Figure 1 and Figure 3 are the same CC BY figure on purpose. Figure 3 is resized
-and recompressed, so the whole-image reuse check has to match it by appearance
+Figure 1 and Figure 3 are the same CC BY figure on purpose. Figure 3 is a re-saved
+JPEG copy, so the whole-image reuse check has to match it by appearance
 rather than by identical bytes. Nothing here reflects anything the original
 authors did; the title page says so.
 """
@@ -14,20 +14,20 @@ import fitz  # PyMuPDF
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
-FIG_A = ROOT / "data/real_figures/PMC10315040_Fig6.jpg"
-FIG_B = ROOT / "data/real_figures/PMC10301924_pathogens1200801f002.jpg"
+FIG_A = ROOT / "data/real_figures/PMC10352194_Fig4.jpg"
+FIG_B = ROOT / "data/real_figures/PMC10264620_f3.jpg"
 OUT = ROOT / "examples/demo_reuse.pdf"
 
-COPY_SCALE = 0.95   # a different file at a different size; at 0.90 the glyph guard skips its two merged blot strips
-COPY_QUALITY = 75
+COPY_SCALE = 1.0    # same size, re-saved; panel finding shifts with rescaling and heavy JPEG (see AUDIT_REPORT)
+COPY_QUALITY = 95
 
 TITLE = (
     "Demo PDF assembled by the Below the Watermark team for Gator Hack V.\n\n"
-    "Figure 1 and Figure 3 are the same published figure on purpose (Figure 3 is a resized, "
-    "recompressed copy), so the image reuse check has something to find. Nothing here reflects "
+    "Figure 1 and Figure 3 are the same published figure on purpose (Figure 3 is a re-saved "
+    "copy), so the image reuse check has something to find. Nothing here reflects "
     "anything the original authors did.\n\n"
-    "Figures 1 and 3: Fig. 6 of PMC10315040 (doi:10.1186/s13048-023-01210-5), CC BY.\n"
-    "Figure 2: Fig. 2 of PMC10301924 (doi:10.3390/pathogens12060801), CC BY."
+    "Figures 1 and 3: Fig. 4 of PMC10352194 (doi:10.1007/s12192-023-01349-6), CC BY.\n"
+    "Figure 2: Fig. 3 of PMC10264620 (doi:10.3389/fpls.2023.1138781), CC BY."
 )
 
 

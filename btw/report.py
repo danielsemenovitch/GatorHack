@@ -206,6 +206,15 @@ def _text_heavy(crop: Image.Image, scale: float = 1.0) -> bool:
     return density >= 25 or (white > 0.45 and density > 6)
 
 
+# Flag lines on the display index (0.50 = the calibrated Standard line).
+# Strict: the lowest line on a fixed grid that flags at most 1% of clean panels
+# on calibration papers (scripts/calibrate_strict.py, results/strict_line.json).
+# On 20 held-out test papers it caught 24% of pasted AI bands and flagged 2.5%
+# of clean panels; Standard caught 33% and flagged 5.5%. The old 0.90 line caught 4%.
+STRICT_LINE = 0.60
+CHANCE_FLAG_RATE = {"benchmark": 0.05, "conservative": 0.025}
+
+
 def _blot_candidates(fig: Image.Image, mode: str = "auto"):
     """Gate the experimental blot model; manual mode is user-confirmed, NOT validated.
 
@@ -289,13 +298,11 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
                 break
             if det is None:
                 det = detector(cnn_version)
-                # Research threshold is calibrated for synthetic, mostly
-                # unmodified panels. The stricter 0.90 REVIEW cutoff for v3
-                # prioritizes avoiding false alarms on entire published papers.
-                # NOT calibrated or validated as a probability of misconduct.
-                # V2 saturates near 1 and has no defensible strict cutoff;
-                # retain its original research threshold and label it clearly.
-                effective_threshold = (0.90 if (cnn_version == "v3" and
+                # Standard is the calibrated research line; Strict is STRICT_LINE
+                # (see above). Neither is a probability of misconduct. V2
+                # saturates near 1 and has no defensible strict cutoff, so it
+                # keeps its original threshold.
+                effective_threshold = (STRICT_LINE if (cnn_version == "v3" and
                                        screening_policy == "conservative")
                                        else float(det.threshold))
             res = _score_at_training_scale(det, crop, analysis_scale)
@@ -339,7 +346,16 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
             y1 = min(hh, int(loc["y"] + loc["h"]) + 4)
             loc["crop"] = _data_url(Image.fromarray(gray[y0:y1, x0:x1].astype(np.uint8)))
             loc["is_detected_band"] = bool(isinstance(loc.get("id"), int) and loc["id"] >= 0)
-    flagged = [p for f in report_figs for p in f["panels"] if p["flagged"]]
+    # Band matches between two figures that are already a whole-image reuse pair
+    # restate that finding (every band of a copied figure matches its twin), so
+    # they are counted under the reuse pair instead of listed again.
+    reuse_pairs = {frozenset((m["a"]["figure"], m["b"]["figure"])) for m in reuse}
+    folded = [d for d in band_duplicates if frozenset((d["a"]["figure"], d["b"]["figure"])) in reuse_pairs
+              and d["a"]["figure"] != d["b"]["figure"]]
+    band_duplicates = [d for d in band_duplicates if d not in folded]
+    for m in reuse:
+        m["matching_bands"] = sum(1 for d in folded if frozenset((d["a"]["figure"], d["b"]["figure"])) == frozenset((m["a"]["figure"], m["b"]["figure"])))
+    flagged =[p for f in report_figs for p in f["panels"] if p["flagged"]]
     ai_declared = bool(provenance.get("present") and provenance.get("ai_generated"))
     # Never call absence of findings "authentic" or "clean".
     verdict = ("suspicious" if flagged or band_duplicates or reuse or ai_declared
@@ -367,11 +383,12 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
             "threshold": round(float(effective_threshold), 6) if det is not None else None,
             "benchmark_threshold": round(float(det.threshold), 6) if det is not None else None,
             "screening_policy": screening_policy,
-            "policy_note": ("Strict v3 line 0.90 (optional): on held-out papers it caught about 3% of simulated AI splices, so most real edits would not be flagged. Use it only to see the very strongest alerts."
+            "chance_flag_rate": CHANCE_FLAG_RATE[screening_policy] if cnn_version == "v3" else None,
+            "policy_note": (f"Strict line {STRICT_LINE:.2f}: set on calibration papers to flag at most 1% of clean panels. On held-out papers it caught about a quarter of simulated AI band pastes and flagged about 2.5% of clean panels."
                             if cnn_version == "v3" and screening_policy == "conservative" else
                             "V2 output saturates at 1.0; stricter cutoffs are not defensibly calibrated, so v2 retains its legacy benchmark threshold."
                             if cnn_version == "v2" and screening_policy == "conservative" else
-                            "Research threshold (default): set so 5% of clean panels from separate calibration papers are flagged. Measured on simulated edits, not validated on whole real papers."),
+                            "Standard line 0.50 (default): set so about 5% of clean panels from separate calibration papers are flagged. Measured on simulated edits, not validated on whole real papers."),
             "score_kind": ("threshold-centered display index" if getattr(det, "space", None) == "logit"
                            else "uncalibrated CNN patch score") if det is not None else None,
             "score_is_probability": False,
