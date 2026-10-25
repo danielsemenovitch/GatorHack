@@ -158,23 +158,42 @@ Text excerpt:
 {text}
 """
 
-MODELS = [m for m in [os.environ.get("GEMINI_TEXT_MODEL"), "gemini-3-flash-preview", "gemini-2.5-flash", "gemini-3-pro-preview"] if m]
+# Stable model first; preview models are often rate limited (429) or overloaded
+# (503) on the free tier. GEMINI_TEXT_MODEL in .env overrides the order.
+MODELS = [m for m in dict.fromkeys([os.environ.get("GEMINI_TEXT_MODEL"), "gemini-2.5-flash", "gemini-3-flash-preview",
+                                    "gemini-flash-latest", "gemini-2.5-flash-lite"]) if m]
+LAST_MODEL: str | None = None
+
+
+def _why(e: Exception) -> str:
+    code = getattr(e, "code", None)
+    return f"HTTP {code}" if code else type(e).__name__
 
 
 def _gemini(parts: list[dict], key: str) -> str:
-    last = None
+    """Try each model; retry once on rate limit or overload. Raises with every model's reason."""
+    global LAST_MODEL
+    reasons = []
+    body = json.dumps({"contents": [{"parts": parts}],
+                       "generationConfig": {"temperature": 0.2, "responseMimeType": "application/json"}}).encode()
     for model in MODELS:
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
-        body = json.dumps({"contents": [{"parts": parts}],
-                           "generationConfig": {"temperature": 0.2, "responseMimeType": "application/json"}}).encode()
-        req = urllib.request.Request(url, data=body, headers={**UA, "Content-Type": "application/json", "x-goog-api-key": key})
-        try:
-            with urllib.request.urlopen(req, timeout=40) as r:
-                out = json.loads(r.read())
-            return "".join(p.get("text", "") for p in out["candidates"][0]["content"]["parts"])
-        except Exception as e:  # unknown model name, quota, network: try the next one
-            last = e
-    raise RuntimeError(f"Gemini unavailable: {last}")
+        for attempt in range(2):
+            req = urllib.request.Request(url, data=body, headers={**UA, "Content-Type": "application/json", "x-goog-api-key": key})
+            try:
+                with urllib.request.urlopen(req, timeout=25) as r:
+                    out = json.loads(r.read())
+                text = "".join(p.get("text", "") for p in out["candidates"][0]["content"]["parts"])
+                LAST_MODEL = model
+                return text
+            except Exception as e:  # unknown model, quota, overload, network, blocked reply
+                code = getattr(e, "code", None)
+                if code in (429, 500, 503) and attempt == 0:
+                    time.sleep(2.0)
+                    continue
+                reasons.append(f"{model}: {_why(e)}")
+                break
+    raise RuntimeError("; ".join(reasons))
 
 
 def gemini_queries(ctx: dict, images: list[Image.Image], key: str) -> list[dict]:
@@ -201,7 +220,7 @@ def plan(ctx: dict, images: list[Image.Image]) -> tuple[list[dict], str, str | N
                 return qs, "Gemini", None
             note = "Gemini returned no queries; used keyword search instead."
         except Exception as e:
-            note = f"Gemini could not plan the search ({type(e).__name__}); used keyword search instead."
+            note = f"Gemini could not plan the search ({e}); used keyword search instead."
     return keyword_queries(ctx), "keywords", note
 
 
