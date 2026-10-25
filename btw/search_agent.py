@@ -51,6 +51,13 @@ def _get(url: str, timeout: float = 20.0) -> bytes:
         return r.read()
 
 
+def _plain(text: str | None) -> str:
+    """Europe PMC titles carry HTML (italics, entities such as &lt;i&gt;); show plain text."""
+    import html
+    t = html.unescape(html.unescape(text or ""))
+    return " ".join(re.sub(r"<[^>]+>", "", t).split())
+
+
 def search(query: str, n: int = PER_QUERY) -> list[dict]:
     """Open access, full text papers matching a Europe PMC query."""
     q = f"({query}) AND OPEN_ACCESS:y AND HAS_FT:y"
@@ -59,8 +66,8 @@ def search(query: str, n: int = PER_QUERY) -> list[dict]:
     out = []
     for x in data.get("resultList", {}).get("result", []):
         if x.get("pmcid"):
-            out.append({"pmcid": x["pmcid"], "title": x.get("title", ""), "year": x.get("pubYear"),
-                        "doi": x.get("doi"), "authors": x.get("authorString", ""), "journal": x.get("journalTitle", "")})
+            out.append({"pmcid": x["pmcid"], "title": _plain(x.get("title")), "year": x.get("pubYear"),
+                        "doi": x.get("doi"), "authors": x.get("authorString", ""), "journal": _plain(x.get("journalTitle"))})
     return out
 
 

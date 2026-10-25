@@ -84,3 +84,8 @@ def test_reports_offline_cleanly(monkeypatch):
     data, images, labels = demo()
     out = sa.run(data, "demo.pdf", images, labels)
     assert out["status"] == "offline" and out["matches"] == []
+
+
+def test_titles_are_plain_text():
+    assert sa._plain("Effects of &lt;i&gt;Eubacterium limosum&lt;/i&gt; in cancer.") == "Effects of Eubacterium limosum in cancer."
+    assert sa._plain("Role of <i>GRN</i> &amp; miR-29b") == "Role of GRN & miR-29b"
