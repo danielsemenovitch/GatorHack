@@ -1,0 +1,134 @@
+name: Controlled V4.1 five-versus-eight epoch experiment
+
+on:
+  push:
+    branches: [experiment/v4-1-eight-epochs-20261025]
+    paths:
+      - '.github/workflows/v4_1_eight_epochs.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  epoch-ablation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 170
+    env:
+      PYTHONUNBUFFERED: '1'
+      JAX_PLATFORM_NAME: cpu
+      XLA_PYTHON_CLIENT_PREALLOCATE: 'false'
+      OPENBLAS_NUM_THREADS: '2'
+      OMP_NUM_THREADS: '2'
+      SKIP_HELDOUT: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install scientific ML and image libraries
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip install "jax[cpu]" optax
+          python -m compileall -q scripts/train_cnn_v4.py scripts/build_v4_benchmark.py scripts/eval_v3_on_v4.py scripts/eval_v4_extra_unseen_donor.py scripts/compare_v4_1_5vs8.py
+      - name: Verify exact AI donor hashes and held-out generation isolation
+        run: |
+          python - <<'PY'
+          from scripts.eval_v4_extra_unseen_donor import verify_donors
+          from btw.sources import ai_panels
+          from pathlib import Path
+          verify_donors()
+          train = ai_panels()
+          holdout = ai_panels(Path('data/ai_sources_holdout'))
+          assert len(train) >= 4 and holdout
+          print('VERIFIED: training donor strips',len(train),'and holdout source strips',len(holdout))
+          PY
+      - name: Rehydrate and discover new attributed CC BY Western blot sources
+        run: |
+          set -o pipefail
+          python -m scripts.collect_v4_ccby --new-papers 240 --workers 7 | tee results/v4_1_epoch_source_log.txt
+      - name: Generate one fixed paper-disjoint benchmark for BOTH training durations
+        run: |
+          set -o pipefail
+          python -m scripts.build_v4_benchmark --max-panels 1750 | tee results/v4_1_epoch_benchmark_log.txt
+      - name: Verify train test partition and dataset sufficiency
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          rows = json.loads(Path('data/benchmark/index.json').read_text())
+          tr = {r['pmcid'] for r in rows if r['split']=='train'}
+          te = {r['pmcid'] for r in rows if r['split']=='test'}
+          assert len(te) >= 40 and len(tr) >= 100
+          assert not tr & te
+          assert sum(r['method']=='ai_splice' for r in rows) >= 1000
+          print('VERIFIED: paper disjointness;',len(rows),'images,',len(tr),'train papers,',len(te),'test papers')
+          PY
+      - name: Train fresh five-epoch V4.1 control on frozen benchmark
+        env:
+          EPOCHS: '5'
+        run: |
+          set -o pipefail
+          python -m scripts.train_cnn_v4 | tee results/v4_1_5ep_training_log.txt
+          mv models/splice_cnn_v4.npz models/splice_cnn_v4_1_5ep.npz
+          mv results/cnn_v4_metrics.json results/cnn_v4_5ep_metrics.json
+      - name: Evaluate five-epoch control against frozen v3 on same heldout papers
+        run: |
+          set -o pipefail
+          cp models/splice_cnn_v4_1_5ep.npz models/splice_cnn_v4.npz
+          cp results/cnn_v4_5ep_metrics.json results/cnn_v4_metrics.json
+          python -m scripts.eval_v3_on_v4 | tee results/v4_1_5ep_v3_compare_log.txt
+          mv results/cnn_v4_comparison.json results/cnn_v4_5ep_comparison.json
+          python -m scripts.eval_v4_extra_unseen_donor | tee results/v4_1_5ep_unseen_log.txt
+          mv results/v4_extra_unseen_ai_source_eval.json results/v4_5ep_unseen_ai_source_eval.json
+          rm models/splice_cnn_v4.npz results/cnn_v4_metrics.json
+      - name: Train eight-epoch V4.1 from scratch with eight-epoch cosine schedule
+        env:
+          EPOCHS: '8'
+        run: |
+          set -o pipefail
+          python -m scripts.train_cnn_v4 | tee results/v4_1_8ep_training_log.txt
+          mv models/splice_cnn_v4.npz models/splice_cnn_v4_1_8ep.npz
+          mv results/cnn_v4_metrics.json results/cnn_v4_8ep_metrics.json
+      - name: Evaluate eight-epoch model against frozen v3 and unseen source
+        run: |
+          set -o pipefail
+          cp models/splice_cnn_v4_1_8ep.npz models/splice_cnn_v4.npz
+          cp results/cnn_v4_8ep_metrics.json results/cnn_v4_metrics.json
+          python -m scripts.eval_v3_on_v4 | tee results/v4_1_8ep_v3_compare_log.txt
+          mv results/cnn_v4_comparison.json results/cnn_v4_8ep_comparison.json
+          python -m scripts.eval_v4_extra_unseen_donor | tee results/v4_1_8ep_unseen_log.txt
+          mv results/v4_extra_unseen_ai_source_eval.json results/v4_8ep_unseen_ai_source_eval.json
+          rm models/splice_cnn_v4.npz results/cnn_v4_metrics.json
+      - name: Create matched five-vs-eight-epoch ablation report
+        run: |
+          python -m scripts.compare_v4_1_5vs8 | tee results/v4_1_epoch_ablation_log.txt
+      - name: Preserve both model checkpoints and reports as experiment artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v4-1-five-versus-eight-epoch-evaluation
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            models/splice_cnn_v4_1_5ep.npz
+            models/splice_cnn_v4_1_8ep.npz
+            data/v4_ai_donor_manifest.json
+            results/v4_sources.json
+            results/v4_benchmark.json
+            results/cnn_v4_5ep_metrics.json
+            results/cnn_v4_8ep_metrics.json
+            results/cnn_v4_5ep_comparison.json
+            results/cnn_v4_8ep_comparison.json
+            results/v4_5ep_unseen_ai_source_eval.json
+            results/v4_8ep_unseen_ai_source_eval.json
+            results/cnn_v4_1_5vs8_comparison.json
+            results/v4_1_epoch_source_log.txt
+            results/v4_1_epoch_benchmark_log.txt
+            results/v4_1_5ep_training_log.txt
+            results/v4_1_8ep_training_log.txt
+            results/v4_1_5ep_v3_compare_log.txt
+            results/v4_1_8ep_v3_compare_log.txt
+            results/v4_1_5ep_unseen_log.txt
+            results/v4_1_8ep_unseen_log.txt
+            results/v4_1_epoch_ablation_log.txt
