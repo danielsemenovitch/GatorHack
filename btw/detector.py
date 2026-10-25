@@ -81,7 +81,9 @@ class Detector:
 class CnnDetector:
     """Same interface as Detector, backed by the JAX patch CNN."""
 
-    def __init__(self, params, threshold: float, rule: str = "top", space: str = "prob", scale: float = 1.0):
+    def __init__(self, params, threshold: float, rule: str = "top", space: str = "prob", scale: float = 1.0, backend=None):
+        from . import cnn
+        self._backend = backend if backend is not None else cnn
         self.params = params
         self.space = space
         self.score_method = rule
@@ -97,19 +99,27 @@ class CnnDetector:
         import re
         if not re.fullmatch(r"v\d+", version or ""):
             raise ValueError("Unsupported CNN version")
-        # v2 is the original checkpoint; v3, v4, ... are models/splice_cnn_vN.npz in the same format.
+        # V5 uses a three-channel residual architecture; older checkpoints
+        # retain the original two-channel model and inference path.
+        if version == "v5":
+            from . import cnn_v5
+            backend = cnn_v5
+        else:
+            backend = cnn
         path = cnn.WEIGHTS if version == "v2" else cnn.WEIGHTS.with_name(f"splice_cnn_{version}.npz")
         if not path.is_file():
             raise FileNotFoundError(f"Requested CNN checkpoint unavailable: {version}")
-        params, meta = cnn.load(path)
+        params, meta = backend.load(path)
+        if version == "v5" and meta.get("architecture") != "v5_residual_3_channel":
+            raise ValueError("V5 checkpoint architecture mismatch")
         return cls(params, float(meta.get("threshold", 0.5)), str(meta.get("rule", "top")),
-                   str(meta.get("space", "prob")), float(meta.get("scale", 1.0)))
+                   str(meta.get("space", "prob")), float(meta.get("scale", 1.0)), backend=backend)
 
     def _display(self, v):
         return 1.0 / (1.0 + np.exp(-(np.asarray(v, np.float64) - self.raw_threshold) / self.scale))
 
     def analyze(self, panel: Image.Image) -> PanelResult:
-        from . import cnn
+        cnn = self._backend
         gray = to_gray(panel)
         X, pos, band, _ = cnn.extract(gray)
         h, w = gray.shape
@@ -137,7 +147,7 @@ class CnnDetector:
         return self._finish(gray, heat, band, wins, probs, pos, score)
 
     def _finish(self, gray, heat, band, wins, probs, pos, score) -> PanelResult:
-        from . import cnn
+        cnn = self._backend
         bands = []
         for b in find_bands(gray):
             x0, y0, x1, y1 = b.box()
@@ -166,6 +176,6 @@ def load_best(version: str = "v2"):
     but it is still experimental and its scores are not guilt probabilities.
     The legacy v2 checkpoint remains available for direct comparison.
     """
-    if version not in ("v2", "v3"):
-        raise ValueError("CNN version must be v2 or v3")
+    if version not in ("v2", "v3", "v5"):
+        raise ValueError("CNN version must be v2, v3 or v5")
     return CnnDetector.load(version)
