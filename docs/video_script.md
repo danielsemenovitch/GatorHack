@@ -26,16 +26,17 @@ Never show the old AKT blot or any unpublished lab data. Every edited figure on 
 
 > This is a published figure where we pasted one AI band into the IL 6 strip. The dashed box is our edit, and the model flagged the panel that contains it. It doesn't catch everything: on twenty two held out figures it flagged the edited panel in seven, and it flagged one of the twenty two unedited originals. So this is one of the good ones, and the site says that.
 
-**2:05 to 2:35. Whole papers.** Screen: click "A PDF with one figure used twice". Point at the pair at the top, then click "Download report".
+**2:05 to 2:40. Duplication, inside and across papers.** Screen: click "A manuscript with two hidden duplications". Point at the two boxes at the top, then scroll to "Search published papers online" and click "Search Europe PMC". (Start the search before you record this part if your connection is slow; it takes about a minute.)
 
-> It runs on whole papers. In this PDF we put the same figure in twice. The report puts the pair at the top, screens every blot panel, and everything it did and skipped goes into one report you can send.
+> Watermarks can't see the oldest trick either: reusing an image. This demo manuscript hides two. The Vinculin control in Figure 1 is the HO 1 blot from Figure 2, resized, and the app lines them up. Figure 3 was lifted from a 2023 paper, and the app finds it in our library of published figures. For everything else, an agent takes over: Gemini reads the title and captions, plans searches on Europe PMC, and the agent checks the figures of every open access paper it finds. Every search it ran is listed, so a reviewer knows what was and wasn't checked.
 
-**2:35 to 2:50. Close.** Screen: back to the landing page.
+**2:40 to 2:55. Close.** Screen: back to the landing page.
 
 > Our benchmark of AI era blot edits is open, so others can beat our model. Watermarks protect whole images. Science needs protection one band at a time.
 
 ---
 
-**Optional, if you have time:** drag your Oncotarget PDF onto the page instead of the demo PDF at 2:05 and say: "This real paper takes about twenty seconds: thirty blot panels, two weak flags, about what chance predicts, and the report says so."
+**If the online search finds nothing or can't connect:** say "the agent lists everything it searched" and show the list under "What the agent searched"; the library match above is the guaranteed part of the demo.
 **If you run over:** cut the provenance section (1:15 to 1:35) first.
+**Before recording:** put your Gemini key in a file named `.env` in the GatorHack folder (one line, `GEMINI_API_KEY=...`) and restart the backend, so the agent plans with Gemini. The file is ignored by git; never commit the key.
 **Upload:** YouTube (unlisted is fine) or Vimeo, then paste the link into Devpost.

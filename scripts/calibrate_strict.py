@@ -53,9 +53,10 @@ def rates(scores, methods, t):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--target", type=float, default=0.01, help="max clean flag rate on calibration papers")
+    ap.add_argument("--model", default="v3", help="v3, or a newer models/splice_cnn_vN.npz")
     args = ap.parse_args()
 
-    det = CnnDetector.load("v3")
+    det = CnnDetector.load(args.model)
     ix = json.loads((ROOT / "data/benchmark/index.json").read_text())
     # Same calibration split as scripts/train_cnn.py.
     calib = [r for r in ix if r["split"] == "train" and zlib.crc32(r["pmcid"].encode()) % 5 == 0 and r["method"] == "clean"]
@@ -69,7 +70,7 @@ def main():
 
     candidates = grid
     out = {
-        "model": "v3",
+        "model": args.model,
         "rule": f"lowest grid line flagging at most {args.target:.0%} of clean panels on calibration papers",
         "n_calibration_clean": len(calib),
         "n_calibration_papers": len({r["pmcid"] for r in calib}),
@@ -79,7 +80,8 @@ def main():
         "calibration_clean_flagged": {f"{t}": round(float((cal_scores > t).mean()), 3) for t in candidates},
         "test": {f"{t}": rates(test_scores, methods, t) for t in candidates},
     }
-    (ROOT / "results/strict_line.json").write_text(json.dumps(out, indent=1) + "\n")
+    name = "strict_line.json" if args.model == "v3" else f"strict_line_{args.model}.json"
+    (ROOT / "results" / name).write_text(json.dumps(out, indent=1) + "\n")
     print(json.dumps(out, indent=1))
 
 

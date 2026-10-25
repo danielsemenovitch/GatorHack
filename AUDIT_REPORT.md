@@ -4,6 +4,15 @@
 **Auditor:** Claude (Anthropic), as an independent reviewer at Daniel's request. Every claim below was checked by running code, not by reading the handoff.
 **Environment:** Linux container, Python 3.13.17 (the handoff targets 3.11), JAX 0.12, Node 22, Chromium through Playwright, FastAPI serving the built React app. Windows was not tested.
 
+## Round 5 (Oct 25, early afternoon): duplication inside and across papers
+
+- **New matcher** (`btw/region_match.py`): SIFT on image content (text on white masked out), ratio test, one to one matches, RANSAC similarity transform, at least 14 agreeing keypoints over a region at least 45 px wide, and then a pixel check: once aligned, the image content of the two regions must correlate at 0.90 or more. Mirror flips are matched in mirrored coordinates (a similarity transform cannot model a reflection; the first version missed every flip).
+- **Why the pixel check:** without it, 7 of the 54 same-paper figure pairs in the library matched on shared chart templates and panel layouts (same axes, same grid, different data). Their aligned content correlated at 0.14 to 0.87; the demo's real copies correlate at 0.996 and 0.998.
+- **Measured:** 29 of 120 panels lifted into a figure from another paper were found (resize 8 of 29, resize plus JPEG 10 of 38, crop 4 of 25, mirror 7 of 28), and none of the 7,140 pairs of untouched library figures matched (0 of 54 same-paper pairs, 0 of 7,086 cross-paper). On untouched library figures, see `untouched_pairs` in `results/region_match_eval.json`.
+- **Not shipped:** matching panels against each other inside one figure gave 41 matches in 3,835 panel pairs, mostly identical labels and repeated layouts. Uniform strips (an actin control) are rarely found because identical bands defeat the ratio test.
+- **Search agent** (`btw/search_agent.py`, `POST /api/search_web`): Gemini (or keyword rules) plans Europe PMC queries, the agent downloads up to 6 figures from each of up to 16 open access papers and runs the matcher. Europe PMC is not reachable from the build machine, so the API formats were checked live in Daniel's Chrome (search JSON fields; JATS `fig/label/graphic`; the `fulltextRepo` file service returned the 704x332 source figure), and the agent is tested with recorded responses (`tests/test_search_agent.py`). The demo's first query returns the source paper 7th of 8, so the agent takes 10 per query. Gemini planning could not be tested from here.
+- **Panel detection under rescaling (round 3 finding) is NOT fixed yet.** A validated fix needs the routing benchmark rerun; there was not time before the deadline.
+
 ## Round 4 (Oct 25, midday): Daniel's review of the site
 
 - **Daniel's local copy was months behind** (`c3751e1`, before PR #3). That old build ran the legacy V2 model in user-confirmed blot mode and flagged the whole Gemini photo. Current main never screens that photo in any setting (checked all 8 combinations).

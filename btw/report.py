@@ -4,6 +4,12 @@ This tool generates leads for HUMAN review, not authenticity or misconduct verdi
 """
 from __future__ import annotations
 
+import logging
+from pathlib import Path
+import os
+import json
+import re
+
 import base64
 import io
 import time
@@ -17,6 +23,9 @@ from PIL import Image
 from .bands import find_bands
 from .duplicates import find_duplicates
 from .generic_duplicates import find_image_reuse
+from . import region_match
+
+log = logging.getLogger("btw.report")
 from .imgio import load_rgb, to_gray
 from .panels import find_panels
 from .provenance import read_c2pa
@@ -214,6 +223,23 @@ def _text_heavy(crop: Image.Image, scale: float = 1.0) -> bool:
 STRICT_LINE = 0.60
 CHANCE_FLAG_RATE = {"benchmark": 0.05, "conservative": 0.025}
 
+# The model the site uses. A newer model (models/splice_cnn_v4.npz, same format
+# as v3) is switched on with BTW_MODEL=v4 once its strict line is calibrated:
+#   python -m scripts.calibrate_strict --model v4   -> results/strict_line_v4.json
+DEFAULT_MODEL = os.environ.get("BTW_MODEL", "v3")
+
+
+def strict_line(model: str) -> tuple[float, float]:
+    """(strict line, chance flag rate at it) for a model; v3's are fixed above."""
+    if model == "v3":
+        return STRICT_LINE, CHANCE_FLAG_RATE["conservative"]
+    f = Path(__file__).resolve().parents[1] / "results" / f"strict_line_{model}.json"
+    if f.exists():
+        rec = json.loads(f.read_text())
+        line = float(rec["chosen_line"])
+        return line, float(rec["test"][str(rec["chosen_line"])]["clean_flagged"])
+    return STRICT_LINE, CHANCE_FLAG_RATE["conservative"]
+
 
 def _blot_candidates(fig: Image.Image, mode: str = "auto"):
     """Gate the experimental blot model; manual mode is user-confirmed, NOT validated.
@@ -248,12 +274,13 @@ def _blot_candidates(fig: Image.Image, mode: str = "auto"):
 
 
 def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
-            blot_mode: str = "auto", cnn_version: str = "v3",
+            blot_mode: str = "auto", cnn_version: str | None = None,
             screening_policy: str = "benchmark") -> dict[str, Any]:
     if blot_mode not in ("auto", "blot", "off"):
         raise ValueError("blot_mode must be 'auto', 'blot', or 'off'")
-    if cnn_version not in ("v2", "v3"):
-        raise ValueError("cnn_version must be v2 or v3")
+    cnn_version = cnn_version or DEFAULT_MODEL
+    if not re.fullmatch(r"v\d+", cnn_version):
+        raise ValueError("cnn_version must look like v3")
     if screening_policy not in ("conservative", "benchmark"):
         raise ValueError("screening_policy must be conservative or benchmark")
     if not (1 <= max_panels <= 256):
@@ -266,6 +293,37 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
                   if is_pdf else read_c2pa(data, mime))
     figures, skipped_images, repeats = _figures_from_upload(data, filename)
     reuse = find_image_reuse([im for _, im in figures])
+    # Shared regions: between figures of this upload (intrapaper) and against the
+    # reference library of published figures (interpaper). Both use the same
+    # verified keypoint matcher, so a cropped, resized or flipped copy still matches.
+    fig_images = [im for _, im in figures]
+    match_feats = [region_match.features(im, with_flip=True) for im in fig_images[:30]]
+    whole_pairs = {frozenset((m["a"]["figure"], m["b"]["figure"])) for m in reuse}
+    region_reuse = [m for m in (region_match.within_upload(fig_images, match_feats) if len(figures) > 1 else [])
+                    if frozenset((m["a"]["figure"], m["b"]["figure"])) not in whole_pairs]
+    try:
+        library_matches = region_match.against_library(fig_images[:30], match_feats)
+        library_info = region_match.library_size()
+    except Exception:  # a missing or unreadable library must never break an analysis
+        log.exception("reference library check failed")
+        library_matches, library_info = [], None
+    for m in region_reuse:
+        for side in ("a", "b"):
+            x0, y0, x1, y1 = m[side]["box"]
+            m[side]["label"] = figures[m[side]["figure"]][0]
+            m[side]["crop"] = _data_url(fig_images[m[side]["figure"]].crop((x0, y0, x1, y1)).convert("RGB"), "JPEG")
+    for m in library_matches:
+        x0, y0, x1, y1 = m["box"]
+        m["label"] = figures[m["figure"]][0]
+        m["crop"] = _data_url(fig_images[m["figure"]].crop((x0, y0, x1, y1)).convert("RGB"), "JPEG")
+        try:
+            src = Image.open(region_match.LIBRARY_DIR / m["source"]["file"]).convert("RGB")
+            sx0, sy0, sx1, sy1 = m["source_box"]
+            m["source_crop"] = _data_url(src.crop((sx0, sy0, sx1, sy1)), "JPEG")
+        except Exception:
+            m["source_crop"] = None
+        pm = m["source"].get("pmcid") or ""
+        m["source"]["url"] = f"https://europepmc.org/article/PMC/{pm.removeprefix('PMC')}" if pm else None
     report_figs, all_panels_gray, panel_refs = [], [], []
     n_panels = 0
     skipped_panels = 0
@@ -302,7 +360,7 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
                 # (see above). Neither is a probability of misconduct. V2
                 # saturates near 1 and has no defensible strict cutoff, so it
                 # keeps its original threshold.
-                effective_threshold = (STRICT_LINE if (cnn_version == "v3" and
+                effective_threshold = (strict_line(cnn_version)[0] if (cnn_version != "v2" and
                                        screening_policy == "conservative")
                                        else float(det.threshold))
             res = _score_at_training_scale(det, crop, analysis_scale)
@@ -358,7 +416,7 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
     flagged =[p for f in report_figs for p in f["panels"] if p["flagged"]]
     ai_declared = bool(provenance.get("present") and provenance.get("ai_generated"))
     # Never call absence of findings "authentic" or "clean".
-    verdict = ("suspicious" if flagged or band_duplicates or reuse or ai_declared
+    verdict = ("suspicious" if flagged or band_duplicates or reuse or region_reuse or library_matches or ai_declared
                else ("no_blots" if n_panels == 0 else "no_findings"))
     per_figure = [
         {"figure": f["id"], "label": f["label"],
@@ -379,13 +437,17 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
             "per_figure": per_figure, "widespread_flag_figures": widespread,
             "flagged_panels": len(flagged), "duplicate_pairs": len(band_duplicates),
             "image_reuse_pairs": len(reuse),
+            "region_reuse_pairs": len(region_reuse),
+            "library_matches": len(library_matches),
+            "library": library_info,
             "max_splice_score": round(max((p["score"] for f in report_figs for p in f["panels"]), default=0), 6),
             "threshold": round(float(effective_threshold), 6) if det is not None else None,
             "benchmark_threshold": round(float(det.threshold), 6) if det is not None else None,
             "screening_policy": screening_policy,
-            "chance_flag_rate": CHANCE_FLAG_RATE[screening_policy] if cnn_version == "v3" else None,
-            "policy_note": (f"Strict line {STRICT_LINE:.2f}: set on calibration papers to flag at most 1% of clean panels. On held-out papers it caught about a quarter of simulated AI band pastes and flagged about 2.5% of clean panels."
-                            if cnn_version == "v3" and screening_policy == "conservative" else
+            "chance_flag_rate": ((strict_line(cnn_version)[1] if screening_policy == "conservative" else CHANCE_FLAG_RATE["benchmark"])
+                                 if cnn_version != "v2" else None),
+            "policy_note": (f"Strict line {strict_line(cnn_version)[0]:.2f}: set on calibration papers to flag at most 1% of clean panels."
+                            if cnn_version != "v2" and screening_policy == "conservative" else
                             "V2 output saturates at 1.0; stricter cutoffs are not defensibly calibrated, so v2 retains its legacy benchmark threshold."
                             if cnn_version == "v2" and screening_policy == "conservative" else
                             "Standard line 0.50 (default): set so about 5% of clean panels from separate calibration papers are flagged. Measured on simulated edits, not validated on whole real papers."),
@@ -402,6 +464,7 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
         },
         "provenance": provenance, "figures": report_figs,
         "image_reuse": reuse, "duplicates": band_duplicates,
+        "region_reuse": region_reuse, "library_matches": library_matches,
         "skipped_images": skipped_images[:100],
         "checks": {
             "whole_image_reuse": "completed" if len(figures) >= 2 else "not_applicable_single_image",

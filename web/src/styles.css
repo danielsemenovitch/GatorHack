@@ -224,6 +224,13 @@ table.matrix { border-collapse: collapse; width: 100%; margin-top: 18px; font-si
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 .credit { margin: 8px 0 0; font-size: 0.78rem; line-height: 1.4; color: var(--muted); max-width: 70ch; }
 
+/* Regions found in two places (this paper or a published one). */
+.stage .mark { position: absolute; border: 2px dashed var(--ponceau); border-radius: 2px; pointer-events: none; }
+.stage .mark span { position: absolute; left: 0; bottom: -1.45em; font-size: 11px; line-height: 1.2; background: var(--ponceau); color: #fff; padding: 1px 5px; border-radius: 3px; white-space: nowrap; }
+.detail.web { margin-top: 28px; }
+.log { margin: 6px 0 0; padding-left: 18px; font-size: var(--step--1); color: var(--muted); }
+.log code { font-size: 0.85em; background: var(--wash); padding: 1px 4px; border-radius: 3px; word-break: break-word; }
+
 /* Ground truth outline for our own demo edit (never shown for user uploads). */
 .stage .known-edit { position: absolute; border: 2px dashed #1F2B33; border-radius: 2px; pointer-events: none; }
 .stage .known-edit span { position: absolute; left: 0; top: -1.45em; font-size: 11px; line-height: 1.2; background: #1F2B33; color: #fff; padding: 1px 5px; border-radius: 3px; white-space: nowrap; }

@@ -11,7 +11,24 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
-from .report import analyze
+import threading
+
+
+def _load_dotenv(path: Path) -> None:
+    """KEY=VALUE lines from a git-ignored .env file (for GEMINI_API_KEY); real environment variables win."""
+    if not path.exists():
+        return
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if line and not line.startswith("#") and "=" in line:
+            k, v = line.split("=", 1)
+            os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
+
+
+_load_dotenv(Path(__file__).resolve().parents[1] / ".env")
+
+from . import region_match, search_agent
+from .report import DEFAULT_MODEL, _data_url, _figures_from_upload, analyze
 
 ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "results"
@@ -35,7 +52,7 @@ def health():
 
 
 @app.post("/api/analyze")
-def analyze_upload(file: UploadFile = File(...), blot_mode: str = Form('auto'), cnn_version: str = Form('v3'), screening_policy: str = Form('benchmark')):
+def analyze_upload(file: UploadFile = File(...), blot_mode: str = Form('auto'), cnn_version: str = Form(DEFAULT_MODEL), screening_policy: str = Form('benchmark')):
     # A plain `def` endpoint runs in FastAPI's worker threadpool, so a long
     # CPU-bound analysis no longer blocks /api/health or other requests.
     data = file.file.read(MAX_BYTES + 1)  # never read more than the limit
@@ -50,6 +67,35 @@ def analyze_upload(file: UploadFile = File(...), blot_mode: str = Form('auto'), 
     except Exception:  # do not leak internal exception text to the browser
         log.exception("analysis failed for %s", file.filename)
         raise HTTPException(422, "Could not analyze this file. It may be corrupt or in an unsupported format.")
+
+
+# Build or load the reference library in the background, so the first upload
+# does not wait for it.
+threading.Thread(target=region_match.library, daemon=True).start()
+
+
+@app.post("/api/search_web")
+def search_web(file: UploadFile = File(...)):
+    """The interpaper agent: search Europe PMC for papers that may contain these figures."""
+    data = file.file.read(MAX_BYTES + 1)
+    if len(data) > MAX_BYTES:
+        raise HTTPException(413, "File too large (25 MB max).")
+    if not data:
+        raise HTTPException(422, "The file is empty.")
+    try:
+        figures, _, _ = _figures_from_upload(data, file.filename or "upload")
+        images, labels = [im for _, im in figures][:30], [lb for lb, _ in figures][:30]
+        out = search_agent.run(data, file.filename or "upload", images, labels)
+    except Exception:
+        log.exception("web search failed for %s", file.filename)
+        raise HTTPException(422, "The search could not run on this file.")
+    for m in out["matches"]:
+        x0, y0, x1, y1 = m["box"]
+        m["crop"] = _data_url(images[m["figure"]].crop((x0, y0, x1, y1)).convert("RGB"), "JPEG")
+        src = m.pop("source_image")
+        sx0, sy0, sx1, sy1 = m["source_box"]
+        m["source_crop"] = _data_url(src.crop((sx0, sy0, sx1, sy1)), "JPEG")
+    return JSONResponse(out)
 
 
 @app.get("/api/examples")
