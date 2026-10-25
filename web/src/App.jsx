@@ -545,7 +545,7 @@ function MethodPage() {
       <div className="prose">
         <p>The detector was trained on forgeries we generated. A careful forger using tools we did not simulate can still get past it, and heavy compression erases the traces it relies on. A flag means look closer, never proof of misconduct.</p>
         <p>The SynthID results are a hand run case study of a few dozen uploads, not a benchmark.</p>
-        <p>The blot model learned from web resolution figures about 750 pixels wide. Larger figures, such as those embedded in publisher PDFs, are screened on a copy resized to that width; on one real paper, screening at full resolution flagged half of its blot panels at the research threshold, a sign of that mismatch rather than of editing.</p>
+        <p>The blot model learned from web resolution figures about 750 pixels wide. Larger figures, such as those embedded in publisher PDFs, are screened on a copy resized to that width; on one published paper, scoring at full resolution flagged half of its blot panels at the research threshold, while the same panels scored at training scale produced no flags. We read that as a resolution mismatch; the paper has no ground truth labels, so it does not prove the panels are unedited.</p>
       </div>
       <h2>The benchmark</h2>
       <div className="prose">
