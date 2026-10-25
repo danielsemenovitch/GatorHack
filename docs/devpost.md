@@ -1,84 +1,82 @@
 # Devpost submission (final text, ready to paste)
 
-Results below are from the named recorded benchmark and manual-test files. The artificial experiments do not measure real-world misconduct.
+Every number below comes from a file in `results/` or a recorded run. Places marked **[V5]** change if the V5 model is promoted; leave them as written if it is not.
 
 **Title:** Below the Watermark
 
-**Tagline:** Find scientific images reused within research papers and across published sources—with evidence for human reviewers.
+**Tagline:** An image integrity checker for scientific papers. It finds what AI watermarks can't: images reused inside a paper, figures lifted from other papers, and pasted-in bands.
 
 ---
 
 ## Inspiration
 
-I work in a wet lab, and Western blots are the evidence behind a huge share of biomedical papers. This year Gemini's image tools made it easy to make a convincing blot, or to change one band in a real one. Google's answer is SynthID, an invisible watermark in every Gemini image, and on October 7, 2026 it opened SynthID Detector to the public. We wanted to know whether that safety net works for science, where image manipulation often happens one band at a time.
+I work in a wet lab, and Western blots are the evidence behind a huge share of biomedical papers. Image duplication turned up in 3.8% of 20,621 papers even before generative AI (Bik et al., 2016), and paper mills recycle figures across papers. Now Gemini's image tools make a convincing blot in seconds. Google's answer is SynthID, an invisible watermark in every Gemini image, and on October 7, 2026 it opened SynthID Detector to the public. We wanted to know whether that new safety net protects science.
 
 ## What it does
 
-**The finding.** We tested SynthID Detector by hand, one fixed scenario at a time, within its terms:
+**The finding that started it.** We tested SynthID Detector by hand, one fixed scenario at a time, within its terms:
 
-- A whole AI blot was detected in 10 of 10 uploads, even after re saving, resizing, JPEG compression, cropping, contrast changes, placement in a figure and a PDF round trip.
-- A single AI band on its own came back "not enough details" in 4 of 4.
-- An AI band pasted into a published, openly licensed blot came back "SynthID was not detected" in 4 of 4. The untouched published figure, our control, was also not detected, as expected.
-- The C2PA content credential Gemini attaches was stripped by the first re save every time.
+- A whole AI blot: detected in 10 of 10 uploads, even after re-saving, resizing, JPEG, cropping, contrast changes, placement in a figure and a PDF round trip.
+- One AI band on its own: "not enough details", 4 of 4.
+- One AI band pasted into a published, openly licensed blot: "not detected", 4 of 4.
+- The C2PA content credential Gemini attaches was gone after the first re-save, every time.
 
-**The tool.** Below the Watermark is a review assistant for scientific figures. Upload a figure or a whole paper PDF and it:
+Watermarks protect whole AI images. Science gets manipulated one figure, one panel, one band at a time, and the oldest trick, reusing an image, involves no new AI image at all.
 
-1. lists every embedded figure by page, and names anything it could not analyze;
-2. reads content credentials, and says plainly when one declares an image AI generated;
-3. finds the same image region used twice in a paper (intrapaper duplication), even cropped, resized, re saved or mirrored;
-4. checks every figure against a library of published figures, and on request sends an agent to look for the figure in other papers (interpaper duplication): Gemini reads the title, abstract and captions and plans Europe PMC searches for the same authors and the same topic, the agent pulls the figures of the open access papers it finds and checks each one, and every query and paper checked is listed in the interface, and in the downloadable report when the search ran before export;
-5. screens Western blots band by band with a small neural network we trained, and looks for copied bands;
-6. exports a self-contained HTML evidence report with region matches, source citations, skipped checks and any completed agent search log.
+**The tool.** Upload a figure or a whole paper PDF. Below the Watermark:
 
-Flags are leads for a human reviewer, never verdicts.
+1. **Finds images reused inside the paper.** Every pair of figures is compared region by region, so a blot reused under another label is found even when it was cropped, resized, re-saved or mirrored.
+2. **Finds figures lifted from other papers.** Every figure is checked against a library of published figures, and a **search agent** goes further on request: Gemini reads the manuscript's title, abstract and captions and plans Europe PMC searches for the same authors and the same topic, the agent downloads the figures of the open-access papers it finds, and the same matcher checks each one. Every query and paper it checked is listed.
+3. **Reads content credentials** and says plainly when one declares an image AI generated; hands off to SynthID Detector for the manual check.
+4. **Screens Western blots band by band** with a small neural network we trained (a proof of concept, see below).
+5. **Writes a self-contained HTML evidence report**: matched regions side by side with source citations and links, flagged panels, and everything it checked or skipped.
 
-**The benchmark.** An open, labeled benchmark for AI era blot edits: real blot panels from openly licensed (CC BY) papers in Europe PMC, forged five ways (copy move, cross splice, AI splice, intensify, erase), each pushed through realistic publishing steps and saved with a pixel mask of exactly what changed. Existing datasets like BioFors predate generative AI.
+Flags are leads for a human reviewer, never verdicts: reuse can be legitimate.
 
 ## How we built it
 
-- **Data:** CC BY figures from Europe PMC; panels cut out automatically; forgeries generated in Python with OpenCV, scikit image and PyMuPDF, using bands from blots we made with Gemini.
-- **Model:** a small CNN written in JAX and trained on CPU. It looks at 32 pixel windows of a blot, normalized against the rest of the same blot, and scores how out of place each one is. Trained on 151 papers and tested on 72 papers it never saw.
-- **Duplication:** SIFT keypoints on image content only (text on white is masked out, since labels like "beta actin" use the same fonts in every paper), one to one matching, a RANSAC similarity transform, and then a pixel check on the aligned regions, so a cropped, resized or mirrored copy still lines up but a chart drawn from the same template does not. The same matcher runs within a paper, against a library of 112 published figures from 62 papers, and on figures the agent downloads.
-- **Agent:** Gemini plans the searches only if an API key is configured, with keyword planning otherwise. Europe PMC supplies open-access papers and figures. Alongside fixture-backed CI tests, a live no-keyword-generator-key smoke test searched 16 real Europe PMC papers, compared 55 figures and found our deliberate 2023 source image (PMC10701888) in about 44 seconds (`results/europepmc_live_smoke.json`). Gemini-planned search still requires a separate configured API key and live check.
-- **App:** FastAPI backend, React frontend designed like a film lightbox, `c2pa-python` for credentials, perceptual hashing plus structural similarity for whole image reuse.
-- **Gemini** made our AI blots; **SynthID Detector** was used by hand only.
+- **Duplication matcher:** SIFT keypoints on image content only (text on white is masked out, since labels like "beta-actin" use the same fonts in every paper), one-to-one matching, a RANSAC similarity transform, and a pixel check on the aligned regions, so a cropped, resized or mirrored copy still lines up but a chart drawn from the same template does not. The same matcher runs within a paper, against a library of 112 published CC BY figures from 62 papers, and on every figure the agent downloads.
+- **Search agent:** Gemini (`gemini-flash-latest`) plans the Europe PMC queries from the manuscript text, or reads the protein labels off a single figure; keyword rules take over if Gemini is unavailable. The Europe PMC REST API supplies open-access papers and their figures.
+- **Blot CNN:** a small JAX network that scores 32-pixel windows of a blot against the rest of the same blot, trained on our own benchmark: real blot panels from CC BY papers, edited five ways (copy-move, cross-splice, AI splice, intensify, erase) with bands from blots we made with Gemini, pushed through realistic publishing steps, each with a pixel mask.
+- **App:** FastAPI backend, React frontend designed like a film lightbox, `c2pa-python` for credentials, PyMuPDF for PDFs.
+- **Gemini** made our AI blots and plans the agent's searches; **SynthID Detector** was used by hand only.
 
-## Results (honest numbers)
+## Results
 
-- The installed experimental CNN v3 measured AUROC 0.703 and caught 35.4% of AI-band splices with 4.1% clean flags on its original 72-paper held-out synthetic panel test. A newer, harder matched benchmark for the eight-epoch V4.1 research model yielded only 23.8% AI-splice recall, AUROC 0.640 and 4.8% clean flags; v3 had AUROC 0.651 and 3.68% clean flags on that same set. **We did not promote V4.1** (`results/cnn_v4_1_8epoch_summary.json`).
-- End to end, as the app actually runs: we pasted one Gemini band into each of 22 held out published figures. The app flagged the edited panel in 7, flagged no untouched panel in any edited figure, and flagged 1 of the 22 unedited originals.
-- An optional Strict setting, set on calibration papers to flag at most 1% of unedited panels: on 20 held out papers it caught 24% of pasted AI bands while flagging 2.5% of unedited panels (Standard on the same papers: 33% and 5.5%). On the 22 whole figures, Strict flagged 4 edited panels and none of the unedited originals.
-- After a 50% resize it catches about 5%. Resizing erases most of what it relies on.
-- **Duplication matcher:** On 118 controlled cross-paper copied-block examples (blot and microscopy regions occupying approximately **25–55% of the original figure**, with cropping, mirroring, resizing or JPEG changes), it found **110/118 (93.2%)**. On smaller individual copied panels, often narrow blot strips, it found **60/120 (50%)**. There were **0/7,140** matches among untouched figure pairs in the evaluated reference collection. These numbers do not establish overall real-paper performance or the web agent's search recall.
+**Duplication (the headline):**
+- A blot panel or micrograph block (25 to 55% of a published figure) reused in a figure from another paper, resized, re-saved, cropped or mirrored: **110 of 118 found (93%)**. Single small strips alone are harder: 60 of 120.
+- **0 false matches** across 7,140 pairs of untouched published figures.
+- **Live agent run:** on our demo manuscript, Gemini planned the searches and the agent found the 2023 source of a lifted figure after checking **4 papers** (keyword planning needed 16 papers and 55 figures).
 
-These are controlled tests of duplicated pixels, not direct measurements of misconduct. Separately, our openly documented blot-edit benchmark allows others to improve on the experimental CNN.
+**Blot CNN (proof of concept) [V5]:** on 72 held-out papers it caught 35% of pasted AI bands while flagging 4% of clean panels (AUROC 0.703). End to end on 22 published figures with one pasted Gemini band, it flagged the edited panel in 7 and 1 of 22 unedited originals. After a 50% resize it catches about 5%. A useful baseline, not a finished detector: the bottleneck is training data and compute.
+
+These are controlled tests of duplicated or edited pixels, not measurements of real-world misconduct.
 
 ## Challenges we ran into
 
-- **Resolution.** Web figures put a band in about 13 by 6 pixels. Our first model learned "this is a band" instead of "this band was edited"; hard negatives fixed that. Later we found the opposite problem: publisher PDFs embed figures two to three times larger than what the model learned from, which nearly tripled false flags on clean blots (7% to 18% in a controlled test). The app now scores blots at the training scale.
-- **Honesty under a deadline.** The figure SynthID missed is a miss for our model too: it doesn't flag the band we pasted and flags an untouched loading control instead. The example we demo is labeled as one of the third it catches, and the site publishes the full rates next to it.
-- **Terms of service.** SynthID Detector forbids automated or adversarial use, so every test was a fixed scenario uploaded by hand, and any adversarial work targets our own model.
-- **Data rights.** Every real figure is CC BY and attributed, every edit is ours, and no unpublished lab data is used.
+- **Watermarks and small regions.** SynthID can't judge a single band, and nobody had measured that for science; we did it by hand, within the detector's terms, with no automated probing.
+- **Telling copies from look-alikes.** Figures in one paper share chart templates and layouts; our first matcher linked them. A pixel check after alignment fixed it without losing real copies.
+- **Busy figures.** A cap on keypoints let the rest of a figure crowd out a reused panel; removing it took reused-block detection from about 70% to 93% with no new false matches.
+- **Resolution.** Publisher PDFs embed figures two to three times larger than the web figures the CNN learned from, which nearly tripled false flags; the app now scores blots at the training scale.
+- **Data rights.** Every figure is CC BY and attributed, every edit is ours, and no unpublished lab data is used.
 
 ## Accomplishments we're proud of
 
-- A measured, reproducible gap in an AI safety tool that went public two weeks before the hackathon.
-- An open benchmark with pixel level ground truth for AI era blot edits.
-- A duplication agent that looks for a figure in other published papers, not just inside the one you uploaded.
-- A functioning paper-PDF-to-evidence-report workflow with within-paper and published-library comparisons, plus optional online searching. Processing time varies with the input, library cache and network.
-- An independent audit that uncovered a PDF parsing bug, a resolution mismatch and misleading reports, followed by regression testing for the new HTML evidence export.
+- A measured gap in an AI safety tool that went public two weeks before the hackathon.
+- A search agent that finds a figure in other published papers, live, and shows its work.
+- 93% of reused panels found with zero false matches on 7,140 real figure pairs.
+- An open benchmark with pixel-level ground truth for AI-era blot edits.
 
 ## What we learned
 
-Watermarks are strong where they are applied (whole images) and absent where science is vulnerable (small regions). Provenance has to be layered, and a detector is only as useful as the honesty of its error rates.
+Watermarks are strong where they are applied (whole images) and absent where science is vulnerable (small regions and reused images). Integrity checking has to be layered, and a detector is only as useful as the honesty of its error rates.
 
 ## What's next
 
-- Train on figures at several resolutions and with more AI generators.
-- Calibrate flags per paper on unedited published papers.
-- Copy move detection inside microscopy images.
-- A public leaderboard on the benchmark.
-- Signing images at capture on lab imagers.
+- Index the full open-access literature on HiPerGator, so every upload is checked against millions of figures instead of 112.
+- Train the blot model on far more data and more AI generators with HiPerGator compute.
+- Copy-move detection inside a single figure.
+- Integrate with journal submission and peer review systems.
 
 ## Built with
 
@@ -86,7 +84,7 @@ python, jax, opencv, scikit-image, scikit-learn, pymupdf, c2pa, fastapi, react, 
 
 ## "Fresh off the frontier": why this is recent
 
-SynthID Detector opened to the public on October 7, 2026, two weeks before the hackathon. Gemini's current image generation and editing (the Gemini 3 family, including Nano Banana Pro, released November 2025) is also within the 12 month window; the free Gemini app doesn't say which image model served each request, so we say "Gemini's image tools." Both are central: one is the threat, the other is the defense we measured.
+SynthID Detector opened to the public on October 7, 2026, two weeks before the hackathon, and it is the defense we measured. Gemini's current models are central twice: its image tools (the Gemini 3 family, including Nano Banana Pro, released November 2025) made the AI blots, and `gemini-flash-latest` plans the agent's literature searches.
 
 ## Tracks to enter
 

@@ -65,4 +65,4 @@ Check `python -m pytest -q tests`; in `web/` run `node --test src/reportExport.t
 4. Confirm HTML report includes the region/library evidence, and that the search log appears if requested *before* download.
 5. Submit before the published hackathon deadline; confirm team eligibility and completed registration independently.
 
-Historical prototype and audit details are in `AUDIT_REPORT.md`; historical model artifacts and raw metrics remain in `results/` for reproducibility.
+Historical prototype and audit details are in `docs/AUDIT_REPORT.md`; historical model artifacts and raw metrics remain in `results/` for reproducibility.

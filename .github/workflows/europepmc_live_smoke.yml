@@ -1,9 +1,6 @@
 name: Live Europe PMC integration smoke (opt-in)
 on:
-  push:
-    branches: [submission/live-europepmc-smoke-20261025]
-    paths: ['.github/workflows/europepmc_live_smoke.yml']
-  workflow_dispatch:
+  workflow_dispatch:   # run by hand: it needs the internet and takes about a minute
 permissions:
   contents: read
 jobs:
