@@ -16,6 +16,7 @@
 - **60/120 (50%)** individual small copied panels/strips: separate and harder evaluation. `results/region_match_eval.json`.
 - **0/7,140** untouched reference-pair matches on the evaluated library, not population-level specificity.
 - V3 experimental CNN (held-out synthetic panel benchmark): AUROC 0.703; 35.4% AI splices caught; 4.1% clean flags on 72 held-out papers. Whole-figure analysis identified an edited panel in 7/22 controlled cases.
+- **Live Gemini-planned agent run (Oct 25, Daniel's laptop):** on the demo manuscript, Gemini planned the Europe PMC searches and the agent found the source of the lifted figure (PMC10701888 Fig. 1, 2023) after checking 4 papers; the keyword fallback needed 16 papers and 55 figures. One run, one demo manuscript: a demonstration, not a recall estimate.
 - Manual SynthID: 10/10 whole-blot images detected; 4/4 individual pasted AI-band composites not detected. Small case study.
 - V4.1 five-versus-eight-epoch work **finished** on a separate experimental branch. Eight epochs: 23.8% synthetic AI-splice recall, AUROC 0.640, 4.8% clean flags, compared with v3 on identical test images: 22.74%, AUROC 0.6512, 3.68% clean flags. No promotion: keep v3 deployed. See `results/cnn_v4_1_8epoch_summary.json` and the linked Actions artifact.
 
