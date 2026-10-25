@@ -25,7 +25,14 @@ def read_c2pa(data: bytes, mime: str = "image/jpeg") -> dict:
         reader = c2pa.Reader(mime, io.BytesIO(data))
         store = json.loads(reader.json())
         active = store["manifests"][store["active_manifest"]]
-        result["validated"] = not store.get("validation_status")
+        codes = [v.get("code", "") for v in (store.get("validation_status") or [])]
+        result["validation_codes"] = codes
+        # "signingCredential.untrusted" only means no trust list is configured
+        # here; the manifest's own integrity checks can still pass.
+        result["integrity_ok"] = all(c == "signingCredential.untrusted" for c in codes)
+        result["signer_trusted"] = None if "signingCredential.untrusted" in codes else (not codes)
+        result["validated"] = not codes
+        result["reader"] = "c2pa-python"
         result["signed_by"] = (active.get("signature_info") or {}).get("issuer")
         for a in active.get("assertions", []):
             if a.get("label", "").startswith("c2pa.actions"):
@@ -34,15 +41,28 @@ def read_c2pa(data: bytes, mime: str = "image/jpeg") -> dict:
                                               "description": act.get("description"),
                                               "source": act.get("digitalSourceType")})
     except Exception as e:  # library missing or manifest unusual: fall back to bytes
+        # Byte matches are NOT a signature check: anyone can write these
+        # strings into a file. Report them as unverified text only.
         result["reader_error"] = str(e)[:200]
+        result["reader"] = "byte_search_unverified"
         txt = data[:400000]
         result["actions"] = [{"description": m.decode(errors="ignore")}
                              for m in re.findall(rb"(Created by [ -~]{3,60}|Applied [ -~]{3,60})", txt)][:5]
-        if b"Google" in txt:
-            result["signed_by"] = "Google LLC"
+        result["summary"] = ("Possible C2PA data found, but it could not be read or verified. "
+                             "Text inside the file is not evidence of who signed it.")
+        result["ai_generated"] = None
+        return result
     result["ai_generated"] = any("trainedAlgorithmicMedia" in str(a.get("source") or "") or
                                  "Generative AI" in str(a.get("description") or "")
                                  for a in result["actions"]) or (b"trainedAlgorithmicMedia" in data[:400000])
-    result["summary"] = ("Content Credentials found" + (f", signed by {result['signed_by']}" if result["signed_by"] else "")
-                         + (". They declare this image AI generated." if result["ai_generated"] else "."))
+    signer = result["signed_by"] or "an unnamed signer"
+    if result.get("validated"):
+        state = f"Content Credentials read and validated, signed by {signer}"
+    elif result.get("integrity_ok"):
+        state = (f"Content Credentials read; manifest integrity checks passed. Signed by a certificate issued to "
+                 f"{signer}, not checked against a trust list here")
+    else:
+        state = (f"Content Credentials present but validation reported problems "
+                 f"({', '.join(result.get('validation_codes', [])[:3])}); treat the signer ({signer}) as unverified")
+    result["summary"] = state + (". The credential declares this image AI generated." if result["ai_generated"] else ".")
     return result

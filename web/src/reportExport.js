@@ -39,13 +39,27 @@ export function reportToHtml(report) {
         safeImg(d.b.crop) + '"><figcaption>Matched region (not necessarily a band)</figcaption></figure></div>'
       : '<p>Matched image crops unavailable in this older report.</p>') +
     '</article>').join("");
+  // Panel boxes are drawn on the overview in the figure's analysis coordinates,
+  // and heat is laid OVER its crop (a transparent heat PNG next to a crop, as
+  // before, showed nothing a reader could line up).
+  const pctOf = (v, t) => (100 * Number(v) / Math.max(1, Number(t))).toFixed(3) + '%';
+  const box = (x, y, w, h, W, H, cls, label) => '<span class="' + cls + '" style="left:' + pctOf(x, W) + ';top:' + pctOf(y, H) +
+    ';width:' + pctOf(w, W) + ';height:' + pctOf(h, H) + '">' + (label ? '<i>' + esc(label) + '</i>' : '') + '</span>';
   const all = figs.map((fig) =>
-    '<article><h3>' + esc(fig.label) + '</h3><p>' + esc(fig.width) + ' × ' + esc(fig.height) +
-    ' pixels. Western blot screening: ' + esc(fig.blot_screen || (fig.panels?.length ? "experimental" : "not assessed")) +
-    '. ' + esc(fig.blot_note || "") + '</p><img class="overview" src="' + safeImg(fig.image) + '">' +
+    '<article><h3>' + esc(fig.label) + '</h3><p>' + esc(fig.native_width || fig.width) + ' × ' + esc(fig.native_height || fig.height) +
+    ' pixels' + (fig.analysis_scale && fig.analysis_scale < 1 && (fig.panels || []).length ? ' (blot panels scored at ' + esc(Math.round(fig.analysis_scale * 100)) + '% size, the model\'s training resolution)' : '') +
+    '. Western blot screening: ' + esc(fig.blot_screen || (fig.panels?.length ? "experimental" : "not assessed")) +
+    '. ' + esc(fig.blot_note || "") +
+    (fig.repeated_placements?.length ? ' The same embedded object is also drawn at: ' + esc(fig.repeated_placements.join("; ")) + '.' : '') +
+    '</p><div class="ov"><img class="overview" src="' + safeImg(fig.image) + '">' +
+    (fig.panels || []).map((p) => box(p.x, p.y, p.w, p.h, fig.width, fig.height, p.flagged ? 'pb flag' : 'pb', 'panel ' + (p.id + 1))).join("") +
+    (fig.id === 0 && report.known_edit ? box(report.known_edit.x, report.known_edit.y, report.known_edit.w, report.known_edit.h,
+      report.known_edit.image_width, report.known_edit.image_height, 'ke', 'known edit') : '') +
+    '</div>' +
     (fig.panels || []).map((p) => '<p>Panel ' + esc(p.id + 1) + ': experimental anomaly index ' +
       esc(fmt(p.score)) + ', flagged for review: ' + (p.flagged ? "yes" : "no") +
-      '</p><div class="pair"><img src="' + safeImg(p.crop) + '"><img src="' + safeImg(p.heat) + '"></div>').join("") +
+      '</p><div class="crop"><img src="' + safeImg(p.crop) + '">' + (p.flagged ? '<img class="heat" src="' + safeImg(p.heat) + '">' : '') +
+      '</div>').join("") +
     '</article>').join("");
   const rows = Object.entries(checks).map(([key, status]) =>
     '<tr><td>' + esc(key.replaceAll("_", " ")) + '</td><td>' + esc(status) + '</td></tr>').join("");
@@ -60,10 +74,18 @@ export function reportToHtml(report) {
     '.overview{max-height:540px}.pair{display:flex;gap:18px;align-items:flex-start}.pair>*{width:48%;min-width:0}.pair figure{margin:0}' +
     '.pair figcaption{font-size:13px}th,td{text-align:left;padding:8px 14px;border-bottom:1px solid #ccd7dd}table{border-collapse:collapse}' +
     '.warning{padding:12px 16px;background:#f6f0eb}@media print{body{margin:8mm auto}article{break-inside:avoid}}' +
+    '.ov,.crop{position:relative;display:inline-block;line-height:0;max-width:100%}.ov img,.crop img{display:block;max-width:100%}' +
+    '.crop .heat{position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:multiply}' +
+    '.pb,.ke{position:absolute;border:1.5px solid rgba(110,135,150,.9);box-sizing:border-box}.pb.flag{border:2px solid #C8285F}' +
+    '.ke{border:2px dashed #1F2B33}.pb i,.ke i{position:absolute;left:0;top:-15px;font:11px/1.2 system-ui;background:#fff;padding:0 3px;font-style:normal}' +
     '</style></head><body><h1>Scientific image integrity review</h1><p><strong>File:</strong> ' + esc(report.filename) +
     ' · <strong>Figures:</strong> ' + esc(figs.length) + ' · <strong>Potential whole-image reuse pairs:</strong> ' + esc(matches.length) +
     '</p><p class="warning"><strong>Human review required.</strong> Findings may reflect legitimate image reuse. ' +
     'No result proves fabrication; no findings do not establish authenticity.</p>' +
+    (report.credit ? '<p><strong>Source and attribution:</strong> ' + esc(report.credit) + '</p>' : '') +
+    (report.known_edit ? '<p><strong>Demo ground truth:</strong> ' + esc(report.known_edit.note) + ' It is outlined with a dashed box below.</p>' : '') +
+    (report.summary?.credential_declares_ai ? '<p class="warning"><strong>Provenance:</strong> ' + esc(provenance.summary) + '</p>' : '') +
+    ((report.skipped_images || []).length ? '<p><strong>Not analyzed:</strong> ' + esc(report.skipped_images.map((x) => x.label + ' (' + x.reason.replaceAll("_", " ") + ')').join("; ")) + '</p>' : '') +
     '<h2>Checks performed</h2><table><thead><tr><th>Check</th><th>Status</th></tr></thead><tbody>' + rows +
     '</tbody></table><h2>Provenance</h2><p>' + esc(provenance.summary || "Not assessed") + '</p>' +
     '<h2>Potential whole-image reuse</h2>' + (pairs || '<p>No whole-image reuse was identified among the extracted figures.</p>') +

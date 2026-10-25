@@ -14,7 +14,7 @@ In the past year, Gemini's image tools made it trivial to fabricate or edit a we
 | A single AI band on its own | "not enough details" | stripped |
 | An AI band pasted into a published blot | see [results](results/synthid_manual.json) | stripped |
 
-The watermark is robust when the AI image is present as a whole panel. Scientific image fraud happens one band at a time.
+The watermark is robust when the AI image is present as a whole panel. Much scientific image manipulation happens at the scale of a single band or panel, where it had too little to check.
 
 ## What we built
 
@@ -22,7 +22,15 @@ The watermark is robust when the AI image is present as a whole panel. Scientifi
 2. **A band splice detector**, trained and tested on that benchmark: a small CNN and a gradient boosted baseline on hand built forensic features, both judging each band against the rest of its own blot.
 3. **A scientific image review app** accepting figure images or paper PDFs. It inventories raster figures, checks for exact and near whole-image reuse within the file, shows possible matches side by side, and exports an HTML evidence report. For confidently identified blots only, it also offers the experimental band CNN and copied-band checks; standalone images can have their C2PA credential read.
 
-## Conservative screening and heat-map update (October 24, 2026)
+## Independent audit update (October 24, 2026, evening)
+
+See [AUDIT_REPORT.md](AUDIT_REPORT.md) for the full audit. The changes that affect results:
+
+- **Resolution mismatch fixed.** CNN v3 learned from web figures about 750 px wide; publisher PDFs embed figures at 1,000 to 2,000+ px. Scoring at full resolution inflated flags on unedited blots (on held-out test papers, enlarging clean panels 2.5x raised clean false flags from 7% to 18% at the research threshold). Blot panels from large figures are now scored on a copy resized to training scale. On the published Oncotarget paper PDF we use for testing (DOI 10.18632/oncotarget.23647) this changes the research threshold count from 18 of 36 screened panels to 0 of 36, and the conservative count from 2 to 0. That paper is unlabeled, so this shows the scores were tracking resolution, not that the paper is clean.
+- **The conservative line (0.90) is close to blind on our benchmark:** on held-out test papers it caught about 3% of pasted AI bands. Choose the research threshold when you want the detector to find anything.
+- **Bugs fixed:** PDFs with grayscale embedded images no longer crash; a journal logo on every page is no longer reported as image reuse; oversized and unreadable images are listed instead of silently dropped; C2PA text found by byte search is no longer reported as "signed by Google"; heat is drawn only on flagged panels; the demo example now shows where we actually edited it.
+
+## Conservative screening and heat-map update (October 24, 2026, afternoon; superseded where the audit update above differs)
 
 **Default review mode now favors fewer alerts:** CNN v3 uses a conservative
 review index threshold of **0.90**, rather than its synthetic-benchmark
@@ -119,7 +127,7 @@ See `tests/test_integrity_mvp.py` for synthetic control cases and
 
 ## Results
 
-Numbers are from `results/*.json`, on 20 held out test papers the models never saw. The flag line is set on training data (5% of clean training panels flagged).
+Numbers are written by `python -m scripts.results_table` from `results/*.json`, on held out test papers the models never saw. The research flag line is set so 5% of clean panels from separate calibration papers are flagged. All edits are simulated.
 
 <!-- RESULTS_TABLE -->
 
@@ -200,7 +208,7 @@ examples/     demo inputs (CC BY figure with an AI band WE added; the published 
 
 - A flag means look closer. It is never proof of misconduct.
 - The forgeries are simulated; a careful forger can get past this detector.
-- Figures are at web resolution, where bands can be only about 13 × 6 pixels. Full resolution originals carry more evidence.
+- The blot model was trained on web resolution figures (about 750 px wide), where bands can be only about 13 × 6 pixels. Larger figures are scored on a copy resized to that scale, so edits made at full resolution may be harder to detect; a model trained on full resolution figures is future work.
 - The SynthID results are a small, hand-run case study. A disclosure draft exists; external submission is not confirmed.
 - Experimental copied-band detection has low detection rates even at native resolution and degrades further after resizing or JPEG.
 - Automatic blot recognition is conservative; users can request blot-specific screening for images they identify as blots or skip it. Neither setting validates authenticity.

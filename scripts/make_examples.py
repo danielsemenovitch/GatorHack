@@ -18,7 +18,11 @@ CITE_ALK2 = ("Figure from PMC10376983 (Biomolecules, CC BY 4.0). We pasted one A
 
 EXAMPLES = [
     {"id": "alk2_ai_band", "file": "alk2_ai_band.jpg", "title": "Published blot with one AI band added",
-     "hero": True, "credit": CITE_ALK2, "synthid_row": "S1"},
+     "hero": True, "credit": CITE_ALK2, "synthid_row": "S1",
+     # Ground truth from examples/alk2_ai_band_mask.png, in pixels of the 739x318 image.
+     "known_edit": {"x": 262, "y": 143, "w": 49, "h": 24, "image_width": 739, "image_height": 318,
+                    "source": "alk2_ai_band_mask.png",
+                    "note": "Region we edited for this demo (ground truth from our own mask)."}},
     {"id": "alk2_original", "file": "alk2_original.jpg", "title": "The same figure, untouched",
      "credit": "Figure from PMC10376983 (Biomolecules, CC BY 4.0), unaltered.", "synthid_row": "S0"},
     {"id": "gemini_blot", "file": "gemini_whole_blot.jpeg", "title": "A whole blot made by Gemini",
@@ -37,7 +41,7 @@ def main():
         rep["credit"] = ex["credit"]
         name = f"{ex['id']}.report.json"
         (EX / name).write_text(json.dumps(rep))
-        entry = {k: ex[k] for k in ("id", "title", "credit") if k in ex}
+        entry = {k: ex[k] for k in ("id", "title", "credit", "known_edit") if k in ex}
         entry.update({"report": name, "file": ex["file"], "hero": ex.get("hero", False),
                       "synthid": synthid.get(ex.get("synthid_row"), "n/a")})
         if ex.get("hero"):

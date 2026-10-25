@@ -7,6 +7,7 @@ from __future__ import annotations
 import base64
 import io
 import time
+from types import SimpleNamespace
 from typing import Any
 
 import cv2
@@ -49,30 +50,118 @@ def _heat_overlay(heat: np.ndarray, threshold: float) -> Image.Image:
     return Image.fromarray(rgba, "RGBA")
 
 
+MAX_PIXELS = 12_000_000
+
+# CNN v3 was trained on Europe PMC web figures: median width 751 px
+# (10th to 90th percentile 682 to 791 px). Publisher PDFs often embed the same
+# figures at 1,000 to 2,000+ px, which the model never saw. On held-out CC BY
+# test panels, enlarging clean panels 2.5x tripled clean false flags at the
+# benchmark threshold (audit, Oct 24). Blot screening therefore runs on a copy
+# of each figure resized to the training width; display uses the original.
+ANALYSIS_WIDTH = 750
+ANALYSIS_TRIGGER = 1.25  # only resize figures wider than 1.25x the training width
+
+
+def _pixmap_rgb(pix) -> Image.Image:
+    """Convert any PyMuPDF pixmap (gray, CMYK, indexed, alpha) to RGB."""
+    import pymupdf as fitz
+    if pix.alpha:
+        pix = fitz.Pixmap(pix, 0)  # drop alpha
+    if pix.colorspace is None or pix.colorspace.n != 3:
+        pix = fitz.Pixmap(fitz.csRGB, pix)
+    return Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
+
+
 def _figures_from_upload(data: bytes, filename: str, max_figures: int = 48):
+    """Return (figures, skipped, repeats).
+
+    figures: [(label, RGB image)] in page order.
+    skipped: images that were NOT analyzed, with a reason (never silent).
+    repeats: label -> later placements of a page decoration, i.e. one embedded
+             PDF object drawn at the same spot on 3+ pages (journal logo,
+             header). Those are reported once instead of producing a
+             pairwise "reuse" finding on every page. Any other repeated
+             placement of the same object stays a separate figure, so
+             genuine reuse of one image in two figures is still flagged.
+    """
+    skipped: list[dict] = []
+    repeats: dict[str, list[str]] = {}
     if filename.lower().endswith(".pdf") or data[:4] == b"%PDF":
         import pymupdf as fitz
         doc = fitz.open(stream=data, filetype="pdf")
-        out = []
+        placements = []  # (label, xref, w, h, page_no, rect)
         for pno, page in enumerate(doc):
             for k, img in enumerate(page.get_images(full=True)):
-                if len(out) >= max_figures:
-                    break
-                pix = fitz.Pixmap(doc, img[0])
-                if pix.width < 150 or pix.height < 80 or pix.width * pix.height > 12000000:
-                    continue
-                if pix.n - pix.alpha > 3 or pix.alpha:
-                    pix = fitz.Pixmap(fitz.csRGB, pix)
-                im = Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
-                out.append((f"page {pno + 1}, image {k + 1}", im))
+                xref = img[0]
+                try:
+                    rects = page.get_image_rects(xref)
+                    rect = tuple(round(v) for v in rects[0]) if rects else None
+                except Exception:
+                    rect = None
+                placements.append((f"page {pno + 1}, image {k + 1}", xref, int(img[2]), int(img[3]), pno, rect))
+        by_xref: dict[int, list] = {}
+        for pl in placements:
+            by_xref.setdefault(pl[1], []).append(pl)
+        decoration = {x for x, pls in by_xref.items()
+                      if len({pl[4] for pl in pls}) >= 3 and len({pl[5] for pl in pls}) == 1 and pls[0][5] is not None}
+        out, decoded, first = [], {}, {}
+        for label, xref, w, h, pno, rect in placements:
+            if xref in decoration and xref in first:
+                repeats.setdefault(first[xref], []).append(label)
+                continue
+            first.setdefault(xref, label)
+            if w < 150 or h < 80:
+                skipped.append({"label": label, "reason": "too_small", "width": w, "height": h})
+                continue
+            if w * h > MAX_PIXELS:  # checked BEFORE decoding (decompression bombs)
+                skipped.append({"label": label, "reason": "too_large", "width": w, "height": h})
+                continue
             if len(out) >= max_figures:
-                break
+                skipped.append({"label": label, "reason": "figure_limit", "width": w, "height": h})
+                continue
+            if xref not in decoded:
+                try:
+                    decoded[xref] = (_pixmap_rgb(fitz.Pixmap(doc, xref)), "")
+                except Exception as e:  # one odd image must not sink the whole PDF
+                    decoded[xref] = (None, str(e)[:120])
+            im, err = decoded[xref]
+            if im is None:
+                skipped.append({"label": label, "reason": "unreadable", "detail": err})
+                continue
+            out.append((label, im))
         doc.close()
-        return out
-    im = load_rgb(data)
-    if im.width * im.height > 12000000:
+        return out, skipped, repeats
+    try:
+        im = Image.open(io.BytesIO(data))
+    except Exception:
+        raise ValueError("This file is not a readable PNG, JPEG or PDF.") from None
+    if im.width * im.height > MAX_PIXELS:  # header only; nothing decoded yet
         raise ValueError("Image exceeds the 12 megapixel analysis limit.")
-    return [("uploaded image", im)]
+    try:
+        im = load_rgb(im)
+    except Exception:
+        raise ValueError("This image could not be decoded (it may be truncated or corrupt).") from None
+    return [("uploaded image", im)], skipped, repeats
+
+
+def _analysis_scale(fig: Image.Image) -> float:
+    """Factor that brings a figure to the CNN's training width (1.0 if already close)."""
+    if fig.width <= ANALYSIS_WIDTH * ANALYSIS_TRIGGER:
+        return 1.0
+    return ANALYSIS_WIDTH / fig.width
+
+
+def _score_at_training_scale(det, crop: Image.Image, scale: float):
+    """Run the CNN on `crop` resized by `scale`; return results in crop pixels."""
+    if scale >= 1.0:
+        return det.analyze(crop)
+    small = crop.resize((max(1, round(crop.width * scale)), max(1, round(crop.height * scale))), Image.LANCZOS)
+    res = det.analyze(small)
+    heat = cv2.resize(np.asarray(res.heat, np.float32), (crop.width, crop.height), interpolation=cv2.INTER_LINEAR)
+    sx, sy = crop.width / small.width, crop.height / small.height
+    bands = [{**b, "x": int(round(b["x"] * sx)), "y": int(round(b["y"] * sy)),
+              "w": max(1, int(round(b["w"] * sx))), "h": max(1, int(round(b["h"] * sy)))} for b in res.bands]
+    return SimpleNamespace(score=res.score, heat=heat, bands=bands, top_features=res.top_features)
 
 
 def _horizontal_blot_structure(crop: Image.Image, min_ratio: float = 1.55) -> bool:
@@ -140,7 +229,7 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
     provenance = ({"present": False, "status": "not_assessed",
                    "summary": "C2PA signatures for embedded PDF images were not checked."}
                   if is_pdf else read_c2pa(data, mime))
-    figures = _figures_from_upload(data, filename)
+    figures, skipped_images, repeats = _figures_from_upload(data, filename)
     reuse = find_image_reuse([im for _, im in figures])
     report_figs, all_panels_gray, panel_refs = [], [], []
     n_panels = 0
@@ -148,11 +237,20 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
     det = None
     effective_threshold = None
     for fi, (label, fig) in enumerate(figures):
+        # Panels are FOUND on the original figure (panel routing was tuned
+        # there and keeps adjacent strips apart). Each panel crop is then
+        # SCORED by the CNN on a copy resized to the training resolution;
+        # heat and band boxes are mapped back to original panel pixels, so
+        # every coordinate in the report is in original figure pixels.
+        analysis_scale = _analysis_scale(fig)
         fig_entry = {
             "id": fi, "label": label, "width": fig.width, "height": fig.height,
+            "native_width": fig.width, "native_height": fig.height,
+            "analysis_scale": round(analysis_scale, 4),
             "image": _data_url(fig if max(fig.size) <= 1600 else fig.resize(
                 (int(fig.width * 1600 / max(fig.size)), int(fig.height * 1600 / max(fig.size)))), "JPEG"),
             "scale": min(1.0, 1600 / max(fig.size)), "panels": [],
+            "repeated_placements": repeats.get(label, []),
             "blot_screen": "not_assessed",
             "blot_note": "No confidently identified Western blot panels. Other image types are not scored by the Western blot CNN.",
         }
@@ -174,7 +272,7 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
                 effective_threshold = (0.90 if (cnn_version == "v3" and
                                        screening_policy == "conservative")
                                        else float(det.threshold))
-            res = det.analyze(crop)
+            res = _score_at_training_scale(det, crop, analysis_scale)
             all_panels_gray.append(to_gray(crop))
             panel_refs.append((fi, p.id))
             fig_entry["panels"].append({
@@ -216,8 +314,10 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
             loc["crop"] = _data_url(Image.fromarray(gray[y0:y1, x0:x1].astype(np.uint8)))
             loc["is_detected_band"] = bool(isinstance(loc.get("id"), int) and loc["id"] >= 0)
     flagged = [p for f in report_figs for p in f["panels"] if p["flagged"]]
+    ai_declared = bool(provenance.get("present") and provenance.get("ai_generated"))
     # Never call absence of findings "authentic" or "clean".
-    verdict = "suspicious" if flagged or band_duplicates or reuse else ("no_blots" if n_panels == 0 else "no_findings")
+    verdict = ("suspicious" if flagged or band_duplicates or reuse or ai_declared
+               else ("no_blots" if n_panels == 0 else "no_findings"))
     per_figure = [
         {"figure": f["id"], "label": f["label"],
          "analyzed_panels": len(f["panels"]),
@@ -251,9 +351,15 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
             "score_is_probability": False,
             "model_version": cnn_version if n_panels else None,
             "content_credentials": provenance.get("present", False),
+            "credential_declares_ai": ai_declared,
+            "skipped_images": len(skipped_images),
+            "repeated_object_placements": sum(len(v) for v in repeats.values()),
+            "resized_for_analysis": sum(1 for f in report_figs if f["analysis_scale"] < 1 and f["panels"]),
+            "analysis_width": ANALYSIS_WIDTH,
         },
         "provenance": provenance, "figures": report_figs,
         "image_reuse": reuse, "duplicates": band_duplicates,
+        "skipped_images": skipped_images[:100],
         "checks": {
             "whole_image_reuse": "completed" if len(figures) >= 2 else "not_applicable_single_image",
             "local_region_reuse": "not_implemented",
@@ -266,6 +372,8 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
             "heat_localization": "patch_level_32px_not_pixel_boundaries",
             "band_duplicate_policy": "conservative_noise_0.90_shape_0.90",
             "c2pa": "not_assessed" if is_pdf else "checked_on_uploaded_file",
+            "blot_resolution": f"panels from figures wider than {int(ANALYSIS_WIDTH * ANALYSIS_TRIGGER)} px are scored on a copy resized to a {ANALYSIS_WIDTH} px wide figure (training resolution)",
+            "skipped_images": "none" if not skipped_images else f"{len(skipped_images)} not analyzed (see skipped_images)",
         },
         "synthid": {
             "status": "manual",
@@ -284,6 +392,8 @@ def analyze(data: bytes, filename: str = "upload", max_panels: int = 64,
             "Multiple flags in one figure may share a benign imaging or processing cause.",
             "A copied-band candidate's matched location is not necessarily a separately detected band.",
             "No finding is not evidence that an image is authentic.",
+            f"The blot CNN was trained on ~{ANALYSIS_WIDTH} px wide web figures; larger figures are screened on a resized copy, so edits made at full resolution may be harder to detect.",
+            "The same embedded PDF object drawn on several pages (for example a journal logo) is reported once, not as image reuse.",
         ],
         "seconds": round(time.time() - t0, 2),
     }

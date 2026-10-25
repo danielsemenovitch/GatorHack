@@ -338,7 +338,17 @@
     }
    ]
   },
-  "preview_verdict": "not flagged"
+  "preview_verdict": "not flagged",
+  "known_edit": {
+   "x": 262,
+   "y": 143,
+   "w": 49,
+   "h": 24,
+   "image_width": 739,
+   "image_height": 318,
+   "source": "alk2_ai_band_mask.png",
+   "note": "Region we edited for this demo (ground truth from our own mask)."
+  }
  },
  {
   "id": "alk2_original",
