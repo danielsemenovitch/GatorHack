@@ -34,7 +34,7 @@ Reproduce: `python -m scripts.eval_region_match --blocks`, `python -m scripts.ev
 
 The CNN in `models/splice_cnn_v3.npz` uses JAX and sliding 32-pixel patches, with intensity and noise features relative to the rest of each blot. The team made synthetic edits: copied bands, cross-spliced bands, AI-donor splices, intensity changes and erasures. Panel scores are **review indices, not probabilities**. Standard flag line is 0.50 and Strict line is 0.60, calibrated separately.
 
-On 2,761 synthetic test images from 72 held-out papers, v3 measured AUROC 0.703, detected 35.4% of AI-splice panels and flagged 4.1% of clean panels (`results/cnn_v3_metrics.json`). The full application flagged an edited panel in 7 of 22 artificially edited whole figures (`results/figure_level_eval.json`). After a 50% resize, recall was about 5%. **Most edits go undetected**. V4/V4.1 research runs are isolated, and no model should be promoted solely based on training loss.
+On 2,761 synthetic test images from 72 held-out papers, v3 measured AUROC 0.703, detected 35.4% of AI-splice panels and flagged 4.1% of clean panels (`results/cnn_v3_metrics.json`). The full application flagged an edited panel in 7 of 22 artificially edited whole figures (`results/figure_level_eval.json`). After a 50% resize, recall was about 5%. **Most edits go undetected**. V4.1 eight-epoch research completed on the newer held-out dataset (synthetic AI-splice recall 23.8%, AUROC 0.640, clean flags 4.8%). It did not meet the 40% target or beat v3's AUROC and clean false flags on the same test. See `results/cnn_v4_1_8epoch_summary.json`. **Keep v3 deployed and the blot CNN a proof of concept.**
 
 The separate copied-band noise matcher has low recall and should be treated as supplementary.
 
