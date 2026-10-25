@@ -292,3 +292,54 @@ h1 { text-wrap: balance; }
   .nav { width: 100%; flex-wrap: nowrap; gap: 2px; margin-left: -12px; }
   .nav button { padding: 8px 12px; white-space: nowrap; }
 }
+
+/* Online discovery leads the review; existing checks retain their sidebar. */
+[hidden] { display: none !important; }
+.section-kicker { margin: 0 0 12px; font-size: .76rem; font-weight: 750; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.search-hero h1 { max-width: 15ch; }
+.search-intro { padding: 30px; border: 1px solid #b9ccd6; border-radius: 14px; background: #e8f0f4; }
+.search-intro h2 { font-size: 1.55rem; line-height: 1.2; letter-spacing: -.025em; margin: 20px 0; }
+.search-intro ol { list-style: none; counter-reset: discovery; padding: 0; margin: 0; }
+.search-intro li { counter-increment: discovery; position: relative; padding: 0 0 19px 39px; }
+.search-intro li::before { content: counter(discovery); position: absolute; left: 0; top: 1px; width: 25px; height: 25px; display: grid; place-items: center; background: var(--ink); color: #fff; border-radius: 50%; font-size: 12px; font-weight: 700; }
+.search-intro strong { display: block; font-size: .95rem; }
+.search-intro li span { display: block; margin-top: 3px; font-size: .85rem; color: var(--muted); }
+.search-intro > p { margin: 2px 0 0; font-size: .8rem; color: var(--muted); }
+.search-badge { display: inline-block; background: var(--ink); color: #fff; font-size: .76rem; line-height: 1.5; font-weight: 650; padding: 5px 11px; border-radius: 999px; white-space: nowrap; }
+.drop .upload-search-note { margin-top: 7px; max-width: 75ch; font-size: .8rem; }
+.review-flow { scroll-margin-top: 24px; }
+.online-search { border: 2px solid var(--ink); border-radius: 14px; background: #fff; padding: 30px; margin: 0 0 36px; box-shadow: 0 14px 34px -25px #1f2b3366; }
+.online-heading { display: flex; justify-content: space-between; gap: 22px; align-items: start; }
+.online-heading h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); letter-spacing: -.03em; line-height: 1.15; margin: 0; }
+.online-search .section-kicker { margin-bottom: 8px; }
+.search-description { max-width: 90ch; font-size: .92rem; line-height: 1.65; color: var(--muted); margin: 16px 0 20px; overflow-wrap: anywhere; }
+.search-status { display: flex; gap: 14px; align-items: flex-start; padding: 20px; background: #edf3f6; border: 1px solid #d0dfe7; border-radius: 9px; margin-bottom: 18px; }
+.search-status h3 { margin: 0; font-size: 1.1rem; line-height: 1.35; }
+.search-status p { margin: 7px 0 0; color: var(--muted); font-size: .88rem; line-height: 1.6; max-width: 90ch; }
+.search-status.search-error { background: #fff1f5; border-color: #edc0cf; }
+.search-spinner { display: block; flex: none; width: 19px; height: 19px; margin-top: 3px; border: 2px solid #bacdd9; border-top-color: var(--ink); border-radius: 50%; animation: search-spin .9s linear infinite; }
+@keyframes search-spin { to { transform: rotate(360deg); } }
+.search-limit { color: var(--muted); font-size: .8rem; margin: 17px 0 0; }
+.online-matches .pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: end; margin: 15px 0 10px; }
+.online-matches figure { margin: 0; min-width: 0; }
+.online-matches img { width: 100%; max-height: 400px; object-fit: contain; display: block; border: 1px solid var(--line); border-radius: 5px; background: var(--light); }
+.online-matches figcaption { margin-top: 7px; font-size: .85rem; color: var(--muted); }
+.online-matches .sub { color: var(--muted); font-size: .9rem; overflow-wrap: anywhere; }
+.online-search .more { max-width: none; margin-bottom: 18px; }
+.online-search .log li { overflow-wrap: anywhere; margin-top: 6px; }
+.local-loading { padding: 18px 0 30px; }
+.local-verdict { font-weight: 650; color: var(--muted); margin: 0 0 8px; }
+.export-note { font-size: .82rem; }
+@media (max-width: 760px) {
+  .online-heading { flex-direction: column; gap: 14px; }
+  .online-search { padding: 22px; }
+  .search-intro { padding: 24px; }
+}
+@media (max-width: 540px) {
+  .online-search { padding: 18px; }
+  .search-status { padding: 15px; }
+  .online-matches .pair { grid-template-columns: 1fr; }
+  .search-badge { white-space: normal; }
+  .sensitivity small { margin-left: 0; flex-basis: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .search-spinner { animation: none; } }

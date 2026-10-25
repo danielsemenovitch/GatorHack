@@ -61,7 +61,9 @@ export function reportToHtml(report) {
       '<li>' + esc(p.pmcid) + ' — ' + esc(p.title) +
       ' (' + esc(p.figures ?? 0) + ' figures read)' +
       (p.error ? ' — ' + esc(p.error) : '') + '</li>').join('') + '</ul>' +
-    (agentPairs || '<p>No matching regions found by this search.</p>') :
+    (agentPairs || (agent.status === 'done' && agent.figures_compared > 0
+      ? '<p>No matching regions found among the figures compared by this search.</p>'
+      : '<p>No completed online figure-comparison result is available. This is not a negative finding.</p>')) :
     '<p>Online Europe PMC search was not requested in this session. The local reference-library check is separate and does not constitute a search of all publications.</p>';
   const pairs = matches.map((m, i) => {
     const a = figs[m.a.figure], b = figs[m.b.figure];
@@ -145,7 +147,7 @@ export function reportToHtml(report) {
         ' figures from ' + esc(report.summary.library.papers) + ' papers. ' : 'Reference-library coverage unavailable. ') +
       'A match does not establish priority or misconduct.</p>' +
       (libraryPairs || '<p>No matching region identified in the built-in reference library.</p>') +
-    '<h2>On-demand Europe PMC search</h2>' + agentLog +
+    '<h2>Europe PMC online search</h2>' + agentLog +
     '<h2>Potential whole-image reuse</h2>' + (pairs || '<p>No whole-image reuse was identified among the extracted figures.</p>') +
     '<h2>Experimental copied-band candidates</h2>' +
       (duplicatedBands || '<p>No copied-band candidate met the detector threshold, or the method was not run.</p>') +
