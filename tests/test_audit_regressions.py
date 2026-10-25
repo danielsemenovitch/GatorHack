@@ -1,4 +1,4 @@
-"""Regression tests for bugs found in the Oct 24 independent audit (AUDIT_REPORT.md).
+"""Regression tests for bugs found in the Oct 24 independent audit (docs/AUDIT_REPORT.md).
 
 Synthetic inputs only; no published figure or author is implicated.
 """

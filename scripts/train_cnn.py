@@ -161,11 +161,8 @@ def main():
         if 0 < sum(yy) < len(yy):
             size_auc[name] = {"n": len(rr), "auroc": round(float(roc_auc_score(yy, [v for _, v in rr])), 3)}
 
-    if os.environ.get("SKIP_HELDOUT"):
-        prev = json.loads((ROOT / "results" / "cnn_metrics_v1.json").read_text())
-        held = {"ai_splice": {**prev["held_out_method"]["ai_splice"], "note": "from the first model version"}}
-    else:
-        held = None
+    # SKIP_HELDOUT=1 skips the slow held-out-method retrain (the v1 record it once reused was removed).
+    held = {} if os.environ.get("SKIP_HELDOUT") else None
     # Held out method: retrain without AI splices, test AI splice vs clean.
     tr_h = [r for r in train_rows if r["method"] != "ai_splice"] if held is None else []
     if held is None:

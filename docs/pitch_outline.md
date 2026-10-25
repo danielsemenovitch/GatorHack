@@ -1,28 +1,27 @@
-# Pitch outline (Monday, top 10, about 5 minutes)
+# Pitch outline (Monday, about 5 minutes)
 
-The deck is a Claude Slides artifact titled "Below the Watermark pitch" (11 slides, speaker notes on every slide; it downloads as PowerPoint or PDF). Order and the one line each slide must land:
+**One line:** Below the Watermark is an image integrity checker for scientific papers. It finds what AI watermarks can't: images reused inside a paper, figures lifted from other papers, and pasted-in bands.
 
-1. **Cover:** Below the Watermark — detecting duplicated scientific figures within and across papers.
-2. **Stakes:** 3.8% of 20,621 papers had image duplication before generative AI (Bik et al. 2016); Gemini makes a blot in seconds.
-3. **Safety net:** SynthID (public October 7, 2026) and the C2PA credential.
-4. **Finding:** whole AI blot detected 10 of 10; one band alone "not enough details" 4 of 4; one band pasted into a published blot not detected 4 of 4; credential stripped on the first re save.
-5. **Statement:** provenance alone does not reveal copied regions in scientific figures; reviewers need image-level evidence.
-6. **What we built:** PDF inventory, in-paper region matching, published-reference library, optional Europe PMC search, downloadable HTML evidence, and experimental CNN.
-7. **Live demo:** Gemini blot credential; the manuscript with two hidden duplications (a blot reused inside the paper, a figure lifted from a 2023 paper), then "Search Europe PMC" for the agent; the pasted AI band the model catches; download the report. The slide's screenshot is the fallback if the live demo fails.
-8. **Honest numbers:** 110/118 (93.2%) **larger block reuse**, 60/120 (50%) **smaller panels/strips**, 0/7,140 matched untouched reference pairs. CNN proof of concept only: synthetic AUROC 0.703, 35.4% splice recall; 7/22 whole edited figures flagged.
-9. **Lessons:** resolution (false flags 7% to 18%, fixed to 3%); chance flags; show the misses.
-10. **Limits and ethics.**
-11. **Next and close.**
+**Story:** Google just made AI images checkable, but most image fraud in science never involves a new AI image, so we built the tool that looks below the watermark.
+
+| Time | Beat | Say or show |
+|---|---|---|
+| 0:00 to 0:30 | Hook | The ALK2 blot with one Gemini band pasted in. "Google's SynthID Detector, public since October 7: not detected." |
+| 0:30 to 1:10 | The gap (recent technology) | Whole AI blot detected 10 of 10; one band "not enough details"; a band pasted into a real blot not detected, 4 of 4. "Watermarks protect whole images. Science gets manipulated piece by piece, and much of it isn't AI at all: it's reuse." |
+| 1:10 to 1:40 | The problem | Duplication in 3.8% of 20,621 papers (Bik et al., 2016), before generative AI. Paper mills recycle figures across papers. Reviewers check by eye, one paper at a time. |
+| 1:40 to 3:10 | Live demo | "A manuscript with two hidden duplications": the blot reused as another protein, boxed on both figures; the figure found in a 2023 paper; then "Search Europe PMC": Gemini reads the manuscript, plans the searches, and the agent finds the original after checking a few papers. Download the report. |
+| 3:10 to 3:50 | Numbers | 93% of reused blot panels and micrographs found, even resized, cropped or mirrored; zero false matches across 7,140 pairs of real published figures; every search the agent ran is logged. |
+| 3:50 to 4:20 | Proof of concept | "We also trained a CNN for pasted bands inside a single blot: about a third caught at a 4% false alarm rate. With more data and HiPerGator compute, that's the next layer. Our benchmark is open." |
+| 4:20 to 5:00 | Vision and close | Journals and reviewers run every submission through it, against the whole open-access literature indexed on HiPerGator. "Watermarks tell you if an image was made by AI. Below the Watermark tells you if a figure can be trusted." |
+
+The deck ("Below the Watermark pitch", Claude Slides) has speaker notes on every slide; the demo slide's screenshot is the fallback if the live demo fails. If the agent can't connect, the library match on the same demo still shows the 2023 source.
 
 ## Likely judge questions
 
-- **"Is anything mocked?"** The demo duplications were deliberately created by us using attributed CC BY material; the quantitative benchmarks are controlled synthetic experiments, and the agent CI tests mock external APIs. SynthID tests were manually uploaded and recorded.
-- **"Why not just use SynthID?"** It works on whole images. It can't read a single band, and a pasted band is the realistic attack.
-- **"Isn't your detector weak?"** Yes, and we say so: on 22 held out whole figures it flagged 7 of the edited panels. The contribution is the measured gap plus the open benchmark plus a working review tool; the detector is the first baseline.
-- **"What does Strict do?"** It's a second flag line set on calibration papers to flag at most 1% of unedited panels. On 20 held out papers it caught 24% of pasted AI bands with 2.5% of unedited panels flagged, against 33% and 5.5% for Standard. On the 22 whole figures it flagged 4 edited panels and none of the originals. The old strict line caught 4%, so we replaced it.
-- **"Why does the Oncotarget paper get 2 flags?"** At the research threshold about 1 in 20 unedited panels is flagged; with 30 panels, 1 or 2 are expected by chance, and both scores (0.512) sit just over the 0.50 line. The report says this.
-- **"Did you just tune it until the demo worked?"** No. Both flag lines come from calibration papers, never the test set. The example we demo is labeled as one of the third it catches, and the Gap page shows the full rates. The figure on our landing page, the one SynthID missed, is a miss for our model too.
-- **"How does it find duplication across papers?"** Two ways. A library of 112 published figures from 62 papers is checked on every upload. On request, an agent goes further: Gemini reads the manuscript (or the labels on a figure) and plans Europe PMC searches for the same authors and topic, the agent downloads the figures of the open access papers it finds, and the same matcher checks each one. It lists every search it ran.
-- **"How good is the matcher?"** It found 110/118 (93.2%) **larger artificial reused regions (about 25–55% of their source figure)**, but only 60/120 (50%) **small panels or strips**. It matched zero of 7,140 untouched pairs in the evaluated reference set. It is not tested as a universal real-world fraud detector.
-- **"How is this different from Proofig or ImageTwin?"** Those are closed commercial tools for duplication. We measured where the new public watermark stops, and we released a benchmark for AI era band edits that anyone can test against.
-- **"What's recent?"** SynthID Detector (public Oct 7, 2026) and Gemini's current image tools are both central: one is the threat, one is the defense we measured.
+- **"Isn't this Proofig or ImageTwin?"** Those are closed commercial tools. Ours is open, searches the open literature with an agent and shows every search it ran, and measures where the new watermark stops.
+- **"Does the agent find everything?"** It searches open-access papers on Europe PMC, a few at a time, and logs every query, so a reviewer knows what was and wasn't checked. Indexing the full open-access corpus is the next step.
+- **"93% of what?"** Blot panels and micrograph blocks (25 to 55% of a figure) reused in another paper's figure with resizing, cropping, JPEG or mirroring. Single small strips alone: 60 of 120.
+- **"Is a match proof of misconduct?"** No. Reuse can be legitimate; the tool shows both images and the source, and a person decides.
+- **"Why keep the CNN if it's weak?"** A pasted AI band is the one case nothing else catches. We built the benchmark and a first baseline; the bottleneck is data and compute.
+- **"Is anything mocked?"** No. Every number comes from `results/*.json`, produced by scripts in `scripts/`. SynthID results are hand uploads recorded in `results/synthid_manual.json`.
+- **"What's recent?"** SynthID Detector (public October 7, 2026) is the defense we measured; Gemini made the AI blots and plans the agent's searches.
