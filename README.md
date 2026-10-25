@@ -36,7 +36,7 @@ V4/V4.1 experiments are on separate branches and **not automatically installed i
 
 Click **“A manuscript with two hidden duplications.”** We intentionally created a controlled PDF from CC BY figures, with a blot strip reused under another label and a separate figure region sourced from a 2023 paper. The first and last pages disclose our modifications; original scientific authors are not implicated. The app compares the regions directly and against the reference library.
 
-Click **“Search Europe PMC”** for an optional on-demand search. Verify that the service is accessible on your machine before using it live in a presentation. The agent has fixture-backed tests, but live Gemini/Europe PMC end-to-end behavior depends on connectivity and quota.
+Click **“Search Europe PMC”** for an optional on-demand search. Public keyword fallback passed a live GitHub Actions test, but test the connectivity and Gemini configuration on your actual presentation laptop before relying on it. The public **keyword-planned Europe PMC pathway passed a real live smoke test**: 16 papers, 55 figures compared, and the intentional source PMC10701888 found in 43.9 seconds ([saved result](results/europepmc_live_smoke.json)). Gemini-assisted planning has not been tested live here and still depends on the user's API key and quota.
 
 The **“A pasted AI band the model catches”** example is intentionally a *selected* positive, not representative of the CNN's average performance. The landing-page ALK2 edit illustrates a SynthID miss, **not** a CNN success.
 
