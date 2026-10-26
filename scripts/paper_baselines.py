@@ -180,7 +180,7 @@ def cmd_b0(a):
             loss.backward()
             opt.step()
             sched.step()
-            tot += float(loss) * len(ix)
+            tot += loss.item() * len(ix)
             n += len(ix)
         print(f"B0 epoch {ep + 1}/{epochs} loss {tot / n:.4f} elapsed {round(time.time() - t0)} s", flush=True)
     model.eval()

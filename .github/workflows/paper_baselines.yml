@@ -1,0 +1,123 @@
+name: Paper baselines on the frozen V5 benchmark
+# Rebuilds the V5 benchmark (same seed and paper split), then scores, on the same
+# paper-disjoint test papers: frozen V3, V5, an ImageNet-pretrained EfficientNet-B0
+# patch baseline (Manjunath et al. 2024 recipe) and TruFor (CVPR 2023, nonprofit research
+# license). Per-image scores are kept for paired statistics. Results go to a new branch.
+on:
+  push:
+    branches: [paper/baselines]
+    paths: ['.github/workflows/paper_baselines.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: paper-baselines
+  cancel-in-progress: false
+env:
+  PYTHONUNBUFFERED: '1'
+  JAX_PLATFORM_NAME: cpu
+  XLA_PYTHON_CLIENT_PREALLOCATE: 'false'
+  PYTHONHASHSEED: '0'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: python -m pip install -r requirements.txt "jax[cpu]" optax
+      - name: Collect CC BY Western blot sources (same procedure as V5)
+        run: python -m scripts.collect_v4_ccby --new-papers 240 --workers 7 | tee results/paper_collect_log.txt
+      - name: Build the V5 benchmark (seed 2026, MD5(PMCID) paper split)
+        run: python -m scripts.build_v5_benchmark --max-panels 1750 | tee results/paper_benchmark_log.txt
+      - run: tar -czf benchmark.tgz data/benchmark results/paper_collect_log.txt results/paper_benchmark_log.txt
+      - uses: actions/upload-artifact@v4
+        with: {name: benchmark, path: benchmark.tgz, retention-days: 30}
+
+  cnn:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: python -m pip install -r requirements.txt "jax[cpu]" optax
+      - uses: actions/download-artifact@v4
+        with: {name: benchmark}
+      - run: tar -xzf benchmark.tgz
+      - name: Score frozen V3 and V5 (per-image scores saved)
+        run: python -m scripts.paper_baselines cnn
+      - uses: actions/upload-artifact@v4
+        with: {name: scores-cnn, path: results/paper/, retention-days: 30}
+
+  b0:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: |
+          python -m pip install -r requirements.txt "jax[cpu]" optax
+          python -m pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+      - uses: actions/download-artifact@v4
+        with: {name: benchmark}
+      - run: tar -xzf benchmark.tgz
+      - name: Train and score the EfficientNet-B0 patch baseline
+        run: python -m scripts.paper_baselines b0 --epochs 4
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: scores-b0, path: results/paper/, retention-days: 30}
+
+  trufor:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: python -m pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with: {name: benchmark}
+      - run: tar -xzf benchmark.tgz
+      - name: Build the official TruFor inference image (weights from grip.unina.it)
+        run: |
+          git clone --depth 1 https://github.com/grip-unina/TruFor /tmp/trufor
+          docker build -t trufor -f /tmp/trufor/test_docker/Dockerfile /tmp/trufor/test_docker
+      - name: Run TruFor on calibration-clean and test images (CPU)
+        run: |
+          python -m scripts.paper_baselines trufor-prep --dir /tmp/tf_in
+          mkdir -p /tmp/tf_out
+          docker run --rm -v /tmp/tf_in:/data -v /tmp/tf_out:/data_out trufor -gpu -1 -in data/ -out data_out/ 2>&1 | tail -n 20
+          python -m scripts.paper_baselines trufor-read --dir /tmp/tf_out
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: scores-trufor, path: results/paper/, retention-days: 30}
+
+  compare:
+    needs: [cnn, b0, trufor]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: python -m pip install numpy scikit-learn
+      - uses: actions/download-artifact@v4
+        with: {pattern: 'scores-*', path: results/paper, merge-multiple: true}
+      - name: Paired, paper-clustered comparison
+        run: python -m scripts.paper_baselines compare | tee results/paper/compare_log.txt
+      - name: Save results to a new branch (the checkpoint .pt stays in the artifact only)
+        run: |
+          rm -f results/paper/*.pt
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git checkout -b "paper/baselines-results-${GITHUB_RUN_ID}"
+          git add results/paper
+          git commit -m "Paper baselines: per-image scores and paired comparison (run ${GITHUB_RUN_ID})"
+          git push origin "paper/baselines-results-${GITHUB_RUN_ID}"
