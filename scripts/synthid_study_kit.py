@@ -53,7 +53,7 @@ def hosts_from(rng):
     panels = json.loads((ROOT / "data/real_panels/panels.json").read_text())
     by_fig = {}
     for p in panels:
-        if p["figure"] in meta and p.get("blot_score", 0) >= .8 and p["w"] >= 80 and p["h"] >= 24:
+        if p["figure"] in meta and p.get("blot_score", 0) >= .85 and p["w"] >= 80 and p["h"] >= 24:
             fw, fh = Image.open(ROOT / "data/real_figures" / p["figure"]).size
             # Skip failed panel detections where the "panel" is most of the figure.
             if p["w"] * p["h"] <= .35 * fw * fh:
@@ -63,32 +63,65 @@ def hosts_from(rng):
     return [(f, meta[f], by_fig[f]) for f in figs]
 
 
-def gray_bands(gray, min_w=10, min_h=4):
-    """Band-shaped blobs only: wider than tall, not smeared across the panel."""
+def band_rows(gray: np.ndarray, donor: bool):
+    """Rows of separate bands as [{"c": y centre, "h": band height, "xs": [x centres], "peak"}].
+
+    Hosts (published panels) use the repository's lane-profile band finder. Donors (clean AI
+    images) use connected components of the thresholded darkness map. Rows need >= 3 bands that
+    are evenly spaced and not merged into one blob."""
+    from btw.bands import darkness_map
+    d = darkness_map(gray)
     H, W = gray.shape
-    return [b for b in find_bands(gray) if b.w >= min_w and b.h >= min_h and b.darkness > 15
-            and 1.3 <= b.w / max(1, b.h) <= 14 and b.w <= .45 * W and b.h <= .35 * H
-            and b.y > 2 and b.y + b.h < H - 2 and b.x > 2 and b.x + b.w < W - 2]
-
-
-def plausible_row(bands):
-    w = np.array([b.w for b in bands], float)
-    return len(bands) == 1 or (w.std() / w.mean() < .45)
-
-
-def rows_of(bands):
+    if donor:
+        d8 = np.clip(d, 0, 255).astype(np.uint8)
+        thr, _ = cv2.threshold(d8, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        m = (d8 > max(thr, 20)).astype(np.uint8)
+        m = cv2.morphologyEx(m, cv2.MORPH_OPEN, np.ones((2, 2), np.uint8))
+        n, _, st, cen = cv2.connectedComponentsWithStats(m)
+        blobs = [(cen[i][0], cen[i][1], st[i][2], st[i][3]) for i in range(1, n)
+                 if st[i][4] >= 20 and 1.3 <= st[i][2] / max(1, st[i][3]) <= 15 and st[i][2] <= .3 * W]
+    else:
+        blobs = [(b.x + b.w / 2, b.y + b.h / 2, b.w, b.h) for b in find_bands(gray) if b.w >= 6 and b.h >= 3]
     rows = []
-    for b in sorted(bands, key=lambda b: b.y + b.h / 2):
-        c = b.y + b.h / 2
+    for bx, by, bw, bh in sorted(blobs, key=lambda t: t[1]):
         for r in rows:
-            if abs(r["c"] - c) < max(4, b.h):
-                r["bands"].append(b)
+            if abs(r["c"] - by) < max(3, .6 * bh):
+                r["b"].append((bx, by, bw, bh))
                 break
         else:
-            rows.append({"c": c, "bands": [b]})
+            rows.append({"c": by, "b": [(bx, by, bw, bh)]})
+    out = []
     for r in rows:
-        r["bands"].sort(key=lambda b: b.x)
-    return [r for r in rows if r["bands"]]
+        b = sorted(r["b"])
+        if len(b) < 3:
+            continue
+        xs = np.array([t[0] for t in b]); ws = np.array([t[2] for t in b]); hs = np.array([t[3] for t in b])
+        gaps = np.diff(xs)
+        if gaps.std() / gaps.mean() > .35 or ws.max() > 1.8 * np.median(ws) or np.any(gaps < .8 * np.median(ws)):
+            continue
+        c = float(np.median([t[1] for t in b])); h = float(np.median(hs))
+        if c - 1.6 * h < 0 or c + 1.6 * h > H:
+            continue
+        peak = float(np.median([d[int(t[1]), int(t[0])] for t in b]))
+        out.append({"c": c, "h": h, "xs": [float(x) for x in xs], "w": float(np.median(ws)),
+                    "pitch": float(np.median(gaps)), "peak": max(peak, 1.0)})
+    return out
+
+
+def warp_strip(dark, xs_src, xs_dst, x0_dst, width, y0_src, y1_src, height):
+    """Resample a donor darkness strip so donor band centres land on host lane centres."""
+    xs_src, xs_dst = np.asarray(xs_src, float), np.asarray(xs_dst, float)
+    dst = np.arange(width, dtype=np.float32) + x0_dst
+    mapx = np.interp(dst, xs_dst, xs_src, left=np.nan, right=np.nan)
+    # Extrapolate linearly outside the first/last centre with the local scale.
+    sl = (xs_src[1] - xs_src[0]) / (xs_dst[1] - xs_dst[0]) if len(xs_src) > 1 else 1.0
+    sr = (xs_src[-1] - xs_src[-2]) / (xs_dst[-1] - xs_dst[-2]) if len(xs_src) > 1 else 1.0
+    left, right = dst < xs_dst[0], dst > xs_dst[-1]
+    mapx[left] = xs_src[0] + (dst[left] - xs_dst[0]) * sl
+    mapx[right] = xs_src[-1] + (dst[right] - xs_dst[-1]) * sr
+    mapy = np.linspace(y0_src, y1_src, height, dtype=np.float32)
+    MX, MY = np.meshgrid(mapx.astype(np.float32), mapy)
+    return cv2.remap(dark.astype(np.float32), MX, MY, cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
 
 
 def compose(fig: Image.Image, panel: dict, donor: Image.Image, level: str, rng: random.Random):
@@ -109,69 +142,76 @@ def compose(fig: Image.Image, panel: dict, donor: Image.Image, level: str, rng: 
         patch = _match_background(patch, float(np.median(background(g))))
         out, mask = patch, np.ones((H, W), np.uint8)
     else:
-        hb, db = gray_bands(g, 8, 3), gray_bands(dg)
-        hrows, drows = rows_of(hb), [r for r in rows_of(db) if len(r["bands"]) >= 3]
+        from btw.bands import darkness_map
+        hrows, drows = band_rows(g, False), band_rows(dg, True)
         if not hrows or not drows:
             return None
-        # Replace k real bands with k AI bands: k = 1, 3, or every band in the row.
-        hrow = max(hrows, key=lambda r: len(r["bands"]))
-        hbands = hrow["bands"]
-        k = {"band1": 1, "bands3": 3, "row": len(hbands)}[level]
-        if len(hbands) < k:
+        hrows = [r for r in hrows if r["peak"] >= 30]  # real, visible bands only
+        if not hrows:
             return None
-        # Host rows need at least 3 separate, band-shaped lanes; merged blobs mean failed detection.
-        if len(hbands) < 3 or not plausible_row(hbands) or any(b.w > 6 * b.h for b in hbands):
+        hrow = hrows[rng.randrange(len(hrows))]
+        m = len(hrow["xs"])
+        k = m if level == "row" else {"band1": 1, "bands3": 3}[level]
+        cand = [r for r in drows if len(r["xs"]) >= k]
+        if not cand:
             return None
-        drows = [r for r in drows if len(r["bands"]) >= k and plausible_row(r["bands"])]
-        if not drows:
+        drow = cand[rng.randrange(len(cand))]
+        j = rng.randrange(0, m - k + 1)
+        dj = rng.randrange(0, len(drow["xs"]) - k + 1)
+        hx = hrow["xs"][j:j + k]
+        dx = drow["xs"][dj:dj + k]
+        hp = hrow["pitch"] if k > 1 or m > 1 else hrow["w"] * 1.4
+        dp = drow["pitch"]
+        # Map donor centres (plus half a lane either side) onto host centres.
+        src = [dx[0] - dp / 2] + dx + [dx[-1] + dp / 2]
+        dst = [hx[0] - hp / 2] + hx + [hx[-1] + hp / 2]
+        bx0, bx1 = int(round(dst[0])), int(round(dst[-1]))
+        hh, dh = hrow["h"], drow["h"]
+        by0, by1 = int(round(hrow["c"] - 1.6 * hh)), int(round(hrow["c"] + 1.6 * hh))
+        bx0, bx1, by0, by1 = max(0, bx0), min(W, bx1), max(0, by0), min(H, by1)
+        if bx1 - bx0 < 6 or by1 - by0 < 4:
             return None
-        drow = max(drows, key=lambda r: sum(b.darkness for b in r["bands"]))
-        hs = rng.randrange(0, len(hbands) - k + 1)
-        tgt = hbands[hs:hs + k]
-        ds = rng.randrange(0, len(drow["bands"]) - k + 1)
-        src = drow["bands"][ds:ds + k]
-        # Target box: the real bands plus a margin; the same relative margin on the donor.
-        tx0, tx1 = min(b.x for b in tgt), max(b.x + b.w for b in tgt)
-        ty0, ty1 = min(b.y for b in tgt), max(b.y + b.h for b in tgt)
-        mx, my = max(2, int(.15 * (tx1 - tx0) / k)), max(2, int(.8 * (ty1 - ty0)))
-        bx0, bx1, by0, by1 = max(0, tx0 - mx), min(W, tx1 + mx), max(0, ty0 - my), min(H, ty1 + my)
-        sx0, sx1 = min(b.x for b in src), max(b.x + b.w for b in src)
-        sy0, sy1 = min(b.y for b in src), max(b.y + b.h for b in src)
-        fx, fy = (sx1 - sx0) / max(1, tx1 - tx0), (sy1 - sy0) / max(1, ty1 - ty0)
-        dx0, dx1 = max(0, int(sx0 - (tx0 - bx0) * fx)), min(dg.shape[1], int(sx1 + (bx1 - tx1) * fx))
-        dy0, dy1 = max(0, int(sy0 - (ty0 - by0) * fy)), min(dg.shape[0], int(sy1 + (by1 - ty1) * fy))
-        if bx1 - bx0 < 6 or by1 - by0 < 4 or dx1 - dx0 < 4 or dy1 - dy0 < 3:
+        # The box must sit inside one membrane strip: no white separator or frame line in it.
+        boxg = g[by0:by1, bx0:bx1]
+        lbg = background(g)[by0:by1, bx0:bx1]
+        rmeans = boxg.mean(1)
+        if (rmeans.max() - np.median(rmeans) > 25 and rmeans.max() > np.median(lbg) + 15) or \
+                (boxg.min(1) > np.median(lbg) - 3).mean() > .5:
             return None
-        # Remove the real bands first (inpaint), so the AI bands replace rather than overlay them.
+        # No white gaps, frame edges or label text inside the box (they mean it straddles strips).
+        lvl = float(np.median(lbg))
+        if lvl < 235 and (boxg > max(lvl + 18, 238)).mean() > .02:
+            return None
+        # A row that is dark across nearly the whole box is a frame line or a merged smear.
+        if ((boxg < lvl - 40).mean(1) > .85).any():
+            return None
+        # Host bands split in two by detection: real lanes are separated by clear gaps.
+        hb_w = hrow["w"]
+        if hrow["pitch"] < 1.25 * hb_w:
+            return None
+        ddark = darkness_map(dg)
+        strip = warp_strip(ddark, src, dst, bx0, bx1 - bx0,
+                           drow["c"] - 1.6 * dh, drow["c"] + 1.6 * dh, by1 - by0)
+        # Build on the host's own membrane (bands removed by the background estimate), so the
+        # pasted lanes keep the local background level and texture instead of a flat box.
+        hd = darkness_map(g)
         g8 = np.clip(g, 0, 255).astype(np.uint8)
-        hole = np.zeros_like(g8)
-        hole[by0:by1, bx0:bx1] = 1
-        base = cv2.inpaint(g8, hole, 3, cv2.INPAINT_TELEA).astype(np.float32)
-        patch = _scale_patch(dg[dy0:dy1, dx0:dx1], bx1 - bx0, by1 - by0)
-        patch = _match_background(patch, float(np.median(background(g))))
-        res, _ = _paste(base, patch, (bx0 + bx1) // 2, (by0 + by1) // 2, "feather", rng)
-        if res is None:
-            return None
-        out = res
+        hole = ((hd > max(8.0, .2 * hrow["peak"])) & True).astype(np.uint8)
+        hole[:by0], hole[by1:], hole[:, :bx0], hole[:, bx1:] = 0, 0, 0, 0
+        hole = cv2.dilate(hole, np.ones((3, 3), np.uint8))
+        base = cv2.inpaint(g8, hole, 5, cv2.INPAINT_TELEA).astype(np.float32)[by0:by1, bx0:bx1]
+        patch = np.clip(base - strip * (hrow["peak"] * rng.uniform(.8, 1.2) / drow["peak"]), 0, 255)
+        region = g[by0:by1, bx0:bx1]
+        ph, pw = patch.shape
+        alpha = np.ones_like(patch)
+        ky, kx = max(1, ph // 5), max(1, int(hp // 5))
+        alpha[:ky] *= np.linspace(0, 1, ky)[:, None]
+        alpha[-ky:] *= np.linspace(1, 0, ky)[:, None]
+        alpha[:, :kx] *= np.linspace(0, 1, kx)[None, :]
+        alpha[:, -kx:] *= np.linspace(1, 0, kx)[None, :]
+        out = g.copy()
+        out[by0:by1, bx0:bx1] = region * (1 - alpha) + patch * alpha
         mask = (np.abs(out - g) > 2).astype(np.uint8)
-        # Reject implausible pastes: the AI box should be about as dark as the real one.
-        real = np.clip(np.median(background(g)) - g[by0:by1, bx0:bx1], 0, None).mean()
-        fake = np.clip(np.median(background(g)) - out[by0:by1, bx0:bx1], 0, None).mean()
-        if not (.5 <= (fake + 1) / (real + 1) <= 1.8):
-            return None
-        # The pasted box must look like membrane with bands, not a solid bar: its top and bottom
-        # rows should be near the panel background.
-        bgv = float(np.median(background(g)))
-        edge = np.concatenate([out[by0, bx0:bx1], out[by1 - 1, bx0:bx1]])
-        if np.median(np.abs(edge - bgv)) > 25:
-            return None
-        # Several AI lanes must still look like separate lanes, not one bar.
-        if k >= 2:
-            mid = (by0 + by1) // 2
-            q = max(1, (by1 - by0) // 6)
-            prof = np.clip(bgv - out[mid - q:mid + q + 1, bx0:bx1], 0, None).mean(0)
-            if prof.std() / max(prof.mean(), 1.0) < .25:
-                return None
     if mask.sum() < 12:
         return None
     if inverted:
@@ -205,7 +245,7 @@ def contact_sheet(out: Path, key: list[dict]):
         sheet = Image.new("RGB", (len(tiles) * (tw + 10), th), "white")
         for j, t in enumerate(tiles):
             sheet.paste(t, (j * (tw + 10), 0))
-        name = host.split()[0]
+        name = host.split()[-1].rsplit(".", 1)[0]
         sheet.save(qc / f"{name}.png")
 
 
@@ -265,17 +305,19 @@ def main():
             if fname in used_hosts:
                 continue
             fig = Image.open(ROOT / "data/real_figures" / fname).convert("RGB")
-            panel = max(panels, key=lambda p: p["w"] * p["h"])
-            comps = {}
-            for lv in LEVELS:
-                r = None
-                for _ in range(20):
-                    r = compose(fig, panel, donor, lv, random.Random(rng.random()))
-                    if r is not None:
+            for panel in sorted(panels, key=lambda p: -p["w"] * p["h"]):
+                comps = {}
+                for lv in LEVELS:
+                    r = None
+                    for _ in range(12):
+                        r = compose(fig, panel, donor, lv, random.Random(rng.random()))
+                        if r is not None:
+                            break
+                    if r is None:
                         break
-                if r is None:
+                    comps[lv] = r
+                if len(comps) == len(LEVELS):
                     break
-                comps[lv] = r
             if len(comps) == len(LEVELS):
                 made = (fname, meta, fig, comps, panel)
                 used_hosts.add(fname)
@@ -283,7 +325,7 @@ def main():
             print("no usable host left for", dpath.name)
             continue
         fname, meta, fig, comps, panel = made
-        cite = f"{meta.get('pmcid')} {meta.get('doi')} ({meta.get('license')})"
+        cite = f"{meta.get('pmcid')} {meta.get('doi')} ({meta.get('license')}) {fname}"
         add(fig, "png", {"condition": "host_unedited", "donor": "", "host": cite, "ai_fraction": 0.0, "format": "png"})
         for lv, (img, m) in comps.items():
             frac = float(m.mean())

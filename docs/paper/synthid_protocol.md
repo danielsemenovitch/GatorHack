@@ -8,8 +8,8 @@ Google's SynthID Detector (public since October 7, 2026) identifies images made 
 
 ## Stimuli
 
-- **AI donors:** Western blot images generated with the Gemini API by `scripts/generate_ai_blots.py`, saved exactly as returned, with prompt, model, time and SHA-256 logged in `data/ai_donors_v6/gemini/manifest.json`. The first six donors in manifest order are used, with no selection by appearance or detector output.
-- **Hosts:** published figures from openly licensed (CC BY) papers in `data/real_figures`, cited in `key.csv`. Hosts are assigned in a fixed shuffled order (seed 7); a host is skipped only when the compositing code cannot place every condition.
+- **AI donors:** Western blot images generated with the Gemini API by `scripts/generate_ai_blots.py`, saved exactly as returned, with prompt, model, time and SHA-256 logged in `data/ai_donors_v6/gemini/manifest.json`. Donors are taken in manifest order. Selection never uses any detector output.
+- **Hosts:** published figures from openly licensed (CC BY) papers in `data/real_figures`, cited in `key.csv`. Hosts are tried in a fixed shuffled order (seed 7); a donor is paired with the first unused host on which the code can place every condition, and a donor with no such host is skipped.
 - **Conditions per donor** (`scripts/synthid_study_kit.py`):
 
 | Condition | What is AI | Approximate AI share of the uploaded image |
@@ -27,7 +27,7 @@ Every composite is saved as PNG and as JPEG 85. AI pixels are converted to grays
 
 ## Quality control (before any upload)
 
-`synthid_kit/qc/` holds one contact sheet per host. One person reviews them and drops a whole host (all of its files) if any composite is visibly implausible, for example pasted text or a smeared rectangle. Dropped hosts and the reason are written in `qc_decisions.csv` before the first upload. No file is dropped after uploading starts.
+*Amended October 26, 2026, before any upload:* the code builds a candidate pool from the first 20 donors. Each donor and host pair has one contact sheet in `qc/`. One reviewer rates every pair as pass or fail on visual plausibility alone (pasted text, a smeared or solid rectangle, bands misaligned with lanes or rows, a visible box edge), and records the rating and reason in `qc_decisions.csv`. The first six passing pairs in manifest order form the study set. No file is dropped after uploading starts.
 
 ## Procedure
 
