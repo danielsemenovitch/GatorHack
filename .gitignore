@@ -8,3 +8,7 @@ data/benchmark/
 
 # Hand-run SynthID study kit (unblinding key must stay private until verdicts are logged)
 synthid_kit/
+
+# Local caches and AI donor images (kept on the laptop until the release decision)
+.cache/
+data/ai_donors_v6/
