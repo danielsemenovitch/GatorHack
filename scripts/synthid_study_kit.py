@@ -43,7 +43,7 @@ LEVELS = ["panel", "row", "bands3", "band1"]
 def donors_from(path: Path):
     man = path / "manifest.json"
     if man.exists():
-        recs = [r for r in json.loads(man.read_text()) if r.get("file")]
+        recs = sorted([r for r in json.loads(man.read_text()) if r.get("file")], key=lambda r: r.get("prompt_index", 0))
         return [(ROOT / r["file"], r) for r in recs]
     return [(p, {"file": str(p)}) for p in sorted(path.glob("*")) if p.suffix.lower() in (".png", ".jpg", ".jpeg", ".webp")]
 
@@ -98,6 +98,9 @@ def compose(fig: Image.Image, panel: dict, donor: Image.Image, level: str, rng: 
     crop = F[y:y + h, x:x + w].mean(2)
     g, inverted = normalize_polarity(crop)
     dg, _ = normalize_polarity(to_gray(donor))
+    # Generated images are ~1400 px wide; the band finder is tuned for published panel scale.
+    if dg.shape[1] > 480:
+        dg = cv2.resize(dg.astype(np.float32), (420, max(8, int(dg.shape[0] * 420 / dg.shape[1]))), interpolation=cv2.INTER_AREA)
     H, W = g.shape
     out = g.copy()
     mask = np.zeros((H, W), np.uint8)
@@ -116,7 +119,8 @@ def compose(fig: Image.Image, panel: dict, donor: Image.Image, level: str, rng: 
         k = {"band1": 1, "bands3": 3, "row": len(hbands)}[level]
         if len(hbands) < k:
             return None
-        if not plausible_row(hbands):
+        # Host rows need at least 3 separate, band-shaped lanes; merged blobs mean failed detection.
+        if len(hbands) < 3 or not plausible_row(hbands) or any(b.w > 6 * b.h for b in hbands):
             return None
         drows = [r for r in drows if len(r["bands"]) >= k and plausible_row(r["bands"])]
         if not drows:
@@ -153,8 +157,21 @@ def compose(fig: Image.Image, panel: dict, donor: Image.Image, level: str, rng: 
         # Reject implausible pastes: the AI box should be about as dark as the real one.
         real = np.clip(np.median(background(g)) - g[by0:by1, bx0:bx1], 0, None).mean()
         fake = np.clip(np.median(background(g)) - out[by0:by1, bx0:bx1], 0, None).mean()
-        if not (.4 <= (fake + 1) / (real + 1) <= 2.5):
+        if not (.5 <= (fake + 1) / (real + 1) <= 1.8):
             return None
+        # The pasted box must look like membrane with bands, not a solid bar: its top and bottom
+        # rows should be near the panel background.
+        bgv = float(np.median(background(g)))
+        edge = np.concatenate([out[by0, bx0:bx1], out[by1 - 1, bx0:bx1]])
+        if np.median(np.abs(edge - bgv)) > 25:
+            return None
+        # Several AI lanes must still look like separate lanes, not one bar.
+        if k >= 2:
+            mid = (by0 + by1) // 2
+            q = max(1, (by1 - by0) // 6)
+            prof = np.clip(bgv - out[mid - q:mid + q + 1, bx0:bx1], 0, None).mean(0)
+            if prof.std() / max(prof.mean(), 1.0) < .25:
+                return None
     if mask.sum() < 12:
         return None
     if inverted:
@@ -234,7 +251,7 @@ def main():
             save(img_or_bytes, p, "png" if ext == "png" else "jpg")
         key.append({"code": c, "file": p.name, "sha256": hashlib.sha256(p.read_bytes()).hexdigest(), **row})
 
-    hi = 0
+    used_hosts = set()
     for dpath, drec in donors:
         donor = Image.open(dpath)
         donor.load()
@@ -242,15 +259,17 @@ def main():
             {"condition": "whole_original", "donor": str(drec.get("file")), "host": "", "ai_fraction": 1.0, "format": "as generated"})
         add(donor, "jpg", {"condition": "whole_jpeg85", "donor": str(drec.get("file")), "host": "", "ai_fraction": 1.0, "format": "jpeg85"})
         made = None
-        while hi < len(hosts) and made is None:
-            fname, meta, panels = hosts[hi]
-            hi += 1
+        for fname, meta, panels in hosts:
+            if made is not None:
+                break
+            if fname in used_hosts:
+                continue
             fig = Image.open(ROOT / "data/real_figures" / fname).convert("RGB")
             panel = max(panels, key=lambda p: p["w"] * p["h"])
             comps = {}
             for lv in LEVELS:
                 r = None
-                for _ in range(8):
+                for _ in range(20):
                     r = compose(fig, panel, donor, lv, random.Random(rng.random()))
                     if r is not None:
                         break
@@ -259,6 +278,7 @@ def main():
                 comps[lv] = r
             if len(comps) == len(LEVELS):
                 made = (fname, meta, fig, comps, panel)
+                used_hosts.add(fname)
         if made is None:
             print("no usable host left for", dpath.name)
             continue
