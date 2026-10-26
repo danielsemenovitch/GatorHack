@@ -1,0 +1,9 @@
+AI DONORS: 4 training band panels, 1 held-out band panels
+UNSEEN_SOURCE generated 120 test pairs
+UNSEEN_SOURCE v3 native: {'n': 120, 'detected': 37, 'clean_flags': 16, 'sensitivity': 0.308, 'false_flag_rate': 0.133, 'sensitivity_95ci': [0.233, 0.396], 'false_flag_rate_95ci': [0.084, 0.206], 'auroc': 0.691}
+UNSEEN_SOURCE v3 resize_50: {'n': 120, 'detected': 1, 'clean_flags': 1, 'sensitivity': 0.008, 'false_flag_rate': 0.008, 'sensitivity_95ci': [0.001, 0.046], 'false_flag_rate_95ci': [0.001, 0.046], 'auroc': 0.543}
+UNSEEN_SOURCE v3 jpeg_q75: {'n': 120, 'detected': 37, 'clean_flags': 16, 'sensitivity': 0.308, 'false_flag_rate': 0.133, 'sensitivity_95ci': [0.233, 0.396], 'false_flag_rate_95ci': [0.084, 0.206], 'auroc': 0.693}
+UNSEEN_SOURCE v5 native: {'n': 120, 'detected': 63, 'clean_flags': 7, 'sensitivity': 0.525, 'false_flag_rate': 0.058, 'sensitivity_95ci': [0.436, 0.612], 'false_flag_rate_95ci': [0.029, 0.116], 'auroc': 0.868}
+UNSEEN_SOURCE v5 resize_50: {'n': 120, 'detected': 8, 'clean_flags': 1, 'sensitivity': 0.067, 'false_flag_rate': 0.008, 'sensitivity_95ci': [0.034, 0.126], 'false_flag_rate_95ci': [0.001, 0.046], 'auroc': 0.729}
+UNSEEN_SOURCE v5 jpeg_q75: {'n': 120, 'detected': 48, 'clean_flags': 6, 'sensitivity': 0.4, 'false_flag_rate': 0.05, 'sensitivity_95ci': [0.317, 0.489], 'false_flag_rate_95ci': [0.023, 0.105], 'auroc': 0.833}
+SAVED /home/runner/work/GatorHack/GatorHack/results/v5_unseen_ai_source_eval.json
