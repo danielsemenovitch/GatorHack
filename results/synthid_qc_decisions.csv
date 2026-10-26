@@ -1,0 +1,21 @@
+pool,figure,decision,reason,reviewer,date
+synthid_kit_pool2,PMC10033651_Fig1.jpg,pass,"replaced bands sit on lanes, local background kept, no box edges",Claude (delegated by Daniel),2026-10-26
+synthid_kit_pool2,PMC10243194_fig1.jpg,pass,"strong but plausible bands, no box edges",Claude (delegated by Daniel),2026-10-26
+synthid_kit_pool2,PMC10315040_Fig5.jpg,fail,row placed on the border between two strips; band on the frame line,Claude (delegated by Daniel),2026-10-26
+synthid_kit_pool2,PMC10520887_fig2.jpg,fail,blurred bands spill past the panel frame,Claude (delegated by Daniel),2026-10-26
+synthid_kit_pool2,PMC10605742_cells1202432f002.jpg,fail,row shows about 9 bands over 6 lanes,Claude (delegated by Daniel),2026-10-26
+synthid_kit_pool2,PMC10665393_Fig2.jpg,fail,thin dark lines drawn across actin bands,Claude (delegated by Daniel),2026-10-26
+synthid_kit_pool2,PMC10674287_viruses1502141f002.jpg,fail,oversized merged blob in the three-band and one-band edits,Claude (delegated by Daniel),2026-10-26
+synthid_kit_pool2,PMC10701888_f2.jpg,fail,three adjacent bands merge into one dark block,Claude (delegated by Daniel),2026-10-26
+synthid_kit_pool2,PMC10706654_ijms2416814f003.jpg,fail,row placed over the lane label text,Claude (delegated by Daniel),2026-10-26
+synthid_kit_pool2,PMC10756753_kiad520F5.jpg,fail,row extends past the panel frame,Claude (delegated by Daniel),2026-10-26
+synthid_kit_pool2,PMC7261179_F4.jpg,fail,three adjacent bands merge into one dark block,Claude (delegated by Daniel),2026-10-26
+synthid_kit_pool3,PMC10264620_f3.jpg,fail,row shows two bands per lane,Claude (delegated by Daniel),2026-10-26
+synthid_kit_pool3,PMC10301924_pathogens1200801f001.jpg,pass,"edits aligned to lanes, no visible seams",Claude (delegated by Daniel),2026-10-26
+synthid_kit_pool3,PMC10301924_pathogens1200801f002.jpg,pass,"strong but plausible bands, faint seams only at full zoom",Claude (delegated by Daniel),2026-10-26
+synthid_kit_pool3,PMC10315040_Fig5.jpg,fail,row shows notched double bands; visible seam,Claude (delegated by Daniel),2026-10-26
+synthid_kit_pool3,PMC10352194_Fig4.jpg,pass,"edits aligned to lanes, no visible seams",Claude (delegated by Daniel),2026-10-26
+synthid_kit_pool3,PMC10520887_fig2.jpg,fail,grey smears spill past the panel frame,Claude (delegated by Daniel),2026-10-26
+synthid_kit_pool3,PMC10701888_f2.jpg,pass,"overexposed but plausible bands, no box edges",Claude (delegated by Daniel),2026-10-26
+synthid_kit_pool3,PMC10706654_ijms2416814f003.jpg,fail,row placed over the lane label text,Claude (delegated by Daniel),2026-10-26
+synthid_kit_pool3,PMC10756753_kiad520F5.jpg,fail,three-band edit smears past the frame,Claude (delegated by Daniel),2026-10-26
