@@ -12,3 +12,4 @@ synthid_kit/
 # Local caches and AI donor images (kept on the laptop until the release decision)
 .cache/
 data/ai_donors_v6/
+synthid_kit_pool*/
