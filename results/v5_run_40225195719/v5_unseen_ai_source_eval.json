@@ -1,0 +1,122 @@
+{
+  "synthetic_test_selection": "120 heldout-paper pairs sampled deterministically from entire independent generation; training never saw this source.",
+  "source_family": "OpenAI image generation",
+  "holdout": "entire source generation g3",
+  "n_independent_holdout_image_generations": 1,
+  "n_test_pairs": 120,
+  "is_generator_family_disjoint": false,
+  "n_calibration_clean_images": 220,
+  "limitations": [
+    "Two other OpenAI generations appear in training; source-generation holdout only.",
+    "Synthetic team-made edits and source papers must not be used to accuse original authors.",
+    "Only one heldout generation: wide sampling uncertainty, not independent proof of generalization."
+  ],
+  "v3": {
+    "rule": "top",
+    "calib_cutoff": 4.2631,
+    "results": {
+      "native": {
+        "n": 120,
+        "detected": 37,
+        "clean_flags": 16,
+        "sensitivity": 0.308,
+        "false_flag_rate": 0.133,
+        "sensitivity_95ci": [
+          0.233,
+          0.396
+        ],
+        "false_flag_rate_95ci": [
+          0.084,
+          0.206
+        ],
+        "auroc": 0.691
+      },
+      "resize_50": {
+        "n": 120,
+        "detected": 1,
+        "clean_flags": 1,
+        "sensitivity": 0.008,
+        "false_flag_rate": 0.008,
+        "sensitivity_95ci": [
+          0.001,
+          0.046
+        ],
+        "false_flag_rate_95ci": [
+          0.001,
+          0.046
+        ],
+        "auroc": 0.543
+      },
+      "jpeg_q75": {
+        "n": 120,
+        "detected": 37,
+        "clean_flags": 16,
+        "sensitivity": 0.308,
+        "false_flag_rate": 0.133,
+        "sensitivity_95ci": [
+          0.233,
+          0.396
+        ],
+        "false_flag_rate_95ci": [
+          0.084,
+          0.206
+        ],
+        "auroc": 0.693
+      }
+    }
+  },
+  "v5": {
+    "rule": "top",
+    "calib_cutoff": 4.4508,
+    "results": {
+      "native": {
+        "n": 120,
+        "detected": 63,
+        "clean_flags": 7,
+        "sensitivity": 0.525,
+        "false_flag_rate": 0.058,
+        "sensitivity_95ci": [
+          0.436,
+          0.612
+        ],
+        "false_flag_rate_95ci": [
+          0.029,
+          0.116
+        ],
+        "auroc": 0.868
+      },
+      "resize_50": {
+        "n": 120,
+        "detected": 8,
+        "clean_flags": 1,
+        "sensitivity": 0.067,
+        "false_flag_rate": 0.008,
+        "sensitivity_95ci": [
+          0.034,
+          0.126
+        ],
+        "false_flag_rate_95ci": [
+          0.001,
+          0.046
+        ],
+        "auroc": 0.729
+      },
+      "jpeg_q75": {
+        "n": 120,
+        "detected": 48,
+        "clean_flags": 6,
+        "sensitivity": 0.4,
+        "false_flag_rate": 0.05,
+        "sensitivity_95ci": [
+          0.317,
+          0.489
+        ],
+        "false_flag_rate_95ci": [
+          0.023,
+          0.105
+        ],
+        "auroc": 0.833
+      }
+    }
+  }
+}

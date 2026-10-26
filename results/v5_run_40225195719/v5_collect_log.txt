@@ -1,0 +1,25 @@
+SEARCH 2023 page 1: 200 hits, 136 candidate new papers
+SEARCH 2023 page 2: 200 hits, 136 candidate new papers
+SEARCH 2023 page 3: 200 hits, 136 candidate new papers
+SEARCH 2024 page 1: 200 hits, 336 candidate new papers
+SEARCH 2024 page 2: 200 hits, 336 candidate new papers
+SEARCH 2024 page 3: 200 hits, 336 candidate new papers
+SEARCH 2025 page 1: 200 hits, 536 candidate new papers
+SEARCH 2025 page 2: 200 hits, 536 candidate new papers
+SEARCH 2025 page 3: 200 hits, 536 candidate new papers
+SEARCH 2026 page 1: 200 hits, 736 candidate new papers
+Starting 961 CC-BY paper inspections: 241 prior, 720 genuinely additional candidates
+COLLECT 70/961: prior=69, new=0, new images=128, elapsed=116s
+COLLECT 140/961: prior=135, new=0, new images=247, elapsed=192s
+COLLECT 210/961: prior=202, new=0, new images=368, elapsed=286s
+COLLECT 280/961: prior=232, new=28, new images=470, elapsed=401s
+COLLECT 350/961: prior=232, new=83, new images=565, elapsed=439s
+COLLECT 420/961: prior=232, new=135, new images=657, elapsed=460s
+COLLECT 490/961: prior=232, new=178, new images=732, elapsed=481s
+COLLECT 560/961: prior=232, new=228, new images=819, elapsed=503s
+COLLECT 630/961: prior=232, new=270, new images=887, elapsed=520s
+COLLECT 700/961: prior=232, new=315, new images=967, elapsed=538s
+COLLECT 770/961: prior=232, new=371, new images=1060, elapsed=556s
+COLLECT 840/961: prior=232, new=413, new images=1133, elapsed=575s
+COLLECT 910/961: prior=232, new=459, new images=1213, elapsed=596s
+V4_SOURCES {"original_figures": 120, "added_figures": 1266, "total_figures": 1386, "prior_papers_rehydrated": 232, "genuinely_new_papers": 489, "total_papers": 787, "verification_policy": "exact CC-BY license from article JATS, with DOI and source URL", "rejected_papers": 240, "elapsed_seconds": 610}

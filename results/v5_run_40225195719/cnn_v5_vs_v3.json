@@ -1,0 +1,217 @@
+{
+  "benchmark": "fixed, paper-disjoint V5 realistic and stress panels, same candidates for frozen V3 and V5",
+  "source": "synthetic controlled forgeries, not real-world misconduct",
+  "calibration": "separate, paper-disjoint calibration; each classifier calibrated to 5% false flags on pooled clean controls",
+  "target": {
+    "realistic_ai_splice_recall": 0.5,
+    "realistic_clean_fpr_max": 0.05,
+    "outrank_v3_auroc": true,
+    "stress_must_not_be_omitted": true
+  },
+  "split_counts": {
+    "calibration_clean": 476,
+    "test": 3551,
+    "test_papers": 168
+  },
+  "v3": {
+    "overall": {
+      "n": 3551,
+      "n_papers": 168,
+      "threshold": 4.363879,
+      "auroc": 0.6622,
+      "clean_false_flag_rate": 0.0576,
+      "n_clean": 920,
+      "methods": {
+        "ai_splice": {
+          "n": 868,
+          "flag_fraction": 0.2396
+        },
+        "clean": {
+          "n": 920,
+          "flag_fraction": 0.0576
+        },
+        "copy_move": {
+          "n": 435,
+          "flag_fraction": 0.2828
+        },
+        "cross_splice": {
+          "n": 439,
+          "flag_fraction": 0.1002
+        },
+        "erase": {
+          "n": 445,
+          "flag_fraction": 0.0831
+        },
+        "intensify": {
+          "n": 444,
+          "flag_fraction": 0.5766
+        }
+      },
+      "ai_resize50": {
+        "n": 108,
+        "recall": 0.0463
+      }
+    },
+    "realistic": {
+      "n": 1767,
+      "n_papers": 168,
+      "threshold": 4.363879,
+      "auroc": 0.7725,
+      "clean_false_flag_rate": 0.0696,
+      "n_clean": 460,
+      "methods": {
+        "ai_splice": {
+          "n": 428,
+          "flag_fraction": 0.3925
+        },
+        "clean": {
+          "n": 460,
+          "flag_fraction": 0.0696
+        },
+        "copy_move": {
+          "n": 435,
+          "flag_fraction": 0.2828
+        },
+        "intensify": {
+          "n": 444,
+          "flag_fraction": 0.5766
+        }
+      }
+    },
+    "stress": {
+      "n": 1784,
+      "n_papers": 168,
+      "threshold": 4.363879,
+      "auroc": 0.5875,
+      "clean_false_flag_rate": 0.0457,
+      "n_clean": 460,
+      "methods": {
+        "ai_splice": {
+          "n": 440,
+          "flag_fraction": 0.0909
+        },
+        "clean": {
+          "n": 460,
+          "flag_fraction": 0.0457
+        },
+        "cross_splice": {
+          "n": 439,
+          "flag_fraction": 0.1002
+        },
+        "erase": {
+          "n": 445,
+          "flag_fraction": 0.0831
+        }
+      },
+      "ai_resize50": {
+        "n": 108,
+        "recall": 0.0463
+      }
+    }
+  },
+  "v5": {
+    "overall": {
+      "n": 3551,
+      "n_papers": 168,
+      "threshold": 4.051197,
+      "auroc": 0.7781,
+      "clean_false_flag_rate": 0.0359,
+      "n_clean": 920,
+      "methods": {
+        "ai_splice": {
+          "n": 868,
+          "flag_fraction": 0.3952
+        },
+        "clean": {
+          "n": 920,
+          "flag_fraction": 0.0359
+        },
+        "copy_move": {
+          "n": 435,
+          "flag_fraction": 0.4529
+        },
+        "cross_splice": {
+          "n": 439,
+          "flag_fraction": 0.2323
+        },
+        "erase": {
+          "n": 445,
+          "flag_fraction": 0.0719
+        },
+        "intensify": {
+          "n": 444,
+          "flag_fraction": 0.6914
+        }
+      },
+      "ai_resize50": {
+        "n": 108,
+        "recall": 0.1111
+      }
+    },
+    "realistic": {
+      "n": 1767,
+      "n_papers": 168,
+      "threshold": 4.051197,
+      "auroc": 0.8718,
+      "clean_false_flag_rate": 0.0457,
+      "n_clean": 460,
+      "methods": {
+        "ai_splice": {
+          "n": 428,
+          "flag_fraction": 0.6262
+        },
+        "clean": {
+          "n": 460,
+          "flag_fraction": 0.0457
+        },
+        "copy_move": {
+          "n": 435,
+          "flag_fraction": 0.4529
+        },
+        "intensify": {
+          "n": 444,
+          "flag_fraction": 0.6914
+        }
+      }
+    },
+    "stress": {
+      "n": 1784,
+      "n_papers": 168,
+      "threshold": 4.051197,
+      "auroc": 0.7012,
+      "clean_false_flag_rate": 0.0261,
+      "n_clean": 460,
+      "methods": {
+        "ai_splice": {
+          "n": 440,
+          "flag_fraction": 0.1705
+        },
+        "clean": {
+          "n": 460,
+          "flag_fraction": 0.0261
+        },
+        "cross_splice": {
+          "n": 439,
+          "flag_fraction": 0.2323
+        },
+        "erase": {
+          "n": 445,
+          "flag_fraction": 0.0719
+        }
+      },
+      "ai_resize50": {
+        "n": 108,
+        "recall": 0.1111
+      }
+    }
+  },
+  "primary_target_met": true,
+  "should_auto_deploy": false,
+  "limitations": [
+    "Realistic subgroup is prespecified readable larger edit crops, not random misconduct or universal real-world performance.",
+    "Other edits and 50% compression/downscale remain important; stress subgroup reports these separately.",
+    "Only four independent AI donors in training (two Gemini plus two OpenAI), and one held-out OpenAI source generation.",
+    "Matching thresholds are calibrated separately on clean calibration papers; model selection did not use test data.",
+    "No automatic promotion without external real-paper validation and model wiring."
+  ]
+}

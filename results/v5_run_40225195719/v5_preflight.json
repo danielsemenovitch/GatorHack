@@ -1,0 +1,27 @@
+{
+  "n": 13418,
+  "train_papers": 388,
+  "calibration_papers": 89,
+  "test_papers": 168,
+  "by_split_profile_method": {
+    "test|realistic|ai_splice": 428,
+    "test|realistic|clean": 460,
+    "test|realistic|copy_move": 435,
+    "test|realistic|intensify": 444,
+    "test|stress|ai_splice": 440,
+    "test|stress|clean": 460,
+    "test|stress|cross_splice": 439,
+    "test|stress|erase": 445,
+    "train|realistic|ai_splice": 1191,
+    "train|realistic|clean": 1290,
+    "train|realistic|copy_move": 1198,
+    "train|realistic|intensify": 1226,
+    "train|stress|ai_splice": 1222,
+    "train|stress|clean": 1290,
+    "train|stress|cross_splice": 1217,
+    "train|stress|erase": 1233
+  },
+  "cross_split_exact_duplicate_sources": 0,
+  "holdout_source": "openai_donor_g3_holdout.jpg (excluded from training)",
+  "test_label_policy": "realistic and stress profiles preassigned before model training"
+}

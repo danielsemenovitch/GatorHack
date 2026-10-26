@@ -1,0 +1,89 @@
+{
+ "run": 40225195719,
+ "threshold": 4.051196575164795,
+ "n_images": 3551,
+ "n_papers": 168,
+ "bootstrap": "2000 resamples of whole source papers, percentile 95% intervals",
+ "v5": {
+  "realistic": {
+   "auroc": 0.8909,
+   "ai_recall": 0.6262,
+   "clean_fpr": 0.0457,
+   "n_ai": 428,
+   "n_clean": 460,
+   "ci95": {
+    "auroc": [
+     0.8695,
+     0.9101
+    ],
+    "ai_recall": [
+     0.5792,
+     0.6722
+    ],
+    "clean_fpr": [
+     0.0267,
+     0.0679
+    ]
+   }
+  },
+  "stress": {
+   "auroc": 0.7204,
+   "ai_recall": 0.1705,
+   "clean_fpr": 0.0261,
+   "n_ai": 440,
+   "n_clean": 460,
+   "ci95": {
+    "auroc": [
+     0.695,
+     0.7457
+    ],
+    "ai_recall": [
+     0.1342,
+     0.2081
+    ],
+    "clean_fpr": [
+     0.0126,
+     0.0422
+    ]
+   }
+  },
+  "overall": {
+   "auroc": 0.7964,
+   "ai_recall": 0.3952,
+   "clean_fpr": 0.0359,
+   "n_ai": 868,
+   "n_clean": 920,
+   "ci95": {
+    "auroc": [
+     0.7789,
+     0.8156
+    ],
+    "ai_recall": [
+     0.3632,
+     0.4267
+    ],
+    "clean_fpr": [
+     0.0224,
+     0.0505
+    ]
+   }
+  }
+ },
+ "v3_point_estimates": {
+  "realistic": {
+   "auroc": 0.7725,
+   "ai_recall": 0.3925,
+   "clean_fpr": 0.0696
+  },
+  "stress": {
+   "auroc": 0.5875,
+   "ai_recall": 0.0909,
+   "clean_fpr": 0.0457
+  },
+  "overall": {
+   "auroc": 0.6622,
+   "ai_recall": 0.2396,
+   "clean_fpr": 0.0576
+  }
+ }
+}

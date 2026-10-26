@@ -1,0 +1,49 @@
+{
+  "selected_panels": 1750,
+  "selected_papers": 645,
+  "profile_counts": {
+    "realistic": 6672,
+    "stress": 6746
+  },
+  "method_by_profile": {
+    "realistic_clean": 1750,
+    "stress_clean": 1750,
+    "realistic_ai_splice": 1619,
+    "stress_ai_splice": 1662,
+    "realistic_copy_move": 1633,
+    "stress_cross_splice": 1656,
+    "realistic_intensify": 1670,
+    "stress_erase": 1678
+  },
+  "zero_edit_masks_skipped": 0,
+  "primary_test_definition": "Visible edits >=0.2% edited pixel fraction, >=12px wide and 4px high before publication; native/quality>=82 JPEG or 80-100% rescale. Controls use comparable transforms.",
+  "stress_definition": "50%-70% downscale with JPEG quality 60-78; no minimum edited fraction above base quality filter.",
+  "by_split": {
+    "test": 3551,
+    "train": 9867
+  },
+  "by_method": {
+    "clean": 3500,
+    "ai_splice": 3281,
+    "copy_move": 1633,
+    "cross_splice": 1656,
+    "intensify": 1670,
+    "erase": 1678
+  },
+  "examples": 13418,
+  "rejected_edits": 582,
+  "n_test_papers": 168,
+  "n_train_papers_before_calibration": 477,
+  "paper_split": "MD5(PMCID)%100 <30 test, >=30 train (same as v3)",
+  "ai_donor_training_original_sources": [
+    "gemini_clean_blot.jpeg",
+    "gemini_film_blot.jpeg",
+    "openai_donor_g1_train.jpg",
+    "openai_donor_g2_train.jpg"
+  ],
+  "ai_donor_heldout_original_sources": [
+    "openai_donor_g3_holdout.jpg"
+  ],
+  "ai_donor_training_panel_crops": 4,
+  "note": "Synthetic team-created edits with masks. Two original Gemini and two additional OpenAI-generated source blots are TRAINING donor images; independent OpenAI generation g3 is HELD OUT. This is not generator-family-disjoint validation."
+}

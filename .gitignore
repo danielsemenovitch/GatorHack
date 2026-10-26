@@ -5,3 +5,6 @@ web/node_modules/
 web/dist/
 results/feature_cache.joblib
 data/benchmark/
+
+# Hand-run SynthID study kit (unblinding key must stay private until verdicts are logged)
+synthid_kit/
