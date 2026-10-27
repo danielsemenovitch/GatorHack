@@ -27,7 +27,7 @@ Every composite is saved as PNG and as JPEG 85. AI pixels are converted to grays
 
 ## Quality control (before any upload)
 
-*Amended October 26, 2026, before any upload:* the code builds a candidate pool from the first 20 donors. Each donor and host pair has one contact sheet in `qc/`. One reviewer rates every pair as pass or fail on visual plausibility alone (pasted text, a smeared or solid rectangle, bands misaligned with lanes or rows, a visible box edge), and records the rating and reason in `qc_decisions.csv`. The first six passing pairs in manifest order form the study set. No file is dropped after uploading starts.
+*Amended October 26, 2026, before any upload:* candidate pairs come from two builds of the compositing code (`synthid_kit_pool2`, first 30 donors; `synthid_kit_pool3`, all 60 donors, after a fix for panels that straddle strips). An earlier 20-donor build was discarded unreviewed after its contact sheets showed systematic background halos; that code was then fixed. Each donor and host pair has one contact sheet in `qc/`. One reviewer rates every pair as pass or fail on visual plausibility alone (pasted text, a smeared or solid rectangle, bands misaligned with lanes or rows, a visible box edge), and records the rating and reason in `qc_decisions.csv`. The first six passing pairs in donor manifest order, with no donor or host figure used twice, form the study set (20 pairs reviewed, 6 passed). No file is dropped after uploading starts.
 
 ## Procedure
 
