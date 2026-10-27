@@ -1,0 +1,5830 @@
+{
+ "rows": [
+  {
+   "family": "gemini",
+   "file": "000.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 1375986
+  },
+  {
+   "family": "gemini",
+   "file": "000.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1309445
+  },
+  {
+   "family": "gemini",
+   "file": "000.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 227934
+  },
+  {
+   "family": "gemini",
+   "file": "000.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3096716
+  },
+  {
+   "family": "gemini",
+   "file": "000.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1065111
+  },
+  {
+   "family": "gemini",
+   "file": "000.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1370829
+  },
+  {
+   "family": "gemini",
+   "file": "000.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1314363
+  },
+  {
+   "family": "gemini",
+   "file": "000.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 861401
+  },
+  {
+   "family": "gemini",
+   "file": "001.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 654759
+  },
+  {
+   "family": "gemini",
+   "file": "001.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 289580
+  },
+  {
+   "family": "gemini",
+   "file": "001.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 289580
+  },
+  {
+   "family": "gemini",
+   "file": "001.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "001.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 74002
+  },
+  {
+   "family": "gemini",
+   "file": "001.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1302502
+  },
+  {
+   "family": "gemini",
+   "file": "001.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 654759
+  },
+  {
+   "family": "gemini",
+   "file": "001.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1013558
+  },
+  {
+   "family": "gemini",
+   "file": "002.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 480053
+  },
+  {
+   "family": "gemini",
+   "file": "002.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 162222
+  },
+  {
+   "family": "gemini",
+   "file": "002.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 162222
+  },
+  {
+   "family": "gemini",
+   "file": "002.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "002.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 40972
+  },
+  {
+   "family": "gemini",
+   "file": "002.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 866378
+  },
+  {
+   "family": "gemini",
+   "file": "002.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 480053
+  },
+  {
+   "family": "gemini",
+   "file": "002.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 720049
+  },
+  {
+   "family": "gemini",
+   "file": "003.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 559537
+  },
+  {
+   "family": "gemini",
+   "file": "003.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 224116
+  },
+  {
+   "family": "gemini",
+   "file": "003.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 224116
+  },
+  {
+   "family": "gemini",
+   "file": "003.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "003.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 59798
+  },
+  {
+   "family": "gemini",
+   "file": "003.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1082454
+  },
+  {
+   "family": "gemini",
+   "file": "003.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 559537
+  },
+  {
+   "family": "gemini",
+   "file": "003.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 850613
+  },
+  {
+   "family": "gemini",
+   "file": "004.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 520231
+  },
+  {
+   "family": "gemini",
+   "file": "004.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 190608
+  },
+  {
+   "family": "gemini",
+   "file": "004.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 190608
+  },
+  {
+   "family": "gemini",
+   "file": "004.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "004.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 43454
+  },
+  {
+   "family": "gemini",
+   "file": "004.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 972508
+  },
+  {
+   "family": "gemini",
+   "file": "004.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 520231
+  },
+  {
+   "family": "gemini",
+   "file": "004.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 747434
+  },
+  {
+   "family": "gemini",
+   "file": "005.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 592569
+  },
+  {
+   "family": "gemini",
+   "file": "005.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 217281
+  },
+  {
+   "family": "gemini",
+   "file": "005.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 217281
+  },
+  {
+   "family": "gemini",
+   "file": "005.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "005.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 47909
+  },
+  {
+   "family": "gemini",
+   "file": "005.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1172708
+  },
+  {
+   "family": "gemini",
+   "file": "005.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 592569
+  },
+  {
+   "family": "gemini",
+   "file": "005.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 954954
+  },
+  {
+   "family": "gemini",
+   "file": "006.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 1179457
+  },
+  {
+   "family": "gemini",
+   "file": "006.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1024208
+  },
+  {
+   "family": "gemini",
+   "file": "006.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 136203
+  },
+  {
+   "family": "gemini",
+   "file": "006.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3096716
+  },
+  {
+   "family": "gemini",
+   "file": "006.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 835053
+  },
+  {
+   "family": "gemini",
+   "file": "006.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1087365
+  },
+  {
+   "family": "gemini",
+   "file": "006.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1195364
+  },
+  {
+   "family": "gemini",
+   "file": "006.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 823924
+  },
+  {
+   "family": "gemini",
+   "file": "007.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 626354
+  },
+  {
+   "family": "gemini",
+   "file": "007.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 263696
+  },
+  {
+   "family": "gemini",
+   "file": "007.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 263696
+  },
+  {
+   "family": "gemini",
+   "file": "007.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "007.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 69957
+  },
+  {
+   "family": "gemini",
+   "file": "007.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1231288
+  },
+  {
+   "family": "gemini",
+   "file": "007.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 626354
+  },
+  {
+   "family": "gemini",
+   "file": "007.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 927212
+  },
+  {
+   "family": "gemini",
+   "file": "008.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 427206
+  },
+  {
+   "family": "gemini",
+   "file": "008.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 151885
+  },
+  {
+   "family": "gemini",
+   "file": "008.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 151885
+  },
+  {
+   "family": "gemini",
+   "file": "008.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "008.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 39149
+  },
+  {
+   "family": "gemini",
+   "file": "008.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 816011
+  },
+  {
+   "family": "gemini",
+   "file": "008.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 427206
+  },
+  {
+   "family": "gemini",
+   "file": "008.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 689858
+  },
+  {
+   "family": "gemini",
+   "file": "009.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 471887
+  },
+  {
+   "family": "gemini",
+   "file": "009.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 178649
+  },
+  {
+   "family": "gemini",
+   "file": "009.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 178649
+  },
+  {
+   "family": "gemini",
+   "file": "009.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "009.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 50014
+  },
+  {
+   "family": "gemini",
+   "file": "009.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 856990
+  },
+  {
+   "family": "gemini",
+   "file": "009.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 471887
+  },
+  {
+   "family": "gemini",
+   "file": "009.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 678512
+  },
+  {
+   "family": "gemini",
+   "file": "010.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 515503
+  },
+  {
+   "family": "gemini",
+   "file": "010.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 214345
+  },
+  {
+   "family": "gemini",
+   "file": "010.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 214345
+  },
+  {
+   "family": "gemini",
+   "file": "010.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "010.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 69558
+  },
+  {
+   "family": "gemini",
+   "file": "010.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 992764
+  },
+  {
+   "family": "gemini",
+   "file": "010.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 515503
+  },
+  {
+   "family": "gemini",
+   "file": "010.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 834206
+  },
+  {
+   "family": "gemini",
+   "file": "011.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 600603
+  },
+  {
+   "family": "gemini",
+   "file": "011.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 251755
+  },
+  {
+   "family": "gemini",
+   "file": "011.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 251755
+  },
+  {
+   "family": "gemini",
+   "file": "011.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "011.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 69246
+  },
+  {
+   "family": "gemini",
+   "file": "011.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1191953
+  },
+  {
+   "family": "gemini",
+   "file": "011.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 600603
+  },
+  {
+   "family": "gemini",
+   "file": "011.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 966955
+  },
+  {
+   "family": "gemini",
+   "file": "012.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 1177952
+  },
+  {
+   "family": "gemini",
+   "file": "012.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1034813
+  },
+  {
+   "family": "gemini",
+   "file": "012.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 116608
+  },
+  {
+   "family": "gemini",
+   "file": "012.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3096716
+  },
+  {
+   "family": "gemini",
+   "file": "012.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 842134
+  },
+  {
+   "family": "gemini",
+   "file": "012.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1096071
+  },
+  {
+   "family": "gemini",
+   "file": "012.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1018648
+  },
+  {
+   "family": "gemini",
+   "file": "012.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 679977
+  },
+  {
+   "family": "gemini",
+   "file": "013.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 412220
+  },
+  {
+   "family": "gemini",
+   "file": "013.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 135844
+  },
+  {
+   "family": "gemini",
+   "file": "013.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 135844
+  },
+  {
+   "family": "gemini",
+   "file": "013.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "013.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 32344
+  },
+  {
+   "family": "gemini",
+   "file": "013.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 782861
+  },
+  {
+   "family": "gemini",
+   "file": "013.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 412220
+  },
+  {
+   "family": "gemini",
+   "file": "013.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 617200
+  },
+  {
+   "family": "gemini",
+   "file": "014.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 498518
+  },
+  {
+   "family": "gemini",
+   "file": "014.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 182968
+  },
+  {
+   "family": "gemini",
+   "file": "014.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 182968
+  },
+  {
+   "family": "gemini",
+   "file": "014.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "014.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 47134
+  },
+  {
+   "family": "gemini",
+   "file": "014.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 935163
+  },
+  {
+   "family": "gemini",
+   "file": "014.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 498518
+  },
+  {
+   "family": "gemini",
+   "file": "014.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 757204
+  },
+  {
+   "family": "gemini",
+   "file": "015.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 779482
+  },
+  {
+   "family": "gemini",
+   "file": "015.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 380800
+  },
+  {
+   "family": "gemini",
+   "file": "015.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 380800
+  },
+  {
+   "family": "gemini",
+   "file": "015.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "015.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 101101
+  },
+  {
+   "family": "gemini",
+   "file": "015.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1572735
+  },
+  {
+   "family": "gemini",
+   "file": "015.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 779482
+  },
+  {
+   "family": "gemini",
+   "file": "015.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1165702
+  },
+  {
+   "family": "gemini",
+   "file": "016.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 727691
+  },
+  {
+   "family": "gemini",
+   "file": "016.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 346373
+  },
+  {
+   "family": "gemini",
+   "file": "016.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 346373
+  },
+  {
+   "family": "gemini",
+   "file": "016.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "016.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 96544
+  },
+  {
+   "family": "gemini",
+   "file": "016.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1473385
+  },
+  {
+   "family": "gemini",
+   "file": "016.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 727691
+  },
+  {
+   "family": "gemini",
+   "file": "016.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1095852
+  },
+  {
+   "family": "gemini",
+   "file": "017.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 535106
+  },
+  {
+   "family": "gemini",
+   "file": "017.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 193283
+  },
+  {
+   "family": "gemini",
+   "file": "017.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 193283
+  },
+  {
+   "family": "gemini",
+   "file": "017.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "017.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 44470
+  },
+  {
+   "family": "gemini",
+   "file": "017.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1049451
+  },
+  {
+   "family": "gemini",
+   "file": "017.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 535106
+  },
+  {
+   "family": "gemini",
+   "file": "017.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 824763
+  },
+  {
+   "family": "gemini",
+   "file": "018.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 1252142
+  },
+  {
+   "family": "gemini",
+   "file": "018.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1158682
+  },
+  {
+   "family": "gemini",
+   "file": "018.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 169235
+  },
+  {
+   "family": "gemini",
+   "file": "018.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3096716
+  },
+  {
+   "family": "gemini",
+   "file": "018.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 941497
+  },
+  {
+   "family": "gemini",
+   "file": "018.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1223564
+  },
+  {
+   "family": "gemini",
+   "file": "018.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1180547
+  },
+  {
+   "family": "gemini",
+   "file": "018.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 780023
+  },
+  {
+   "family": "gemini",
+   "file": "019.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 677089
+  },
+  {
+   "family": "gemini",
+   "file": "019.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 306805
+  },
+  {
+   "family": "gemini",
+   "file": "019.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 306805
+  },
+  {
+   "family": "gemini",
+   "file": "019.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "019.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 75957
+  },
+  {
+   "family": "gemini",
+   "file": "019.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1355531
+  },
+  {
+   "family": "gemini",
+   "file": "019.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 677089
+  },
+  {
+   "family": "gemini",
+   "file": "019.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 965207
+  },
+  {
+   "family": "gemini",
+   "file": "020.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 619006
+  },
+  {
+   "family": "gemini",
+   "file": "020.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 271521
+  },
+  {
+   "family": "gemini",
+   "file": "020.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 271521
+  },
+  {
+   "family": "gemini",
+   "file": "020.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "020.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 72624
+  },
+  {
+   "family": "gemini",
+   "file": "020.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1190341
+  },
+  {
+   "family": "gemini",
+   "file": "020.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 619006
+  },
+  {
+   "family": "gemini",
+   "file": "020.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 901755
+  },
+  {
+   "family": "gemini",
+   "file": "021.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 409829
+  },
+  {
+   "family": "gemini",
+   "file": "021.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 154958
+  },
+  {
+   "family": "gemini",
+   "file": "021.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 154958
+  },
+  {
+   "family": "gemini",
+   "file": "021.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "021.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 46015
+  },
+  {
+   "family": "gemini",
+   "file": "021.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 816923
+  },
+  {
+   "family": "gemini",
+   "file": "021.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 409829
+  },
+  {
+   "family": "gemini",
+   "file": "021.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 644663
+  },
+  {
+   "family": "gemini",
+   "file": "022.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 472039
+  },
+  {
+   "family": "gemini",
+   "file": "022.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 171827
+  },
+  {
+   "family": "gemini",
+   "file": "022.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 171827
+  },
+  {
+   "family": "gemini",
+   "file": "022.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "022.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 39073
+  },
+  {
+   "family": "gemini",
+   "file": "022.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 898114
+  },
+  {
+   "family": "gemini",
+   "file": "022.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 472039
+  },
+  {
+   "family": "gemini",
+   "file": "022.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 741511
+  },
+  {
+   "family": "gemini",
+   "file": "023.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 585224
+  },
+  {
+   "family": "gemini",
+   "file": "023.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 217917
+  },
+  {
+   "family": "gemini",
+   "file": "023.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 217917
+  },
+  {
+   "family": "gemini",
+   "file": "023.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "023.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 52920
+  },
+  {
+   "family": "gemini",
+   "file": "023.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1184641
+  },
+  {
+   "family": "gemini",
+   "file": "023.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 585224
+  },
+  {
+   "family": "gemini",
+   "file": "023.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 905408
+  },
+  {
+   "family": "gemini",
+   "file": "024.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 1325029
+  },
+  {
+   "family": "gemini",
+   "file": "024.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1193426
+  },
+  {
+   "family": "gemini",
+   "file": "024.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 214161
+  },
+  {
+   "family": "gemini",
+   "file": "024.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3096716
+  },
+  {
+   "family": "gemini",
+   "file": "024.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1038031
+  },
+  {
+   "family": "gemini",
+   "file": "024.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1237750
+  },
+  {
+   "family": "gemini",
+   "file": "024.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1175756
+  },
+  {
+   "family": "gemini",
+   "file": "024.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 786767
+  },
+  {
+   "family": "gemini",
+   "file": "025.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 757905
+  },
+  {
+   "family": "gemini",
+   "file": "025.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 365520
+  },
+  {
+   "family": "gemini",
+   "file": "025.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 365520
+  },
+  {
+   "family": "gemini",
+   "file": "025.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "025.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 92909
+  },
+  {
+   "family": "gemini",
+   "file": "025.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1556504
+  },
+  {
+   "family": "gemini",
+   "file": "025.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 757905
+  },
+  {
+   "family": "gemini",
+   "file": "025.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1148227
+  },
+  {
+   "family": "gemini",
+   "file": "026.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 440733
+  },
+  {
+   "family": "gemini",
+   "file": "026.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 136253
+  },
+  {
+   "family": "gemini",
+   "file": "026.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 136253
+  },
+  {
+   "family": "gemini",
+   "file": "026.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "026.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 24556
+  },
+  {
+   "family": "gemini",
+   "file": "026.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 829218
+  },
+  {
+   "family": "gemini",
+   "file": "026.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 440733
+  },
+  {
+   "family": "gemini",
+   "file": "026.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 612193
+  },
+  {
+   "family": "gemini",
+   "file": "027.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 560824
+  },
+  {
+   "family": "gemini",
+   "file": "027.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 236902
+  },
+  {
+   "family": "gemini",
+   "file": "027.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 236902
+  },
+  {
+   "family": "gemini",
+   "file": "027.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "027.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 73300
+  },
+  {
+   "family": "gemini",
+   "file": "027.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1067300
+  },
+  {
+   "family": "gemini",
+   "file": "027.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 560824
+  },
+  {
+   "family": "gemini",
+   "file": "027.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 824667
+  },
+  {
+   "family": "gemini",
+   "file": "028.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 613174
+  },
+  {
+   "family": "gemini",
+   "file": "028.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 270200
+  },
+  {
+   "family": "gemini",
+   "file": "028.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 270200
+  },
+  {
+   "family": "gemini",
+   "file": "028.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "028.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 69980
+  },
+  {
+   "family": "gemini",
+   "file": "028.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1184679
+  },
+  {
+   "family": "gemini",
+   "file": "028.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 613174
+  },
+  {
+   "family": "gemini",
+   "file": "028.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 936006
+  },
+  {
+   "family": "gemini",
+   "file": "029.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 592706
+  },
+  {
+   "family": "gemini",
+   "file": "029.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 241315
+  },
+  {
+   "family": "gemini",
+   "file": "029.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 241315
+  },
+  {
+   "family": "gemini",
+   "file": "029.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "029.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 60076
+  },
+  {
+   "family": "gemini",
+   "file": "029.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1185936
+  },
+  {
+   "family": "gemini",
+   "file": "029.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 592706
+  },
+  {
+   "family": "gemini",
+   "file": "029.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 915546
+  },
+  {
+   "family": "gemini",
+   "file": "030.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 1178802
+  },
+  {
+   "family": "gemini",
+   "file": "030.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1014326
+  },
+  {
+   "family": "gemini",
+   "file": "030.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 168983
+  },
+  {
+   "family": "gemini",
+   "file": "030.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3096716
+  },
+  {
+   "family": "gemini",
+   "file": "030.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 852595
+  },
+  {
+   "family": "gemini",
+   "file": "030.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1069627
+  },
+  {
+   "family": "gemini",
+   "file": "030.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1295227
+  },
+  {
+   "family": "gemini",
+   "file": "030.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 899661
+  },
+  {
+   "family": "gemini",
+   "file": "031.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 597018
+  },
+  {
+   "family": "gemini",
+   "file": "031.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 250809
+  },
+  {
+   "family": "gemini",
+   "file": "031.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 250809
+  },
+  {
+   "family": "gemini",
+   "file": "031.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "031.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 64243
+  },
+  {
+   "family": "gemini",
+   "file": "031.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1165764
+  },
+  {
+   "family": "gemini",
+   "file": "031.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 597018
+  },
+  {
+   "family": "gemini",
+   "file": "031.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 913170
+  },
+  {
+   "family": "gemini",
+   "file": "032.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 624395
+  },
+  {
+   "family": "gemini",
+   "file": "032.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 270949
+  },
+  {
+   "family": "gemini",
+   "file": "032.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 270949
+  },
+  {
+   "family": "gemini",
+   "file": "032.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "032.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 74123
+  },
+  {
+   "family": "gemini",
+   "file": "032.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1227564
+  },
+  {
+   "family": "gemini",
+   "file": "032.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 624395
+  },
+  {
+   "family": "gemini",
+   "file": "032.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 964080
+  },
+  {
+   "family": "gemini",
+   "file": "033.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 568438
+  },
+  {
+   "family": "gemini",
+   "file": "033.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 232713
+  },
+  {
+   "family": "gemini",
+   "file": "033.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 232713
+  },
+  {
+   "family": "gemini",
+   "file": "033.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "033.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 57306
+  },
+  {
+   "family": "gemini",
+   "file": "033.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1096048
+  },
+  {
+   "family": "gemini",
+   "file": "033.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 568438
+  },
+  {
+   "family": "gemini",
+   "file": "033.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 859251
+  },
+  {
+   "family": "gemini",
+   "file": "034.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 672974
+  },
+  {
+   "family": "gemini",
+   "file": "034.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 310779
+  },
+  {
+   "family": "gemini",
+   "file": "034.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 310779
+  },
+  {
+   "family": "gemini",
+   "file": "034.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "034.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 83050
+  },
+  {
+   "family": "gemini",
+   "file": "034.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1310795
+  },
+  {
+   "family": "gemini",
+   "file": "034.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 672974
+  },
+  {
+   "family": "gemini",
+   "file": "034.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1027765
+  },
+  {
+   "family": "gemini",
+   "file": "035.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 598870
+  },
+  {
+   "family": "gemini",
+   "file": "035.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 236238
+  },
+  {
+   "family": "gemini",
+   "file": "035.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 236238
+  },
+  {
+   "family": "gemini",
+   "file": "035.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "035.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 57831
+  },
+  {
+   "family": "gemini",
+   "file": "035.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1221005
+  },
+  {
+   "family": "gemini",
+   "file": "035.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 598870
+  },
+  {
+   "family": "gemini",
+   "file": "035.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 971093
+  },
+  {
+   "family": "gemini",
+   "file": "036.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 1303635
+  },
+  {
+   "family": "gemini",
+   "file": "036.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1221903
+  },
+  {
+   "family": "gemini",
+   "file": "036.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 190327
+  },
+  {
+   "family": "gemini",
+   "file": "036.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3096716
+  },
+  {
+   "family": "gemini",
+   "file": "036.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1003988
+  },
+  {
+   "family": "gemini",
+   "file": "036.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1284500
+  },
+  {
+   "family": "gemini",
+   "file": "036.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1334913
+  },
+  {
+   "family": "gemini",
+   "file": "036.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 881406
+  },
+  {
+   "family": "gemini",
+   "file": "037.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 665211
+  },
+  {
+   "family": "gemini",
+   "file": "037.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 296647
+  },
+  {
+   "family": "gemini",
+   "file": "037.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 296647
+  },
+  {
+   "family": "gemini",
+   "file": "037.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "037.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 69270
+  },
+  {
+   "family": "gemini",
+   "file": "037.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1338789
+  },
+  {
+   "family": "gemini",
+   "file": "037.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 665211
+  },
+  {
+   "family": "gemini",
+   "file": "037.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 982776
+  },
+  {
+   "family": "gemini",
+   "file": "038.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 479926
+  },
+  {
+   "family": "gemini",
+   "file": "038.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 149680
+  },
+  {
+   "family": "gemini",
+   "file": "038.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 149680
+  },
+  {
+   "family": "gemini",
+   "file": "038.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "038.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 31830
+  },
+  {
+   "family": "gemini",
+   "file": "038.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 895001
+  },
+  {
+   "family": "gemini",
+   "file": "038.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 479926
+  },
+  {
+   "family": "gemini",
+   "file": "038.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 779271
+  },
+  {
+   "family": "gemini",
+   "file": "039.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 508145
+  },
+  {
+   "family": "gemini",
+   "file": "039.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 182359
+  },
+  {
+   "family": "gemini",
+   "file": "039.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 182359
+  },
+  {
+   "family": "gemini",
+   "file": "039.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "039.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 42381
+  },
+  {
+   "family": "gemini",
+   "file": "039.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 964584
+  },
+  {
+   "family": "gemini",
+   "file": "039.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 508145
+  },
+  {
+   "family": "gemini",
+   "file": "039.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 726217
+  },
+  {
+   "family": "gemini",
+   "file": "040.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 728962
+  },
+  {
+   "family": "gemini",
+   "file": "040.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 344643
+  },
+  {
+   "family": "gemini",
+   "file": "040.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 344643
+  },
+  {
+   "family": "gemini",
+   "file": "040.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "040.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 90051
+  },
+  {
+   "family": "gemini",
+   "file": "040.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1479681
+  },
+  {
+   "family": "gemini",
+   "file": "040.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 728962
+  },
+  {
+   "family": "gemini",
+   "file": "040.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1081961
+  },
+  {
+   "family": "gemini",
+   "file": "041.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 551677
+  },
+  {
+   "family": "gemini",
+   "file": "041.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 201307
+  },
+  {
+   "family": "gemini",
+   "file": "041.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 201307
+  },
+  {
+   "family": "gemini",
+   "file": "041.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "041.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 52048
+  },
+  {
+   "family": "gemini",
+   "file": "041.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1104607
+  },
+  {
+   "family": "gemini",
+   "file": "041.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 551677
+  },
+  {
+   "family": "gemini",
+   "file": "041.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 862160
+  },
+  {
+   "family": "gemini",
+   "file": "042.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 1358705
+  },
+  {
+   "family": "gemini",
+   "file": "042.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1234520
+  },
+  {
+   "family": "gemini",
+   "file": "042.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 205856
+  },
+  {
+   "family": "gemini",
+   "file": "042.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3096716
+  },
+  {
+   "family": "gemini",
+   "file": "042.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1004708
+  },
+  {
+   "family": "gemini",
+   "file": "042.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1298129
+  },
+  {
+   "family": "gemini",
+   "file": "042.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1403275
+  },
+  {
+   "family": "gemini",
+   "file": "042.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 935983
+  },
+  {
+   "family": "gemini",
+   "file": "043.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 794697
+  },
+  {
+   "family": "gemini",
+   "file": "043.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 391984
+  },
+  {
+   "family": "gemini",
+   "file": "043.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 391984
+  },
+  {
+   "family": "gemini",
+   "file": "043.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "043.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 105102
+  },
+  {
+   "family": "gemini",
+   "file": "043.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1617391
+  },
+  {
+   "family": "gemini",
+   "file": "043.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 794697
+  },
+  {
+   "family": "gemini",
+   "file": "043.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1191759
+  },
+  {
+   "family": "gemini",
+   "file": "044.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 678586
+  },
+  {
+   "family": "gemini",
+   "file": "044.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 306900
+  },
+  {
+   "family": "gemini",
+   "file": "044.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 306900
+  },
+  {
+   "family": "gemini",
+   "file": "044.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "044.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 71456
+  },
+  {
+   "family": "gemini",
+   "file": "044.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1367890
+  },
+  {
+   "family": "gemini",
+   "file": "044.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 678586
+  },
+  {
+   "family": "gemini",
+   "file": "044.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 967800
+  },
+  {
+   "family": "gemini",
+   "file": "045.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 529162
+  },
+  {
+   "family": "gemini",
+   "file": "045.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 195143
+  },
+  {
+   "family": "gemini",
+   "file": "045.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 195143
+  },
+  {
+   "family": "gemini",
+   "file": "045.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "045.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 41750
+  },
+  {
+   "family": "gemini",
+   "file": "045.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 999270
+  },
+  {
+   "family": "gemini",
+   "file": "045.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 529162
+  },
+  {
+   "family": "gemini",
+   "file": "045.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 796473
+  },
+  {
+   "family": "gemini",
+   "file": "046.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 491116
+  },
+  {
+   "family": "gemini",
+   "file": "046.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 210953
+  },
+  {
+   "family": "gemini",
+   "file": "046.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 210953
+  },
+  {
+   "family": "gemini",
+   "file": "046.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "046.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 57566
+  },
+  {
+   "family": "gemini",
+   "file": "046.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 973566
+  },
+  {
+   "family": "gemini",
+   "file": "046.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 491116
+  },
+  {
+   "family": "gemini",
+   "file": "046.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 749236
+  },
+  {
+   "family": "gemini",
+   "file": "047.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 639796
+  },
+  {
+   "family": "gemini",
+   "file": "047.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 269056
+  },
+  {
+   "family": "gemini",
+   "file": "047.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 269056
+  },
+  {
+   "family": "gemini",
+   "file": "047.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "047.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 66531
+  },
+  {
+   "family": "gemini",
+   "file": "047.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1292501
+  },
+  {
+   "family": "gemini",
+   "file": "047.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 639796
+  },
+  {
+   "family": "gemini",
+   "file": "047.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 949008
+  },
+  {
+   "family": "gemini",
+   "file": "048.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 1579559
+  },
+  {
+   "family": "gemini",
+   "file": "048.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1545638
+  },
+  {
+   "family": "gemini",
+   "file": "048.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 310553
+  },
+  {
+   "family": "gemini",
+   "file": "048.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3096716
+  },
+  {
+   "family": "gemini",
+   "file": "048.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1256000
+  },
+  {
+   "family": "gemini",
+   "file": "048.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1609986
+  },
+  {
+   "family": "gemini",
+   "file": "048.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1681906
+  },
+  {
+   "family": "gemini",
+   "file": "048.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1108104
+  },
+  {
+   "family": "gemini",
+   "file": "049.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 445662
+  },
+  {
+   "family": "gemini",
+   "file": "049.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 149116
+  },
+  {
+   "family": "gemini",
+   "file": "049.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 149116
+  },
+  {
+   "family": "gemini",
+   "file": "049.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "049.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 37371
+  },
+  {
+   "family": "gemini",
+   "file": "049.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 861258
+  },
+  {
+   "family": "gemini",
+   "file": "049.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 445662
+  },
+  {
+   "family": "gemini",
+   "file": "049.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 640836
+  },
+  {
+   "family": "gemini",
+   "file": "050.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 437877
+  },
+  {
+   "family": "gemini",
+   "file": "050.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 165352
+  },
+  {
+   "family": "gemini",
+   "file": "050.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 165352
+  },
+  {
+   "family": "gemini",
+   "file": "050.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "050.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 40696
+  },
+  {
+   "family": "gemini",
+   "file": "050.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 790896
+  },
+  {
+   "family": "gemini",
+   "file": "050.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 437877
+  },
+  {
+   "family": "gemini",
+   "file": "050.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 637657
+  },
+  {
+   "family": "gemini",
+   "file": "051.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 681007
+  },
+  {
+   "family": "gemini",
+   "file": "051.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 304456
+  },
+  {
+   "family": "gemini",
+   "file": "051.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 304456
+  },
+  {
+   "family": "gemini",
+   "file": "051.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "051.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 75751
+  },
+  {
+   "family": "gemini",
+   "file": "051.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1363168
+  },
+  {
+   "family": "gemini",
+   "file": "051.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 681007
+  },
+  {
+   "family": "gemini",
+   "file": "051.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1002785
+  },
+  {
+   "family": "gemini",
+   "file": "052.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 687170
+  },
+  {
+   "family": "gemini",
+   "file": "052.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 319534
+  },
+  {
+   "family": "gemini",
+   "file": "052.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 319534
+  },
+  {
+   "family": "gemini",
+   "file": "052.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "052.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 79687
+  },
+  {
+   "family": "gemini",
+   "file": "052.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1363968
+  },
+  {
+   "family": "gemini",
+   "file": "052.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 687170
+  },
+  {
+   "family": "gemini",
+   "file": "052.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1036210
+  },
+  {
+   "family": "gemini",
+   "file": "053.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 574699
+  },
+  {
+   "family": "gemini",
+   "file": "053.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 227724
+  },
+  {
+   "family": "gemini",
+   "file": "053.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 227724
+  },
+  {
+   "family": "gemini",
+   "file": "053.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "053.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 47168
+  },
+  {
+   "family": "gemini",
+   "file": "053.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1121573
+  },
+  {
+   "family": "gemini",
+   "file": "053.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 574699
+  },
+  {
+   "family": "gemini",
+   "file": "053.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 765635
+  },
+  {
+   "family": "gemini",
+   "file": "054.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 1388653
+  },
+  {
+   "family": "gemini",
+   "file": "054.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1290437
+  },
+  {
+   "family": "gemini",
+   "file": "054.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 224607
+  },
+  {
+   "family": "gemini",
+   "file": "054.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3096716
+  },
+  {
+   "family": "gemini",
+   "file": "054.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1047433
+  },
+  {
+   "family": "gemini",
+   "file": "054.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1355563
+  },
+  {
+   "family": "gemini",
+   "file": "054.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1439441
+  },
+  {
+   "family": "gemini",
+   "file": "054.png",
+   "model": "gemini-2.5-flash-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 959966
+  },
+  {
+   "family": "gemini",
+   "file": "055.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 555755
+  },
+  {
+   "family": "gemini",
+   "file": "055.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 210568
+  },
+  {
+   "family": "gemini",
+   "file": "055.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 210568
+  },
+  {
+   "family": "gemini",
+   "file": "055.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "055.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 47834
+  },
+  {
+   "family": "gemini",
+   "file": "055.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1085783
+  },
+  {
+   "family": "gemini",
+   "file": "055.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 555755
+  },
+  {
+   "family": "gemini",
+   "file": "055.jpg",
+   "model": "gemini-3-pro-image-preview",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 841137
+  },
+  {
+   "family": "gemini",
+   "file": "056.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 699683
+  },
+  {
+   "family": "gemini",
+   "file": "056.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 315599
+  },
+  {
+   "family": "gemini",
+   "file": "056.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 315599
+  },
+  {
+   "family": "gemini",
+   "file": "056.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "056.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 83173
+  },
+  {
+   "family": "gemini",
+   "file": "056.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1422696
+  },
+  {
+   "family": "gemini",
+   "file": "056.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 699683
+  },
+  {
+   "family": "gemini",
+   "file": "056.jpg",
+   "model": "gemini-3-pro-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1004742
+  },
+  {
+   "family": "gemini",
+   "file": "057.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 556991
+  },
+  {
+   "family": "gemini",
+   "file": "057.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 224049
+  },
+  {
+   "family": "gemini",
+   "file": "057.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 224049
+  },
+  {
+   "family": "gemini",
+   "file": "057.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "057.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 54407
+  },
+  {
+   "family": "gemini",
+   "file": "057.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1066987
+  },
+  {
+   "family": "gemini",
+   "file": "057.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 556991
+  },
+  {
+   "family": "gemini",
+   "file": "057.jpg",
+   "model": "gemini-3.1-flash-image-preview",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 791610
+  },
+  {
+   "family": "gemini",
+   "file": "058.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 512879
+  },
+  {
+   "family": "gemini",
+   "file": "058.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 189982
+  },
+  {
+   "family": "gemini",
+   "file": "058.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 189982
+  },
+  {
+   "family": "gemini",
+   "file": "058.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "058.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 50855
+  },
+  {
+   "family": "gemini",
+   "file": "058.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 980430
+  },
+  {
+   "family": "gemini",
+   "file": "058.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 512879
+  },
+  {
+   "family": "gemini",
+   "file": "058.jpg",
+   "model": "gemini-3.1-flash-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 790827
+  },
+  {
+   "family": "gemini",
+   "file": "059.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 551725
+  },
+  {
+   "family": "gemini",
+   "file": "059.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 191727
+  },
+  {
+   "family": "gemini",
+   "file": "059.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 191727
+  },
+  {
+   "family": "gemini",
+   "file": "059.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 3170444
+  },
+  {
+   "family": "gemini",
+   "file": "059.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 44249
+  },
+  {
+   "family": "gemini",
+   "file": "059.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1074107
+  },
+  {
+   "family": "gemini",
+   "file": "059.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 551725
+  },
+  {
+   "family": "gemini",
+   "file": "059.jpg",
+   "model": "gemini-3.1-flash-lite-image",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 859297
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_01.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 1969901
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_01.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1684195
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_01.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 333905
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_01.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 4717724
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_01.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1440985
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_01.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1779127
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_01.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1916489
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_01.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1143506
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_02.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 2770145
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_02.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 2417629
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_02.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 540752
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_02.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 4717724
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_02.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1956198
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_02.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 2525413
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_02.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 2696494
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_02.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1531518
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_03.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 2017306
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_03.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1748507
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_03.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 326883
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_03.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 4717724
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_03.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1411233
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_03.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1839129
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_03.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1898926
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_03.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 522570
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_04.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 1637044
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_04.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1313882
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_04.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 194987
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_04.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 4717724
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_04.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1078393
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_04.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1403199
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_04.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1323145
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_04.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 350041
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_05.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 1417578
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_05.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1079949
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_05.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 181318
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_05.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 4717724
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_05.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 918157
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_05.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1149959
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_05.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1178126
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_05.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 342975
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_06.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 1810032
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_06.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1508779
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_06.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 266062
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_06.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 4720754
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_06.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1244006
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_06.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1598465
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_06.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1713620
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_06.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 704674
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_07.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 1552664
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_07.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1184969
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_07.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 168779
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_07.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 4715039
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_07.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 973855
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_07.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1271412
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_07.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1241955
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_07.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 420134
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_08.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 1591228
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_08.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1238488
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_08.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 168349
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_08.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 4718732
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_08.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1019717
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_08.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1333629
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_08.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1283740
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_08.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 704146
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_09.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 1801637
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_09.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1539070
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_09.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 274762
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_09.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 4717724
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_09.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1253739
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_09.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1626465
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_09.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1770791
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_09.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 507686
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_10.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 937689
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_10.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 621870
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_10.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 140374
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_10.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 4715552
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_10.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 514267
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_10.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 678589
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_10.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 610685
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_10.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 207440
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_11.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 1496455
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_11.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1073609
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_11.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 147461
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_11.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 4717724
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_11.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 883924
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_11.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1160688
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_11.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1095108
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_11.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 298543
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_12.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 1327609
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_12.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 961896
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_12.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 183254
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_12.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 4717724
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_12.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 815982
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_12.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1034318
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_12.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1077531
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_12.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 335770
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_13.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 1172115
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_13.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 829214
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_13.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 147763
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_13.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 4717724
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_13.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 694087
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_13.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 892393
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_13.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 851604
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_13.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 259538
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_14.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 1527883
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_14.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1128571
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_14.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 152074
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_14.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 4718732
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_14.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 928591
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_14.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1221630
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_14.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1154391
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_14.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 644745
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_15.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 1819856
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_15.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1543419
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_15.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 265537
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_15.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 4717724
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_15.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1261042
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_15.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1638020
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_15.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1659287
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_15.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 455404
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_16.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 2060482
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_16.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1679906
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_16.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 316262
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_16.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 4718732
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_16.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1375317
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_16.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1798411
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_16.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1783378
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_16.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 934234
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_17.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 1938532
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_17.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1666516
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_17.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 306324
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_17.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 4717724
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_17.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1356636
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_17.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1757606
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_17.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1856099
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_17.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 514844
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_18.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 1986188
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_18.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1701719
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_18.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 308294
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_18.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 4720754
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_18.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1382907
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_18.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1798226
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_18.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1793850
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_18.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 717549
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_19.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 1925689
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_19.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1600154
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_19.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 286831
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_19.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 4718732
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_19.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1306012
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_19.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1704019
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_19.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1692063
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_19.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 915192
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_20.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "original",
+   "c2pa_present": true,
+   "declares_ai": true,
+   "bytes": 2338675
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_20.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "resave_same_format",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 2007780
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_20.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "jpeg_q95",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 413352
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_20.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "tiff",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 4717724
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_20.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "crop_90pct",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 1631894
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_20.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "placed_in_2x2_figure",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 2111840
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_20.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_embedded_then_extracted",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 2020797
+  },
+  {
+   "family": "openai",
+   "file": "openai_blot_20.png",
+   "model": "ChatGPT image generation (Plus account, Oct 26 2026; model not exposed)",
+   "step": "pdf_page_rendered",
+   "c2pa_present": false,
+   "declares_ai": false,
+   "bytes": 534595
+  }
+ ],
+ "summary": {
+  "gemini|original": [
+   60,
+   60
+  ],
+  "gemini|resave_same_format": [
+   0,
+   60
+  ],
+  "gemini|jpeg_q95": [
+   0,
+   60
+  ],
+  "gemini|tiff": [
+   0,
+   60
+  ],
+  "gemini|crop_90pct": [
+   0,
+   60
+  ],
+  "gemini|placed_in_2x2_figure": [
+   0,
+   60
+  ],
+  "gemini|pdf_embedded_then_extracted": [
+   50,
+   60
+  ],
+  "gemini|pdf_page_rendered": [
+   0,
+   60
+  ],
+  "openai|original": [
+   20,
+   20
+  ],
+  "openai|resave_same_format": [
+   0,
+   20
+  ],
+  "openai|jpeg_q95": [
+   0,
+   20
+  ],
+  "openai|tiff": [
+   0,
+   20
+  ],
+  "openai|crop_90pct": [
+   0,
+   20
+  ],
+  "openai|placed_in_2x2_figure": [
+   0,
+   20
+  ],
+  "openai|pdf_embedded_then_extracted": [
+   0,
+   20
+  ],
+  "openai|pdf_page_rendered": [
+   0,
+   20
+  ]
+ }
+}
